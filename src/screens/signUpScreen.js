@@ -1,23 +1,35 @@
-// src/screens/SignUpScreen.js
 import React, { useState } from "react";
-import { StyleSheet, ImageBackground, View, Text } from "react-native";
+import { StyleSheet, ImageBackground, View, Text, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { SvgUri } from "react-native-svg";
 import PrimaryInput from "../components/PrimaryInput";
-import { backIcon } from "../../assets/icons/back-icon.svg";
-import { userIcon } from "../../assets/icons/user icon.svg";
+import ReturnBtn from "../components/ReturnBtn";
 import SecondaryBtn from "../components/SecondaryBtn";
+import RegisterEmailModal from "../components/RegisterEmailModal";
+import { useDispatch} from "react-redux";
+import { userActions } from "../store/userSlice";
 
 const SignUpScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [emailModalVisible, setEmailModalVisible] = useState(false);
+  const userIcon = require("../../assets/icons/user-icon.png");
+  const showEmailModal = () => {
+    setEmailModalVisible(!emailModalVisible);
+  };
+  // Let's add the username to the userSlice by dispatching the setUsername action
+  // Let's use the dispatch method from the useDispatch hook to dispatch the setUsername action
+  // Let's import the useDispatch hook from react-redux
 
-  const handleSignUp = () => {
-    // Validate the input fields
-    // If everything is correct, navigate to the next screen or sign the user up
-    navigation.navigate("Home"); // Replace with actual next step in your app
+  const getUsername = (enteredText) => {
+    setUsername(enteredText);
+  };
+  const handleUsername = () => {
+    console.log(username);
+    if (username.trim().length > 0) {
+      dispatch(userActions.setUsername(username));
+      setEmailModalVisible(true);
+      dispatch(userActions.logUser());
+    }
   };
 
   return (
@@ -33,7 +45,8 @@ const SignUpScreen = ({ navigation }) => {
           ...styles.linearGradient,
         }}
       >
-        <SvgUri width="24" height="24" source={backIcon} />
+        <ReturnBtn method={() => navigation.navigate("Welcome")} />
+
         <View style={styles.containerMain}>
           <View style={styles.containerText}>
             <Text style={styles.title}>Welcome to EDMC</Text>
@@ -46,9 +59,20 @@ const SignUpScreen = ({ navigation }) => {
             placeholder="Username"
             Icon={userIcon}
             extraStyle={styles.input}
+            value={username}
+            method={getUsername}
+          />
+          <SecondaryBtn
+            title={"CONTINUE!"}
+            textStyle
+            onPress={handleUsername}
           />
         </View>
-        <SecondaryBtn  title={"CONTINUE!"} textStyle onPress={handleSignUp} />
+        <RegisterEmailModal
+          visible={emailModalVisible}
+          username={username}
+          hideEmailModal={showEmailModal}
+        />
       </LinearGradient>
     </ImageBackground>
   );
@@ -64,31 +88,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 15,
+    gap: 12,
   },
   containerText: {
     justifyContent: "center",
     marginTop: 24,
-    rowGap:9,
+    rowGap: 9,
   },
   title: {
     fontSize: 36,
-    marginVertical:0,
+    marginVertical: 0,
     color: "#fff",
     fontFamily: "Cereal-Medium",
-    
   },
   subtitle: {
     fontSize: 16,
     color: "#fff",
     fontFamily: "Gordita-Medium",
   },
-  input: {
-    width: "100%",
-    padding: 15,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
-  },
+
   button: {
     backgroundColor: "#A020F0",
     padding: 15,
@@ -107,12 +125,6 @@ const styles = StyleSheet.create({
     padding: 24,
     justifyContent: "space-between",
     paddingBottom: 72,
-  },
-  backIcon: {
-    width: 24,
-    height: 24,
-    marginTop: 24,
-    marginLeft: 24,
   },
   image: {
     width: 100,
