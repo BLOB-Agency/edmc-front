@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="20px" viewBox="0 0 18 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>home icon</title>
+    <g id="home-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9,0 L18,7 L18,18 C18,19.1045695 17.1045695,20 16,20 L12,20 L12,10 L6,10 L6,20 L2,20 C0.8954305,20 0,19.1045695 0,18 L0,7 L9,0 Z" id="Path-2" stroke="#FFFFFF"></path>
+    </g>
+</svg>

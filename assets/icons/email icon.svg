@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>email icon</title>
+    <g id="email-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <circle id="Oval" stroke="#FFFFFF" cx="9.00026656" cy="9.00004938" r="3.59989338"></circle>
+        <path d="M12.6001599,5.400156 L12.6001599,9.90002272 C12.6001599,11.3911474 13.8089553,12.5999428 15.30008,12.5999428 C16.7912046,12.5999428 18,11.3911474 18,9.90002272 L18,9.00004938 C17.9997366,4.81778737 15.1184063,1.18685368 11.0455806,0.236376716 C6.97275495,-0.714100249 2.78188416,1.26639104 0.930435909,5.01651836 C-0.921012342,8.76664569 0.054937084,13.2980104 3.28600118,15.9534841 C6.51706528,18.6089578 11.1516518,18.688653 14.4721045,16.1458377" id="Path" stroke="#FFFFFF"></path>
+    </g>
+</svg>
