@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="14.5px" height="16px" viewBox="0 0 14.5 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>skip-back</title>
-    <g id="skip-back" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <polygon id="Path" stroke="#FFFFFF" points="14.5 16 4.5 8 14.5 0"></polygon>
-        <line x1="0.5" y1="15" x2="0.5" y2="1" id="Path" stroke="#FFFFFF"></line>
-    </g>
-</svg>

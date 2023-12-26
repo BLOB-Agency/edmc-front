@@ -57,7 +57,7 @@ const SignUpScreen = ({ navigation }) => {
           <PrimaryInput
             label={"Username"}
             placeholder="Username"
-            Icon={userIcon}
+            icon={userIcon}
             extraStyle={styles.input}
             value={username}
             method={getUsername}

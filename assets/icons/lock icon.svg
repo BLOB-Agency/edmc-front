@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>lock icon</title>
-    <g id="lock-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <rect id="Rectangle" stroke="#FFFFFF" x="0" y="8.1" width="16" height="9.9" rx="2"></rect>
-        <path d="M3.55555556,8.1 L3.55555556,4.5 C3.55555556,2.01471863 5.54540111,-2.66453526e-15 8,-2.66453526e-15 C10.4545989,-2.66453526e-15 12.4444444,2.01471863 12.4444444,4.5 L12.4444444,8.1" id="Path" stroke="#FFFFFF"></path>
-    </g>
-</svg>

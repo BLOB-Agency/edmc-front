@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="21px" height="14px" viewBox="0 0 21 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>volume x icon</title>
-    <g id="volume-x-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <polygon id="Path" stroke="#FFFFFF" points="9 0 4 4 0 4 0 10 4 10 9 14"></polygon>
-        <line x1="21" y1="4" x2="15" y2="10" id="Path" stroke="#FFFFFF"></line>
-        <line x1="15" y1="4" x2="21" y2="10" id="Path" stroke="#FFFFFF"></line>
-    </g>
-</svg>

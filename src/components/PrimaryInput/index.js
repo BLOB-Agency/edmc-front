@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput, Text, StyleSheet } from "react-native";
+import { View, TextInput, Text, StyleSheet, Image } from "react-native";
 import styles from "./styles";
 
 const PrimaryInput = ({
@@ -18,7 +18,7 @@ const PrimaryInput = ({
       <View
         style={[styles.inputContainer, errorMessage ? styles.inputError : null]}
       >
-        {icon && <Image source={icon} style={{ width: 24, height: 24 }} />}
+        {icon && <Image source={icon} style={{ width: 18, height: 18 }} />}
         <TextInput
           placeholderTextColor="rgba(255, 255, 255, 0.5)"
           placeholder={placeholder}

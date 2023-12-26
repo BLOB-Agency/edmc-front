@@ -1,11 +1,11 @@
 // src/store/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-
 export const userSlice = createSlice({
   name: "user",
   initialState: {
     username: "",
     email: "",
+    password: "",
     color: "#BB61C9",
   },
   reducers: {
@@ -18,6 +18,9 @@ export const userSlice = createSlice({
     setColor: (state, action) => {
       state.color = action.payload;
     },
+    setPassword: (state, action) => {
+      state.password = action.payload;
+    },
     logUser: (state) => {
       console.log(
         "The username is: ",
@@ -25,12 +28,12 @@ export const userSlice = createSlice({
         "The email is: ",
         state.email,
         "The color is: ",
-        state.color
+        state.color,
+        "The password is: ",
+        state.password
       );
     },
   },
 });
-
 export const userActions = userSlice.actions;
-
 export default userSlice.reducer;

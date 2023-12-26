@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        gap: 10,
         backgroundColor: 'rgba(255, 255, 255, 0.12)',
         borderColor: 'rgba(255, 255, 255, 0.3)',
         borderWidth: 1,
@@ -25,8 +26,6 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 10,
-        width: 20,
-        height: 20,
     },
     input: {
         flex: 1,
