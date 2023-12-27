@@ -6,6 +6,7 @@ import { useFonts } from "expo-font";
 import { store } from "./src/store/store";
 import WelcomeScreen from "./src/screens/welcomeScreen";
 import SignUpScreen from "./src/screens/signUpScreen";
+import SignUpColorPick from "./src/screens/signUpColorPick";
 // ... import other screens
 
 const Stack = createStackNavigator();
@@ -37,6 +38,12 @@ export default function App() {
             component={SignUpScreen}
             options={{ headerShown: false }}
             // Add options here if you want to customize the header for SignUp screen
+          />
+          <Stack.Screen
+            name="SignUpColorPick"
+            animation="fade"
+            component={SignUpColorPick}
+            options={{ headerShown: false }}
           />
           {/* Add other screens and their respective options here */}
         </Stack.Navigator>

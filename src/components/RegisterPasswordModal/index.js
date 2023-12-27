@@ -20,17 +20,23 @@ const RegisterPasswordModal = (props) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [checkEmailModalVisible, setCheckEmailModalVisible] = useState(false);
   const userData = useSelector((state) => state.user);
-  const hideCheckEmailModal = () => {
-    setCheckEmailModalVisible(false);
-  };
   const getPassword = (enteredText) => {
     setPasswordError(false);
     setPassword(enteredText);
+    console.log("password: ", password);
+    console.log("enteredText: ", enteredText);
   };
+
   const getConfirmPassword = (enteredText) => {
     setConfirmPassword(false);
     setConfirmPassword(enteredText);
     console.log("confirmPassword: ", confirmPassword);
+  };
+  const generateCode = () => {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+  };
+  const hideCheckEmailModal = () => {
+    setCheckEmailModalVisible(false);
   };
 
   const passwordHandler = () => {
@@ -51,9 +57,15 @@ const RegisterPasswordModal = (props) => {
     // If they match, dispatch the password and navigate to the next screen
     else {
       dispatch(userActions.setPassword(password));
+      const verificationCode = generateCode();
+      const userWithCode = {
+        ...userData,
+        verificationCode,
+        isVerified: false,
+        password: password,
+      };
+      signUp(userWithCode);
       dispatch(userActions.logUser());
-
-      signUp(userData);
 
       setCheckEmailModalVisible(true);
     }
@@ -125,7 +137,10 @@ const RegisterPasswordModal = (props) => {
           </View>
           <CheckEmailModal
             visible={checkEmailModalVisible}
-            method={hideCheckEmailModal}
+            navigation={props.navigation}
+            hideEmailModal={props.hideEmailModal}
+            hidePasswordModal={props.hidePasswordModal}
+            hideCheckEmailModal={hideCheckEmailModal}
           />
         </LinearGradient>
       </ImageBackground>

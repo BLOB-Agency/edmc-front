@@ -28,7 +28,12 @@ expo start
 ### Signup
 
 - [ ] Signup
-- [x] Save username, email, password to redux store
+- [x] Save username, email, password, color to redux store
+- [x] Save username, email, password, color to json file using json-server
+- [ ] Check if username or email already exists
+- [ ] Check if password is strong enough
+- [ ] Check if email already exists
+- [ ] Need to change the modal system to a page system !!!!!!!!!!!!!!!!
 - [ ] When user signup, send email verification (create email verification function)
 
 ### User Profile Page
