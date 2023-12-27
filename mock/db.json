@@ -1,0 +1,83 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "janedoe",
+      "firstName": "Alice",
+      "lastname": "Doe",
+      "email": "alice@example.com",
+      "password": "123456",
+      "color": "#5B9279"
+    },
+    {
+      "id": 2,
+      "username": "johndoe",
+      "firstName": "Bob",
+      "lastname": "Doe",
+      "email": "bob@example.com",
+      "password": "123456",
+      "color": "#FAB565"
+    },
+    {
+      "id": 3,
+      "username": "marysmith",
+      "firstName": "Mary",
+      "lastname": "Smith",
+      "email": "mary@example.com",
+      "password": "123456",
+      "color": "#A1C3D1"
+    },
+    {
+      "id": 4,
+      "username": "davidjohnson",
+      "firstName": "David",
+      "lastname": "Johnson",
+      "email": "david@example.com",
+      "password": "123456",
+      "color": "#E8B1D4"
+    },
+    {
+      "id": 5,
+      "username": "sarahbrown",
+      "firstName": "Sarah",
+      "lastname": "Brown",
+      "email": "sarah@example.com",
+      "password": "123456",
+      "color": "#F0DFAF"
+    },
+    {
+      "id": 6,
+      "username": "michaelwilson",
+      "firstName": "Michael",
+      "lastname": "Wilson",
+      "email": "michael@example.com",
+      "password": "123456",
+      "color": "#C8E6C9"
+    },
+    {
+      "id": 7,
+      "username": "emilythomas",
+      "firstName": "Emily",
+      "lastname": "Thomas",
+      "email": "emily@example.com",
+      "password": "123456",
+      "color": "#FFCDD2"
+    },
+    {
+      "id": 2,
+      "username": "johndoe",
+      "firstName": "Bob",
+      "lastname": "Doe",
+      "email": "bob@example.com",
+      "password": "123456",
+      "color": "#FAB565"
+    },
+    {
+      "username": "Guts6667",
+      "email": "rayanchambet1@gmail.com",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "id": 8
+    }
+  ]
+}

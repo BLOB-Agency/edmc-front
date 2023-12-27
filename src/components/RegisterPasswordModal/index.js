@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../store/userSlice";
 import PrimaryInput from "../PrimaryInput";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet } from "react-native";
 import SecondaryBtn from "../SecondaryBtn";
 import ReturnBtn from "../ReturnBtn";
 import CheckEmailModal from "../CheckEmailModal";
 import styles from "./styles";
+import signUp from "../../utils/signUp";
 
 const RegisterPasswordModal = (props) => {
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ const RegisterPasswordModal = (props) => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [checkEmailModalVisible, setCheckEmailModalVisible] = useState(false);
+  const userData = useSelector((state) => state.user);
   const hideCheckEmailModal = () => {
     setCheckEmailModalVisible(false);
   };
@@ -51,6 +52,9 @@ const RegisterPasswordModal = (props) => {
     else {
       dispatch(userActions.setPassword(password));
       dispatch(userActions.logUser());
+
+      signUp(userData);
+
       setCheckEmailModalVisible(true);
     }
   };
@@ -119,13 +123,14 @@ const RegisterPasswordModal = (props) => {
               />
             </View>
           </View>
-          <CheckEmailModal visible={checkEmailModalVisible} method={hideCheckEmailModal} />
+          <CheckEmailModal
+            visible={checkEmailModalVisible}
+            method={hideCheckEmailModal}
+          />
         </LinearGradient>
       </ImageBackground>
     </Modal>
   );
 };
-
-
 
 export default RegisterPasswordModal;
