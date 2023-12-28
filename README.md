@@ -35,6 +35,9 @@ expo start
 - [ ] Check if email already exists
 - [ ] Need to change the modal system to a page system !!!!!!!!!!!!!!!!
 - [ ] When user signup, send email verification (create email verification function)
+- [x] Color Picker Page
+- [ ] Save color in the store
+- [ ] Make color a variable accessible through the components
 
 ### User Profile Page
 
