@@ -28,7 +28,8 @@ const verifyCode = async (code, email) => {
 
         // Let's generate a token for the user
         const token = Math.random().toString(36).substr(2,10);
-        return token;
+        const datas = { ...user, token };
+        return datas;
     } catch (error) {
         console.error("Error in checkCode:", error);
         throw error;

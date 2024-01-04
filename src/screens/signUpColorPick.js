@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { editUser } from "../utils/editUser";
+import { useDispatch, useSelector } from "react-redux";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { ImageBackground } from "react-native";
 import ReturnBtn from "../components/ReturnBtn";
-import PrimaryBtn from "../components/PrimaryBtn"
+import PrimaryBtn from "../components/PrimaryBtn";
 import { FlatList } from "react-native-gesture-handler";
+import { userActions } from "../store/userSlice";
 
 const SignUpColorPick = ({ navigation }) => {
   const colors = [
@@ -21,14 +24,33 @@ const SignUpColorPick = ({ navigation }) => {
     { name: "Duck", colorCode: "#0E7C7B" },
     { name: "Pine", colorCode: "#005A34" },
   ];
-  // Let's create a function that will allow to pick a color and display a white border and an Icon the selected Item
+  const dispatch = useDispatch();
   // State to track the selected color
   const [selectedColor, setSelectedColor] = useState(null);
 
   // Function to handle color selection
   const handleColorSelection = (color) => {
     setSelectedColor(color);
+    dispatch(userActions.setColor(color));
     console.log("SelectedColor: ", color);
+  };
+
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
+  const handleContinue = () => {
+    if (auth && auth.id) {
+      console.log("id", auth.id);
+      console.log("updatedUser", user);
+      editUser( user, auth.id).then((res) => {
+        console.log("res", res);
+        if (res) {
+          console.log("Let's go Home!");
+          // navigation.navigate("Welcome");
+        }
+      });
+    } else {
+      console.error("Authentication information is missing or undefined.");
+    }
   };
 
   return (
@@ -52,22 +74,16 @@ const SignUpColorPick = ({ navigation }) => {
               Music is subjective, and so is our app. Pick a color you like!
             </Text>
           </View>
-          {/* <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          > */}
           <FlatList
             data={colors}
             style={{
               flexDirection: "row",
               flexWrap: "wrap",
+              flex: 1,
             }}
             contentContainerStyle={{
-              justifyContent: "start",
-              alignItems:"center"
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
             numColumns={3}
             renderItem={(itemData) => {
@@ -91,7 +107,6 @@ const SignUpColorPick = ({ navigation }) => {
                         backgroundColor: itemData.item.colorCode,
                         borderWidth: isSelected ? 2 : 0,
                         borderColor: isSelected ? "#fff" : "",
-                        
                       },
                     ]}
                     onPress={() => {
@@ -111,8 +126,9 @@ const SignUpColorPick = ({ navigation }) => {
             }}
           />
         </View>
-        <PrimaryBtn title={"CONTINUE"} />
-        {/* </View> */}
+        {selectedColor && (
+          <PrimaryBtn title={"CONTINUE"} onPress={handleContinue} />
+        )}
       </LinearGradient>
     </ImageBackground>
   );
@@ -188,28 +204,3 @@ const styles = StyleSheet.create({
 });
 
 export default SignUpColorPick;
-
-{
-  /* {colors.map((color) => (
-              <FlatList
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 6,
-                }}
-              >
-                <TouchableOpacity
-                  key={color.name}
-                  style={{
-                    backgroundColor: color.colorCode,
-                    width: 100,
-                    height: 100,
-                    borderRadius: 100,
-
-                    marginTop: 10,
-                  }}
-                ></TouchableOpacity>
-                <Text style={{ color: "#fff" }}>{color.name}</Text>
-              </FlatList>
-            ))} */
-}

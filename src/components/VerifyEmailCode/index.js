@@ -26,9 +26,6 @@ const VerifyEmailCode = (props) => {
     props.hidePasswordModal();
     props.hideEmailModal();
     props.navigation.navigate("SignUpColorPick");
-   
-    
-    
   };
   const handleKeyPress = (index, key) => {
     if (key === "Backspace" && index > 0) {
@@ -67,15 +64,16 @@ const VerifyEmailCode = (props) => {
 
       // Call verifyCode and update the token state
       verifyCode(verificationCodeString, props.userData.email)
-        .then((token) => {
+        .then((datas) => {
           // Dispatch the token to the store
-          dispatch(authActions.setToken(token));
-          if (token) {
+          console.log("datas: ", datas);  
+          dispatch(authActions.setToken(datas.token));
+          if (datas.token) {
             dispatch(authActions.setIsLoggedIn(true));
+            dispatch(authActions.setId(datas.id));
             dispatch(authActions.getStatus());
-            
-            
-            closeAllModals()
+
+            closeAllModals();
             props.method();
             // Let's navigate to the next screen without the navigation prop
           }
