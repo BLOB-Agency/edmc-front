@@ -1,0 +1,403 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "janedoe",
+      "firstName": "Alice",
+      "lastname": "Doe",
+      "email": "alice@example.com",
+      "password": "123456",
+      "color": "#5B9279"
+    },
+    {
+      "id": 2,
+      "username": "johndoe",
+      "firstName": "Bob",
+      "lastname": "Doe",
+      "email": "bob@example.com",
+      "password": "123456",
+      "color": "#FAB565"
+    },
+    {
+      "id": 3,
+      "username": "marysmith",
+      "firstName": "Mary",
+      "lastname": "Smith",
+      "email": "mary@example.com",
+      "password": "123456",
+      "color": "#A1C3D1"
+    },
+    {
+      "id": 4,
+      "username": "davidjohnson",
+      "firstName": "David",
+      "lastname": "Johnson",
+      "email": "david@example.com",
+      "password": "123456",
+      "color": "#E8B1D4"
+    },
+    {
+      "id": 5,
+      "username": "sarahbrown",
+      "firstName": "Sarah",
+      "lastname": "Brown",
+      "email": "sarah@example.com",
+      "password": "123456",
+      "color": "#F0DFAF"
+    },
+    {
+      "id": 6,
+      "username": "michaelwilson",
+      "firstName": "Michael",
+      "lastname": "Wilson",
+      "email": "michael@example.com",
+      "password": "123456",
+      "color": "#C8E6C9"
+    },
+    {
+      "id": 7,
+      "username": "emilythomas",
+      "firstName": "Emily",
+      "lastname": "Thomas",
+      "email": "emily@example.com",
+      "password": "123456",
+      "color": "#FFCDD2"
+    },
+    {
+      "id": 2,
+      "username": "johndoe",
+      "firstName": "Bob",
+      "lastname": "Doe",
+      "email": "bob@example.com",
+      "password": "123456",
+      "color": "#FAB565"
+    },
+    {
+      "username": "Des",
+      "email": "fssdf@dsf.co",
+      "password": "@321Toto",
+      "color": "#BB61C9",
+      "verificationCode": "8534",
+      "id": 9
+    },
+    {
+      "username": "Sdfsdf",
+      "email": "dsfsdf@dsfs.cds",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "5969",
+      "id": 10
+    },
+    {
+      "username": "Guts6667",
+      "email": "rayanchambet1@gmail.com",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "5445",
+      "id": 11
+    },
+    {
+      "username": "Guts666",
+      "email": "sdfs@sd.fsdsf",
+      "password": "@123Tata",
+      "color": "#BB61C9",
+      "verificationCode": "8750",
+      "id": 12
+    },
+    {
+      "username": "TESTE",
+      "email": "test@test.com",
+      "password": "@123Test",
+      "color": "#BB61C9",
+      "verificationCode": "4203",
+      "id": 13
+    },
+    {
+      "username": "DsfsdFf",
+      "email": "sdfs@dfsf.csdrzf",
+      "password": "@123Rere",
+      "color": "#BB61C9",
+      "verificationCode": "4783",
+      "id": 14
+    },
+    {
+      "username": "Dell,add,;",
+      "email": "delladlngf@dsklf.co’sm",
+      "password": "@123Roro",
+      "color": "#BB61C9",
+      "verificationCode": "9504",
+      "id": 15
+    },
+    {
+      "username": "Toto",
+      "email": "toto@toto.toto",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "8320",
+      "id": 16
+    },
+    {
+      "username": "Tutu",
+      "email": "tutu@tutu.xom",
+      "password": "@123Tutu",
+      "color": "#BB61C9",
+      "verificationCode": "1187",
+      "id": 17
+    },
+    {
+      "username": "Edsfsdf",
+      "email": "dsgsdg@dsgs.csdf",
+      "password": "@123Roro",
+      "color": "#BB61C9",
+      "verificationCode": "3718",
+      "id": 18
+    },
+    {
+      "username": "Dsfdsfs",
+      "email": "dsfsdf@dsf.dfsfsd",
+      "password": "@123Rere",
+      "color": "#BB61C9",
+      "verificationCode": "9177",
+      "id": 19
+    },
+    {
+      "username": "Eggy",
+      "email": "eggy@oeuf.com",
+      "password": "@123Eggy",
+      "color": "#BB61C9",
+      "verificationCode": "7416",
+      "id": 20
+    },
+    {
+      "username": "Lyly",
+      "email": "lyly@lyly.com",
+      "password": "@123Lyly",
+      "color": "#BB61C9",
+      "verificationCode": "3455",
+      "id": 21
+    },
+    {
+      "username": "Yoyo",
+      "email": "yoyo@yooyl.com",
+      "password": "@123Yoyo",
+      "color": "#BB61C9",
+      "verificationCode": "7971",
+      "id": 22
+    },
+    {
+      "username": "doSgd",
+      "email": "dsdg@dsfms.com",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "5966",
+      "id": 23
+    },
+    {
+      "username": "Tallness",
+      "email": "dfdsklnf@sdklf.xomkdsf",
+      "password": "@123Rere",
+      "color": "#BB61C9",
+      "verificationCode": "8418",
+      "id": 24
+    },
+    {
+      "username": "Fdsdf",
+      "email": "dsfs@klsdf.df",
+      "password": "@123Tutu",
+      "color": "#BB61C9",
+      "verificationCode": "8785",
+      "id": 25
+    },
+    {
+      "username": "DelFsdfl",
+      "email": "dsl dsl@fdsk.cil",
+      "password": "@123Rete",
+      "color": "#BB61C9",
+      "verificationCode": "9314",
+      "id": 26
+    },
+    {
+      "username": "Rutabaga",
+      "email": "ru@ta.baga",
+      "password": "@123Rutabaga",
+      "color": "#BB61C9",
+      "verificationCode": "4700",
+      "id": 27
+    },
+    {
+      "username": "Dsfsfd",
+      "email": "dsfsdfdfdsf@dsf.dsf",
+      "password": "@123Roto",
+      "color": "#BB61C9",
+      "verificationCode": "2954",
+      "id": 28
+    },
+    {
+      "username": "Yoyu",
+      "email": "yoyu@test.com",
+      "password": "@1234Toto",
+      "color": "#BB61C9",
+      "verificationCode": "6914",
+      "id": 29
+    },
+    {
+      "username": "Tuto",
+      "email": "tuto@tuto.com",
+      "password": "@123Tuto",
+      "color": "#BB61C9",
+      "verificationCode": "9417",
+      "id": 30
+    },
+    {
+      "username": "Roro",
+      "email": "roro@roro.com",
+      "password": "@123Roro",
+      "color": "#BB61C9",
+      "verificationCode": "5102",
+      "id": 31
+    },
+    {
+      "username": "Dsdsf",
+      "email": "dfds@dsf.cs",
+      "password": "@123Roro",
+      "color": "#BB61C9",
+      "verificationCode": "2552",
+      "id": 32
+    },
+    {
+      "username": "dele",
+      "email": "dedle@ed.com",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "4894",
+      "id": 33
+    },
+    {
+      "username": "Test",
+      "email": "tsgs@fds.e",
+      "password": "@123Roro",
+      "color": "#BB61C9",
+      "verificationCode": "8035",
+      "id": 34
+    },
+    {
+      "username": "Dsfdsf",
+      "email": "sfsd@sdf.dfdf",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "3264",
+      "id": 35
+    },
+    {
+      "username": "Dssdg",
+      "email": "dsf@sdff.om",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "4102",
+      "id": 36
+    },
+    {
+      "username": "@214",
+      "email": "dsfs@ds.om",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "6082",
+      "id": 37
+    },
+    {
+      "username": "Hello",
+      "email": "zein@ds..dss",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "2468",
+      "id": 38
+    },
+    {
+      "username": "Dsfsdf",
+      "email": "sdfsdfj@df.com",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "5398",
+      "id": 39
+    },
+    {
+      "username": "Fed",
+      "email": "dsfds@dfsf.com",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "3930",
+      "id": 40
+    },
+    {
+      "username": "Tsdfg",
+      "email": "dsfs@ds.df",
+      "password": "@123Toto",
+      "color": "#BB61C9",
+      "verificationCode": "1256",
+      "id": 41
+    },
+    {
+      "username": "HelloWorld",
+      "email": "slugd@sdf.cos",
+      "password": "@123Toto",
+      "color": "#5B9279",
+      "id": 42
+    },
+    {
+      "username": "Dsfsdf",
+      "email": "dsff@fsf.com",
+      "password": "@123Toto",
+      "color": "#5B9279",
+      "id": 43
+    },
+    {
+      "username": "Blondie",
+      "email": "blondie@fire.com",
+      "password": "@123Fire",
+      "color": "#5B9279",
+      "id": 44
+    },
+    {
+      "username": "Exfdsf",
+      "email": "dsf@dsfsf.fg",
+      "password": "@123Toto",
+      "color": "#5B9279",
+      "id": 45
+    },
+    {
+      "username": "Hllo",
+      "email": "dsfsf@s.df",
+      "password": "@123Roro",
+      "color": "#5B9279",
+      "id": 46
+    },
+    {
+      "username": "Dgsg",
+      "email": "sdfs@sdf.comdsf",
+      "password": "@123Roro",
+      "color": "#5B9279",
+      "id": 47
+    },
+    {
+      "username": "Dfsfsd",
+      "email": "sdfd@sdf.csdf",
+      "password": "@123Roro",
+      "color": "#5B9279",
+      "id": 48
+    },
+    {
+      "username": "Dsfsdf",
+      "email": "dsfsf@csd.com",
+      "password": "@123Roro",
+      "color": "#5B9279",
+      "id": 49
+    },
+    {
+      "username": "Sdfsd ffg",
+      "email": "sdfs@dsf.com",
+      "password": "@123Eoeo",
+      "color": "#5B9279",
+      "id": 50
+    }
+  ]
+}

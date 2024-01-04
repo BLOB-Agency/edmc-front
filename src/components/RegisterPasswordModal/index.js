@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../store/userSlice";
 import PrimaryInput from "../PrimaryInput";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet } from "react-native";
 import SecondaryBtn from "../SecondaryBtn";
 import ReturnBtn from "../ReturnBtn";
 import CheckEmailModal from "../CheckEmailModal";
 import styles from "./styles";
+import signUp from "../../utils/signUp";
 
 const RegisterPasswordModal = (props) => {
   const dispatch = useDispatch();
@@ -19,17 +19,24 @@ const RegisterPasswordModal = (props) => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [checkEmailModalVisible, setCheckEmailModalVisible] = useState(false);
-  const hideCheckEmailModal = () => {
-    setCheckEmailModalVisible(false);
-  };
+  const userData = useSelector((state) => state.user);
   const getPassword = (enteredText) => {
     setPasswordError(false);
     setPassword(enteredText);
+    console.log("password: ", password);
+    console.log("enteredText: ", enteredText);
   };
+
   const getConfirmPassword = (enteredText) => {
     setConfirmPassword(false);
     setConfirmPassword(enteredText);
     console.log("confirmPassword: ", confirmPassword);
+  };
+  const generateCode = () => {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+  };
+  const hideCheckEmailModal = () => {
+    setCheckEmailModalVisible(false);
   };
 
   const passwordHandler = () => {
@@ -50,7 +57,16 @@ const RegisterPasswordModal = (props) => {
     // If they match, dispatch the password and navigate to the next screen
     else {
       dispatch(userActions.setPassword(password));
+      const verificationCode = generateCode();
+      const userWithCode = {
+        ...userData,
+        verificationCode,
+        isVerified: false,
+        password: password,
+      };
+      signUp(userWithCode);
       dispatch(userActions.logUser());
+
       setCheckEmailModalVisible(true);
     }
   };
@@ -119,13 +135,17 @@ const RegisterPasswordModal = (props) => {
               />
             </View>
           </View>
-          <CheckEmailModal visible={checkEmailModalVisible} method={hideCheckEmailModal} />
+          <CheckEmailModal
+            visible={checkEmailModalVisible}
+            navigation={props.navigation}
+            hideEmailModal={props.hideEmailModal}
+            hidePasswordModal={props.hidePasswordModal}
+            hideCheckEmailModal={hideCheckEmailModal}
+          />
         </LinearGradient>
       </ImageBackground>
     </Modal>
   );
 };
-
-
 
 export default RegisterPasswordModal;

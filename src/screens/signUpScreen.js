@@ -13,8 +13,8 @@ const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [emailModalVisible, setEmailModalVisible] = useState(false);
   const userIcon = require("../../assets/icons/user-icon.png");
-  const showEmailModal = () => {
-    setEmailModalVisible(!emailModalVisible);
+  const hideEmailModal = () => {
+    setEmailModalVisible(false);
   };
   // Let's add the username to the userSlice by dispatching the setUsername action
   // Let's use the dispatch method from the useDispatch hook to dispatch the setUsername action
@@ -71,7 +71,8 @@ const SignUpScreen = ({ navigation }) => {
         <RegisterEmailModal
           visible={emailModalVisible}
           username={username}
-          hideEmailModal={showEmailModal}
+          hideEmailModal={hideEmailModal}
+          navigation={navigation}
         />
       </LinearGradient>
     </ImageBackground>

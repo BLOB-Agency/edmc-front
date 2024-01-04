@@ -1,6 +1,6 @@
 import { Modal, ImageBackground, Text, View } from "react-native";
 import React, { useState } from "react";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { userActions } from "../../store/userSlice";
 import PrimaryInput from "../PrimaryInput";
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,18 +27,21 @@ const RegisterEmailModal = (props) => {
       dispatch(userActions.setEmail(email));
       dispatch(userActions.logUser());
       setPasswordModalVisible(true);
-      
     } else {
       console.log("The email is invalid!");
       setEmailError(true);
     }
   };
-  const showPasswordModal = () => {
-    setPasswordModalVisible(!passwordModalVisible);
+  const hidePasswordModal = () => {
+    setPasswordModalVisible(false);
   };
+ 
 
   return (
-    <Modal animationType="fade" visible={props.visible}>
+    <Modal
+      animationType="fade"
+      visible={props.visible}
+    >
       <ImageBackground
         source={require("../../../assets/images/bg.png")}
         style={{ width: "100%", height: "100%" }}
@@ -81,7 +84,13 @@ const RegisterEmailModal = (props) => {
               />
             </View>
           </View>
-          <RegisterPasswordModal visible={passwordModalVisible} username={props.username} hidePasswordModal={showPasswordModal}  />
+          <RegisterPasswordModal
+            visible={passwordModalVisible}
+            username={props.username}
+            navigation={props.navigation}
+            hideEmailModal={props.hideEmailModal}
+            hidePasswordModal={hidePasswordModal}
+          />
         </LinearGradient>
       </ImageBackground>
     </Modal>

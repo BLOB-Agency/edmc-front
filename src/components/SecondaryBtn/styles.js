@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'Cereal-Medium',
         fontSize: 16,
-        color: '#BB61C9',
         letterSpacing: -0.49,
         textAlign: 'center',
         textTransform: 'uppercase',

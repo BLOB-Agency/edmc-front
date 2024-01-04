@@ -33,6 +33,12 @@ export const userSlice = createSlice({
         state.password
       );
     },
+    resetUser: (state) => {
+      state.username = "";
+      state.email = "";
+      state.color = "#BB61C9";
+      state.password = "";
+    },
   },
 });
 export const userActions = userSlice.actions;

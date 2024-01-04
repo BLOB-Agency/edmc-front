@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ImageBackground,
   Image,
@@ -8,12 +8,27 @@ import {
   Text,
   Linking,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import styles from "./styles";
 import PrimaryBtn from "../PrimaryBtn";
+import resendCode from "../../utils/resendCode";
+import VerifyEmailCode from "../VerifyEmailCode";
 
 const CheckEmailModal = (props) => {
+  const [verifyEmailModalVisible, setVerifyEmailModalVisible] = useState(false);
+  const handleShowVerifyEmailModal = () => {
+    setVerifyEmailModalVisible(true);
+  };
+  const hideVerifyEmailModal = () => {
+    setVerifyEmailModalVisible(false);
+  };
+  const userData = useSelector((state) => state.user);
+  const handleResendCode = () => {
+    resendCode(userData.email);
+    console.log("Resending code...");
+  };
   const openEmailApp = () => {
     console.log("Opening email app...");
     Linking.canOpenURL("mailto:")
@@ -42,7 +57,7 @@ const CheckEmailModal = (props) => {
         >
           <TouchableOpacity
             style={styles.backIconContainer}
-            onPress={props.method}
+            onPress={handleShowVerifyEmailModal}
           >
             <BlurView tint="light" intensity={20} style={styles.blurView}>
               <Image
@@ -71,13 +86,21 @@ const CheckEmailModal = (props) => {
             </View>
           </BlurView>
           <View style={styles.containerResendCode}>
-            <Text style={{ color: "#fff" }}>
-              Don't have a code?
-            </Text>
-            <TouchableOpacity>
+            <Text style={{ color: "#fff" }}>Don't have a code?</Text>
+            <TouchableOpacity onPress={handleResendCode}>
               <Text style={styles.sendCodeLink}>Resend now</Text>
             </TouchableOpacity>
           </View>
+          <VerifyEmailCode
+            visible={verifyEmailModalVisible}
+            method={hideVerifyEmailModal}
+            userData={userData}
+            navigation={props.navigation}
+            hideEmailModal={props.hideEmailModal}
+            hidePasswordModal={props.hidePasswordModal}
+            hideCheckEmailModal={props.hideCheckEmailModal}
+            hideVerifyEmailModal={hideVerifyEmailModal}
+          />
         </LinearGradient>
       </ImageBackground>
     </Modal>

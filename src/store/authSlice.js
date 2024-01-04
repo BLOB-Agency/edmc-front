@@ -1,33 +1,35 @@
-// src/utils/auth.js
-import { store } from "../store";
-import { setAuthToken, clearAuthToken } from "../store/tokenSlice";
-import { setUserDetails, clearUserDetails } from "../store/userSlice";
+// Let's make a slice for authentication
+import { createSlice } from "@reduxjs/toolkit";
 
-// Example of a sign-in function
-export const signIn = async (email, password) => {
-  try {
-    // Implement your sign-in logic here
-    // For example, sending a request to your backend
+const authSlice = createSlice({
+  name: "auth",
+  initialState: {
+    token: "",
+    isLoggedIn: false,
+    id: null,
+  },
+  reducers: {
+    setToken(state, action) {
+      state.token = action.payload;
+    },
+    setId(state, action) {
+      state.id = action.payload;
+    },
+    setIsLoggedIn(state, action) {
+      state.isLoggedIn = action.payload;
+    },
+    getStatus(state) {
+      console.log("status: ", state.isLoggedIn);
+      console.log("token: ", state.token);
+      console.log("id: ", state.id);
+    },
+    logOut(state) {
+      state.token = "";
+      state.isLoggedIn = false;
+      state.id = null;
+    }
+  },
+});
 
-    // On successful sign-in:
-    // Set the auth token in the Redux store
-    store.dispatch(setAuthToken("your_auth_token_here"));
-
-    // Set the user details in the Redux store
-    store.dispatch(
-      setUserDetails({ username: "example", email: "example@email.com" })
-    );
-  } catch (error) {
-    // Handle errors
-    console.error(error);
-  }
-};
-
-// Example of a sign-out function
-export const signOut = () => {
-  // Clear the auth token and user details from the Redux store
-  store.dispatch(clearAuthToken());
-  store.dispatch(clearUserDetails());
-};
-
-// Additional authentication functions (e.g., signUp, verifyEmail) can be added here
+export const authActions = authSlice.actions;
+export default authSlice.reducer;

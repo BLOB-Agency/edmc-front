@@ -1,28 +1,21 @@
-/**
- *
- * @param {string} userName
- * @param {string} color
- * @param {string} token
- * @returns {Promise} - Promise object represents the userdata
- */
+// Let's make an editUser function that will update the user's data in the database, we'll use fetch again:
+// Path: src/utils/editUser.js
+const BASE_URL = "http://localhost:3000"; // Adjust the URL based on your JSON server address
 
-const editUser = async (userName, color, token) => {
-  return await fetch("https://api/demo/user/edit", {
-    method: "POST",
-    body: JSON.stringify({
-      userName: userName,
-      color: color,
-    }),
+export const editUser = async (userData, id) => {
+  const url = `${BASE_URL}/users/${id}`;
+  console.log(`Updating user at URL: ${url} with data: `, userData);
+
+  return fetch(url, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      console.log(res);
-      return res;
-    });
+    body: JSON.stringify(userData),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  });
 };
-
-export default editUser;
