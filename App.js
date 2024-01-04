@@ -7,6 +7,7 @@ import { store } from "./src/store/store";
 import WelcomeScreen from "./src/screens/welcomeScreen";
 import SignUpScreen from "./src/screens/signUpScreen";
 import SignUpColorPick from "./src/screens/signUpColorPick";
+import Profile from "./src/screens/profile";
 // ... import other screens
 
 const Stack = createStackNavigator();
@@ -43,6 +44,12 @@ export default function App() {
             name="SignUpColorPick"
             animation="fade"
             component={SignUpColorPick}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Profile"
+            animation="fade"
+            component={Profile}
             options={{ headerShown: false }}
           />
           {/* Add other screens and their respective options here */}

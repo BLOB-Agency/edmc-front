@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { editUser } from "../utils/editUser";
 import { useDispatch, useSelector } from "react-redux";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
@@ -45,7 +45,8 @@ const SignUpColorPick = ({ navigation }) => {
         console.log("res", res);
         if (res) {
           console.log("Let's go Home!");
-          // navigation.navigate("Welcome");
+          // For now we'll just navigate to the profile screen but then we'll need to navigate to the home screen
+          navigation.navigate("Profile");
         }
       });
     } else {
