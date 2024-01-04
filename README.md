@@ -36,14 +36,14 @@ expo start
 - [ ] Need to change the modal system to a page system !!!!!!!!!!!!!!!!
 - [ ] When user signup, send email verification (create email verification function)
 - [x] Color Picker Page
-- [ ] Save color in the store
-- [ ] Make color a variable accessible through the components
+- [x] Save color in the store
+- [x] Make color a variable accessible through the components
 
 ### User Profile Page
 
-- [ ] User Profile Page
+- [x] User Profile Page
 - [ ] Display user's profile picture, username, email
-- [ ] Logout button
+- [x] Logout button
 
 ### User Settings Page
 
