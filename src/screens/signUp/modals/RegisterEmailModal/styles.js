@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
     },
     containerMain: {
       flex: 1,
-      justifyContent: "center",
-      padding: 15,
+      justifyContent: "flex-start",
       gap: 12,
     },
     containerText: {
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
     },
     input: {
-      marginTop: 24,
+      marginTop: 12,
     },
   });
 

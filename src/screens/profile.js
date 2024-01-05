@@ -24,6 +24,7 @@ const Profile = ({ navigation }) => {
   const handlePersonalData = () => {
     console.log("Clicked On Personal Data");
   };
+
   const handlePassword = () => {
     console.log("Clicked On Password");
   };

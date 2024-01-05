@@ -1,12 +1,29 @@
 // src/store/userSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import authService from "@utils/authService";
+
+export const registerUser = createAsyncThunk(
+    'user/registerUser',
+    async (userData, { rejectWithValue }) => {
+
+      try {
+        return await authService.createUser(userData)
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
+    }
+);
+
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
+    loading: false,
     username: "",
     email: "",
     password: "",
     color: "#BB61C9",
+    error: null,
   },
   reducers: {
     setUsername: (state, action) => {
@@ -36,10 +53,25 @@ export const userSlice = createSlice({
     resetUser: (state) => {
       state.username = "";
       state.email = "";
-      state.color = "#BB61C9";
       state.password = "";
     },
   },
+  extraReducers: (builder) => {
+    builder
+        .addCase(registerUser.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(registerUser.fulfilled, (state, action) => {
+          state.loading = false;
+        })
+        .addCase(registerUser.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        });
+  },
 });
-export const userActions = userSlice.actions;
+export const userActions = {
+  ...userSlice.actions,
+    registerUser
+};
 export default userSlice.reducer;

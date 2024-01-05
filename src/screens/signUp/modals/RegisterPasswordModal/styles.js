@@ -20,14 +20,13 @@ const styles = StyleSheet.create({
     },
     containerMain: {
       flex: 1,
-      justifyContent: "center",
-      padding: 15,
-      gap: 12,
+
+      gap: 24,
     },
+
     containerText: {
-      justifyContent: "center",
-      marginTop: 24,
-      rowGap: 9,
+        justifyContent: "center",
+        rowGap: 6,
     },
     containerTitle: {
       gap: 6,
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
     },
     input: {
-      marginTop: 24,
+      marginTop: 12,
     },
   });
 

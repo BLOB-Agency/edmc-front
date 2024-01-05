@@ -1,28 +1,14 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  backIconContainer: {
-    marginTop: 24,
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.07)",
-    borderColor: "rgba(255, 255, 255, 0.3)",
-    borderWidth: 1,
-  },
+
   blurView: {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    borderRadius: 30,
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
+    borderRadius: 15
   },
   linearGradient: {
     flex: 1,
@@ -31,22 +17,26 @@ const styles = StyleSheet.create({
     paddingBottom: 72,
     justifyContent: "space-between",
   },
-  blurMainContainer: {
-    height: "75%",
-    borderRadius: 30,
+  background: {
+    textAlign: "center",
+    flex:1,
+    height: 400,
     overflow: "hidden",
-    padding: 15,
-    gap: 12,
+    maxHeight: 400,
+    backgroundColor: 'rgba(255, 255, 255, 0.07)',
+    borderColor: 'rgba(255, 255, 255, 0.22)',
+    borderWidth: 1,
+    borderRadius: 15
   },
   containerMain: {
     height: "100%",
     justifyContent: "space-between",
-    padding: 15,
-    paddingVertical: 48,
+    paddingHorizontal: 24,
+    paddingVertical: 36,
   },
   containerText: {
     justifyContent: "center",
-    rowGap: 9,
+    rowGap: 6,
   },
   title: {
     textAlign: "center",

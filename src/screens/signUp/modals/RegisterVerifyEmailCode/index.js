@@ -12,21 +12,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import styles from "./styles";
 import { TextInput } from "react-native-gesture-handler";
-import verifyCode from "../../utils/verifyCode";
-import { authActions } from "../../store/authSlice";
-
-const VerifyEmailCode = (props) => {
+import verifyCode from "@utils/verifyCode";
+import { authActions } from "@store/authSlice";
+import Background from "@components/auth/bg"
+const VerifyEmailCode = ({goNext, goPrevious}) => {
   const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const inputRefs = [];
-  const closeAllModals = () => {
-    props.hideVerifyEmailModal();
-    props.hideCheckEmailModal();
-    props.hidePasswordModal();
-    props.hideEmailModal();
-    props.navigation.navigate("SignUpColorPick");
-  };
+
   const handleKeyPress = (index, key) => {
     if (key === "Backspace" && index > 0) {
       // If Backspace key is pressed and not the first input
@@ -85,26 +79,15 @@ const VerifyEmailCode = (props) => {
   }, [verificationCode]);
 
   return (
-    <Modal animationType="fade" visible={props.visible}>
-      <ImageBackground
-        source={require("../../../assets/images/bg.png")}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <LinearGradient
-          colors={["rgba(30,30,30,0.0)", "rgba(30, 30, 30, 0.89)", "#1E1E1E"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={{
-            ...styles.linearGradient,
-          }}
-        >
+
+      <Background>
           <TouchableOpacity
             style={styles.backIconContainer}
-            onPress={props.method}
+            onPress={goNext}
           >
             <BlurView tint="light" intensity={20} style={styles.blurView}>
               <Image
-                source={require("../../../assets/icons/back-icon.png")}
+                source={require("@assets/icons/back-icon.png")}
                 style={{ width: 24, height: 24 }}
               />
             </BlurView>
@@ -135,9 +118,8 @@ const VerifyEmailCode = (props) => {
               </View>
             </View>
           </View>
-        </LinearGradient>
-      </ImageBackground>
-    </Modal>
+      </Background>
+    
   );
 };
 
