@@ -5,6 +5,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     token: "",
+    user: null,
     isLoggedIn: false,
     id: null,
   },
@@ -18,13 +19,12 @@ const authSlice = createSlice({
     setIsLoggedIn(state, action) {
       state.isLoggedIn = action.payload;
     },
-    getStatus(state) {
-      console.log("status: ", state.isLoggedIn);
-      console.log("token: ", state.token);
-      console.log("id: ", state.id);
+    setUser(state, action) {
+      state.user = action.payload;
     },
     logOut(state) {
       state.token = "";
+      state.user = null;
       state.isLoggedIn = false;
       state.id = null;
     }

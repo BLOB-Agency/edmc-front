@@ -9,13 +9,13 @@ import ReturnBtn from "@components/ReturnBtn";
 import styles from "./styles";
 import signUp from "@utils/signup";
 import authService from "@utils/authService";
-import genericStyles from "../../../../genericStyles";
 import Background from "@components/auth/bg"
-import {authStyles} from "@components/auth/styles";
+import {authStyles, genericStyles} from "@components/auth/styles";
+import {authActions} from "@store/authSlice";
 const passwordIcon = require("@assets/icons/lock-icon.png");
 const isPasswordRegexValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&-])[A-Za-z\d@$!%*?&-]{8,}$/;
 
-const RegisterPasswordModal = ({goNext, goPrevious}) => {
+const RegisterPasswordModal = ({goNext, goPrevious, goToModal}) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
@@ -44,18 +44,28 @@ const RegisterPasswordModal = ({goNext, goPrevious}) => {
     if (isPasswordInvalid || isPasswordMismatch) return;
 
     dispatch(userActions.setPassword(password));
-      dispatch(userActions.registerUser(userData))
-          .unwrap()
-          .then((fulfilledAction) => {
-              // Handle success
-              console.log('Registration successful:', fulfilledAction);
-              // Perform any success logic here, like navigation or showing a success message
-          })
-          .catch((rejectedAction) => {
-              // Handle error
-              console.error('Registration failed:', rejectedAction);
-              // Perform any error handling here, like showing an error message
-          });
+    dispatch(userActions.registerUser({...userData, password, password_confirmation: confirmPassword}))
+      .unwrap()
+      .then((fulfilledAction) => {
+          console.log('Registration successful:', fulfilledAction);
+          dispatch(authActions.setToken(fulfilledAction.access_token));
+            dispatch(authActions.setIsLoggedIn(true));
+            dispatch(authActions.setUser(fulfilledAction.user));
+      })
+      .catch((rejectedAction) => {
+          console.error('Registration failed:', rejectedAction);
+          if (rejectedAction.email) {
+              goToModal(1)
+              return;
+          }
+
+          if (rejectedAction.username) {
+              goToModal(0)
+              return;
+          }
+
+
+      });
   };
 
   return (
@@ -74,12 +84,12 @@ const RegisterPasswordModal = ({goNext, goPrevious}) => {
                   placeholder={"*******"}
                   icon={passwordIcon}
                   isPassword={true}
-                  extraStyle={styles.input}
+                  extraStyle={{...styles.input}}
                   value={password}
                   method={onPasswordChange}
                 />
                 {passwordError && (
-                  <Text style={{ ...genericStyles.bodyText, color: "#FFA500" }}>
+                  <Text style={genericStyles.errorText}>
                     Password must be at least 8 characters long, contain at
                     least 1 lowercase letter, 1 uppercase letter, 1 numeric
                     digit and 1 special character.
@@ -95,7 +105,7 @@ const RegisterPasswordModal = ({goNext, goPrevious}) => {
                   method={onConfirmPasswordChange}
                 />
                 {confirmPasswordError && (
-                  <Text style={{ ...genericStyles.bodyText, color: "#FFA500" }}>
+                  <Text style={genericStyles.errorText}>
                     The passwords do not match
                   </Text>
                 )}

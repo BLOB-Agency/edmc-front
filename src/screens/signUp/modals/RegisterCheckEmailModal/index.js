@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   ImageBackground,
   Image,
@@ -9,7 +9,6 @@ import {
   Linking,
 } from "react-native";
 import { useSelector } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import styles from "./styles";
 import PrimaryBtn from "@components/PrimaryBtn";
@@ -20,32 +19,50 @@ import ReturnBtn from "@components/ReturnBtn";
 import {authStyles} from "@components/auth/styles";
 
 const CheckEmailModal = ({goNext, goPrevious}) => {
-
-  const insets = useSafeAreaInsets();
-  const [verifyEmailModalVisible, setVerifyEmailModalVisible] = useState(false);
-
-  const handleShowVerifyEmailModal = () => {
-    setVerifyEmailModalVisible(true);
-  };
+  const [timeoutId, setTimeoutId] = useState(null);
   const userData = useSelector((state) => state.user);
   const handleResendCode = () => {
-    resendCode(userData.email);
-    console.log("Resending code...");
+    stopTimer();
+
+    resendCode(userData.email).then(() => {
+      console.info("Resent code");
+    }).catch((err) => {
+        console.error(err);
+    }).finally(startTimer);
   };
-  const openEmailApp = () => {
+
+  const openEmailApp = async () => {
+    stopTimer();
     console.log("Opening email app...");
-    Linking.canOpenURL("mailto:")
-      .then((supported) => {
-        if (!supported) {
-          console.log("Can't handle mailto URL");
-        } else {
-          return Linking.openURL("mailto:");
-        }
-      })
-      .catch((err) => console.error("An error occurred", err));
+
+    Linking
+        .canOpenURL("mailto:")
+        .then((supported) => {
+          if (!supported) {
+              console.log("Can't handle mailto URL");
+          } else {
+              return Linking.openURL("mailto:");
+          }
+        })
+        .catch((err) =>
+            console.error("An error occurred", err)
+        ).finally(() => { goNext(); });
   };
+
+  const stopTimer = () => clearTimeout(timeoutId);
+  const startTimer = () => {
+    const id = setTimeout(goNext, 60_000); // 1 minute
+    setTimeoutId(id);
+  };
+
+  useEffect(() => {
+    startTimer();
+
+    return stopTimer;
+  }, []);
+
   return (
-    
+
   <Background>
     <ReturnBtn method={goPrevious} />
       <View style={{flex: 1, justifyContent: "space-between"}}>
@@ -76,7 +93,7 @@ const CheckEmailModal = ({goNext, goPrevious}) => {
       </View>
 
   </Background>
-    
+
   );
 };
 

@@ -55,17 +55,23 @@ const withSequentialModals = (Modals, { onFirstModalBack, onLastModalNext } = {}
             }
         };
 
+        const goToModal = (index) => {
+            if (index >= 0 && index < Modals.length) {
+                setCurrentModalIndex(index);
+            }
+        };
+
         const CurrentModal = Modals[currentModalIndex];
         const NextModal = nextModalIndex !== null ? Modals[nextModalIndex] : null;
 
         return (
             <View style={{ position: 'relative' }}>
                 <Animated.View style={{ opacity: fadeOutAnim }}>
-                    <CurrentModal  goNext={goNext} goPrevious={goPrevious} {...props} />
+                    <CurrentModal  goNext={goNext} goToModal={goToModal}  goPrevious={goPrevious} {...props} />
                 </Animated.View>
                 {NextModal && (
                     <Animated.View style={{ opacity: fadeInAnim, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                        <NextModal goNext={goNext} goPrevious={goPrevious} {...props} />
+                        <NextModal goNext={goNext} goToModal={goToModal} goPrevious={goPrevious} {...props} />
                     </Animated.View>
                 )}
             </View>

@@ -14,7 +14,7 @@ export default function({navigation}) {
     }
 
     const goToLogin = () => {
-        navigation.navigate('Login');
+        navigation.navigate('SignIn');
     }
     return (
         <>

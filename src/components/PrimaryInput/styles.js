@@ -37,13 +37,6 @@ const styles = StyleSheet.create({
         borderColor: 'red',
         borderWidth: 1,
     },
-    errorText: {
-        fontFamily: 'Gordita-Medium',
-        color: 'red',
-        fontSize: 12,
-        marginTop: 5,
-        marginLeft: 12,
-    },
 });
 
 

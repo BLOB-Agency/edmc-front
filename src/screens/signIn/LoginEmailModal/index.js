@@ -8,16 +8,21 @@ import ReturnBtn from "@components/ReturnBtn";
 import styles from "./styles";
 import Background from "@components/auth/bg"
 import {authStyles, genericStyles} from "@components/auth/styles";
+import {loginActions} from "@store/loginSlice";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
-    const emailIcon = require("@assets/icons/email-icon.png");
+const emailIcon = require("@assets/icons/email-icon.png");
 
-const RegisterEmailModal = ({goNext, goPrevious}) => {
+const LoginEmailModal = ({goNext, goPrevious}) => {
     const dispatch = useDispatch();
-    const username = useSelector(state => state.user.username)
-    const stateError = useSelector(state => (state.user.errors ?? []).email ?? "")
+    const stateError = useSelector(state => (state.login.errors ?? []).email ?? "")
+    const enteredEmail = useSelector(state => state.login.email)
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState(null);
+
+    useEffect(() => {
+        setEmail(enteredEmail)
+    }, [enteredEmail]);
 
     useEffect(() => {
         setEmailError(stateError)
@@ -31,10 +36,9 @@ const RegisterEmailModal = ({goNext, goPrevious}) => {
     const emailHandler = () => {
         if (EMAIL_REGEX.test(email)) {
             setEmailError(null);
-            dispatch(userActions.setEmail(email));
+            dispatch(loginActions.setEmail(email));
             goNext();
         } else {
-            console.log("The email is invalid!");
             setEmailError("Please enter a valid email address");
         }
     };
@@ -43,13 +47,13 @@ const RegisterEmailModal = ({goNext, goPrevious}) => {
         <Background>
             <ReturnBtn method={goPrevious}/>
             <View style={styles.containerMain}>
-                <Text style={authStyles.title}>Hey {username}!</Text>
+                <Text style={authStyles.title}>Welcome back!</Text>
                 <Text style={authStyles.subtitle}>
-                    Now we need your email, so we can verify your account
+                    Enter your account details to get started.
                 </Text>
                 <PrimaryInput
                     label={"E-Mail Address"}
-                    placeholder={"avicii@edmc.io"}
+                    placeholder={"Enter your email"}
                     icon={emailIcon}
                     extraStyle={styles.input}
                     value={email}
@@ -58,7 +62,7 @@ const RegisterEmailModal = ({goNext, goPrevious}) => {
                 />
 
                 <SecondaryBtn
-                    title={"LET'S GO!"}
+                    title={"CONTINUE!"}
                     textStyle
                     onPress={emailHandler}
                 />
@@ -67,4 +71,4 @@ const RegisterEmailModal = ({goNext, goPrevious}) => {
     );
 };
 
-export default RegisterEmailModal;
+export default LoginEmailModal;

@@ -1,3 +1,3 @@
 export default {
-    API_URL: 'http://localhost:3000/v1',
+    API_URL: 'http://api.edmc.test/v1',
 }

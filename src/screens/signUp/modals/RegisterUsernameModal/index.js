@@ -1,6 +1,6 @@
 import {Text, View} from "react-native";
-import React, {useState} from "react";
-import {useDispatch} from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {userActions} from "@store/userSlice";
 import PrimaryInput from "@components/PrimaryInput";
 import SecondaryBtn from "@components/SecondaryBtn";
@@ -14,13 +14,18 @@ const userIcon = require("@assets/icons/user-icon.png");
 export default function ({goNext, goPrevious}) {
     const dispatch = useDispatch();
     const [username, setUsername] = useState("");
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
+    const stateError = useSelector(state => (state.user.errors ?? []).email ?? "")
+
+    useEffect(() => {
+        setError(stateError)
+    }, [stateError]);
 
     const saveUsername = () => {
         if (username.trim().length > 0) {
             dispatch(userActions.setUsername(username));
             goNext();
-            setError('');
+            setError(null);
         } else {
             setError('Username cannot be empty');
         }

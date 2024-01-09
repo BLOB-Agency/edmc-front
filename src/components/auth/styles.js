@@ -16,4 +16,19 @@ const authStyles = StyleSheet.create({
     },
 });
 
-export {authStyles};
+const genericStyles = StyleSheet.create({
+    bodyText: {
+        color: "#fff",
+        fontFamily: "Cereal-Book",
+        fontSize: 16,
+    },
+    errorText: {
+        color: "#ff0033",
+        fontFamily: "Gordita-Medium",
+        fontSize: 14,
+
+    },
+});
+
+
+export {authStyles, genericStyles};

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TextInput, Text, StyleSheet, Image } from "react-native";
 import styles from "./styles";
+import {genericStyles} from "@components/auth/styles";
 
 const PrimaryInput = ({
   label,
@@ -33,7 +34,7 @@ const PrimaryInput = ({
         />
       </View>
 
-      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+      {errorMessage && <Text style={{...genericStyles.errorText, marginTop:6, marginLeft: 12}}>{errorMessage}</Text>}
     </View>
   );
 };
