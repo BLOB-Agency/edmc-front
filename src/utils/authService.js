@@ -11,7 +11,13 @@ export default {
                 },
             });
 
-            return response.ok
+            if (response.ok) {
+                const json = await response.json();
+
+                return json.user
+            }
+
+            return false
         } catch (error) {
             console.error('Error verifying token', error);
             return false;

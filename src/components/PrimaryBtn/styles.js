@@ -7,6 +7,8 @@ const styles = StyleSheet.create({
     button: {
         paddingVertical: 14,
         borderRadius: 30,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.20)',
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',

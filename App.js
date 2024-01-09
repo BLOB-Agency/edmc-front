@@ -6,7 +6,6 @@ import { useFonts } from "expo-font";
 import {persistor, store} from "@store/store";
 import WelcomeScreen from "@screens/welcomeScreen";
 import SignUpColorPick from "@screens/signUpColorPick";
-import Profile from "./src/screens/profile";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {PersistGate} from "redux-persist/integration/react";
 import tokenService from "@utils/tokenService";
@@ -14,11 +13,14 @@ import authService from "@utils/authService";
 import {authActions} from "@store/authSlice";
 import {userActions} from "@store/userSlice";
 import SignUp from "./src/screens/signUp";
-import {SafeAreaProvider} from "react-native-safe-area-context";
+import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import welcome from "@screens/welcome";
 import SignIn from "@screens/signIn";
 import EventEmitter from "eventemitter3";
 import {useLoginEventEmitter} from "@utils/emitters";
+import NavigationHeader from "@components/navigationHeader";
+import Profile from "@screens/profile";
+import {StatusBar, View} from "react-native";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,7 +36,9 @@ const UserTabs = () => {
             name="Profile"
             animation="fade"
             component={Profile}
-            options={{ headerShown: false }}
+            options={{
+               headerShown: false,
+            }}
         />
       </Tab.Navigator>
   );
@@ -76,45 +80,65 @@ const Loader = () => {
         const token = await tokenService.getTokenFromStorage();
         console.info('token', token)
         if (token) {
-            const isValid = await authService.verifyToken(token);
-            console.log('isValid', isValid)
-            if (isValid) {
-                return token;
+            const user = await authService.verifyToken(token);
+            console.log('isValid', user)
+            if (user !== false) {
+                return {token, user};
             }
         }
+
+        await tokenService.deleteTokenFromStorage();
 
         return null;
     };
 
-    useEffect(() => {
-        checkForToken().then(token => {
-            if (token) {
-                dispatch(authActions.setIsLoggedIn(true));
-            } else {
-                dispatch(authActions.setIsLoggedIn(false));
-                dispatch(authActions.logOut());
-            }
-        });
-    }, [dispatch]);
+
 
     useEffect(() => {
+
         const handleLoginSuccess = () => {
             navigation.navigate('UserTabs');
         };
 
-        loginEventEmitter.on('loginSuccess', handleLoginSuccess);
+        const handleLogoutSuccess = () => {
+            console.log('logout', navigation, 1)
+            navigation.navigate('Welcome');
+        }
 
+        loginEventEmitter.on('loginSuccess', handleLoginSuccess);
+        loginEventEmitter.on('logoutSuccess', handleLogoutSuccess);
         return () => {
             loginEventEmitter.off('loginSuccess', handleLoginSuccess);
         };
     }, [navigation]);
 
+    useEffect(() => {
+        checkForToken().then((result) => {
+            if (result !== null && result.token && result.user) {
+                dispatch(authActions.setIsLoggedIn(true));
+                dispatch(authActions.setToken(result.token));
+                dispatch(authActions.setUser(result.user));
+            } else {
+                dispatch(authActions.setIsLoggedIn(false));
+                dispatch(authActions.logOut());
+
+                loginEventEmitter.emit('logoutSuccess');
+            }
+        });
+    }, [dispatch]);
+
 
     return (
+       <Fragment>
+           {isAuthenticated ? <UserTabs  /> : <AuthStack />}
+       </Fragment>
+    )
+}
+
+const NavigationWrapper = () => {
+    return (
         <NavigationContext.Provider value={useNavigation()}>
-            <Fragment>
-                {isAuthenticated ? <UserTabs  /> : <AuthStack />}
-            </Fragment>
+            <Loader />
         </NavigationContext.Provider>
     )
 }
@@ -134,13 +158,17 @@ export default function App() {
     }
 
     return (
-        <ReduxProvider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                    <NavigationContainer>
-                            <Loader></Loader>
-                    </NavigationContainer >
-            </PersistGate>
-        </ReduxProvider>
+       <SafeAreaView style={{flex:1, backgroundColor: "#1e1e1e"}}>
+           <StatusBar barStyle="light-content" backgroundColor="#1E1E1E" />
+
+           <ReduxProvider store={store}>
+               <PersistGate loading={null} persistor={persistor}>
+                   <NavigationContainer>
+                       <NavigationWrapper></NavigationWrapper>
+                   </NavigationContainer >
+               </PersistGate>
+           </ReduxProvider>
+       </SafeAreaView>
     );
 }
 
