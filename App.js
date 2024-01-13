@@ -6,7 +6,7 @@ import { useFonts } from "expo-font";
 import {persistor, store} from "@store/store";
 import WelcomeScreen from "@screens/welcomeScreen";
 import SignUpColorPick from "@screens/signUpColorPick";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {BottomTabBar, createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {PersistGate} from "redux-persist/integration/react";
 import tokenService from "@utils/tokenService";
 import authService from "@utils/authService";
@@ -21,6 +21,8 @@ import {useLoginEventEmitter} from "@utils/emitters";
 import NavigationHeader from "@components/navigationHeader";
 import Profile from "@screens/profile";
 import {StatusBar, View} from "react-native";
+import verifyEmail from "@screens/verifyEmail";
+import {BlurView} from "expo-blur";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,9 +31,31 @@ const NavigationContext = createContext();
 
 export const useNavigationContext = () => useContext(NavigationContext);
 
+const BlurredTabBar = (props) => {
+    return (
+        <BlurView
+            style={{ position: 'absolute', bottom: 0, width: '100%', height: 60 }} // Adjust height as needed
+            blurType="dark" // Can be 'dark', 'light', or 'xlight'
+            blurAmount={10} // Adjust blur intensity
+        >
+            <BottomTabBar {...props} />
+        </BlurView>
+    );
+};
+
+
 const UserTabs = () => {
+    const user = useSelector((state) => state.auth.user ?? {});
+    const navigation = useNavigationContext();
+
+
+    // useEffect(() => {
+    //     if (navigation && user.email_verified_at === null) {
+    //         setTimeout(() => navigation.navigate('verifyEmail'), 0);
+    //     }
+    // }, [navigation]);
   return (
-      <Tab.Navigator>
+      <Tab.Navigator tabBar={(props) => <BlurredTabBar {...props} />}>
         <Tab.Screen
             name="Profile"
             animation="fade"
@@ -43,6 +67,24 @@ const UserTabs = () => {
       </Tab.Navigator>
   );
 }
+
+const UserStack = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="UserTabs"
+                component={UserTabs}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="verifyEmail"
+                component={verifyEmail}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+    );
+};
+
 
 const AuthStack = () => {
   return (
@@ -130,7 +172,7 @@ const Loader = () => {
 
     return (
        <Fragment>
-           {isAuthenticated ? <UserTabs  /> : <AuthStack />}
+           {isAuthenticated ? <UserStack  /> : <AuthStack />}
        </Fragment>
     )
 }

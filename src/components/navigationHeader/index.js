@@ -21,7 +21,7 @@ const NavigationHeader = ({ title, scrollY, onHeaderLayout }) => {
 
     const titleTranslateY = scrollY.interpolate({
         inputRange: [0, 70],
-        outputRange: [0, -insets.top+36],
+        outputRange: [0, -insets.top+42],
         extrapolate: 'clamp',
     });
 
@@ -32,7 +32,6 @@ const NavigationHeader = ({ title, scrollY, onHeaderLayout }) => {
             });
         }
     };
-
 
     const scale = scrollY.interpolate({
         inputRange: [0, 70],
@@ -53,12 +52,11 @@ const NavigationHeader = ({ title, scrollY, onHeaderLayout }) => {
             >
                 <BlurView
                     style={{...StyleSheet.absoluteFill,  borderBottomWidth: StyleSheet.hairlineWidth,}}
-                    blurType="extraDark"
+                    blurType="dark"
                     blurAmount={10} // Set your desired blur amount
                 />
             </Animated.View>
-            <View style={{paddingTop: insets.top+12, paddingHorizontal: 24}}
-            >
+            <View style={{paddingTop: insets.top+12, paddingHorizontal: 24}}>
                 <Animated.Text
                     ref={titleRef}
                     onLayout={onTitleLayout}

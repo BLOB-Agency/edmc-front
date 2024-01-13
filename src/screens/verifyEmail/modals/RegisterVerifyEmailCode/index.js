@@ -15,6 +15,7 @@ import { TextInput } from "react-native-gesture-handler";
 import verifyCode from "@utils/verifyCode";
 import { authActions } from "@store/authSlice";
 import Background from "@components/auth/bg"
+import {authStyles} from "@components/auth/styles";
 const VerifyEmailCode = ({goNext, goPrevious}) => {
   const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
   const auth = useSelector((state) => state.auth);
@@ -34,22 +35,7 @@ const VerifyEmailCode = ({goNext, goPrevious}) => {
     const newVerificationCode = [...verificationCode];
     newVerificationCode[index] = text;
     setVerificationCode(newVerificationCode);
-    // if(verificationCode.join("").length === 4){
-    //   console.log("userEmail: ", props.userData.email)
-    //   const verificationCodeString = verificationCode.join("");
-    //   // we need to dispatch the token to the store which is the response from the verifyCode function
-    //   verifyCode(verificationCodeString, props.userData.email)
-    //   .then((token) => {
-    //   dispatch(authActions.setToken(token));
 
-    //   if(auth.token){
-    //     console.log("auth.token: ", auth.token)
-    //     dispatch(authActions.setIsLoggedIn(true));
-    //     dispatch(authActions.getStatus());
-    //   }
-    //   })
-
-    // }
   };
   useEffect(() => {
     if (verificationCode.join("").length === 4) {
@@ -81,22 +67,12 @@ const VerifyEmailCode = ({goNext, goPrevious}) => {
   return (
 
       <Background>
-          <TouchableOpacity
-            style={styles.backIconContainer}
-            onPress={goNext}
-          >
-            <BlurView tint="light" intensity={20} style={styles.blurView}>
-              <Image
-                source={require("@assets/icons/back-icon.png")}
-                style={{ width: 24, height: 24 }}
-              />
-            </BlurView>
-          </TouchableOpacity>
+
           <View style={styles.containerMain}>
             <View style={styles.containerText}>
               <View>
-                <Text style={styles.title}>Verify your email</Text>
-                <Text style={styles.subtitle}>
+                <Text style={authStyles.title}>Verify your email</Text>
+                <Text style={authStyles.subtitle}>
                   Enter the code we sent to your e-mail adress
                 </Text>
               </View>

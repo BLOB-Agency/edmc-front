@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     overflow: "hidden",
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
   },
   linearGradient: {
     flex: 1,
@@ -32,41 +32,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   containerMain: {
+    marginTop: 24,
     height: "100%",
     justifyContent: "space-between",
-    padding: 15,
-    paddingVertical: 48,
   },
   title: {
-    textAlign: "center",
+
     fontSize: 36,
     marginVertical: 0,
     color: "#fff",
     fontFamily: "Cereal-Medium",
   },
   subtitle: {
-    textAlign: "center",
     fontSize: 16,
     color: "#fff",
+
     fontFamily: "Gordita-Medium",
   },
-  backIconContainer: {
-    marginTop: 24,
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.07)",
-    borderColor: "rgba(255, 255, 255, 0.3)",
-    borderWidth: 1,
-  },
+
   containerDigitInput: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 24,
+    marginTop: 48,
   },
   digitInput: {
     width: 50,

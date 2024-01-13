@@ -1,5 +1,17 @@
 // Let's make a slice for authentication
-import { createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import authService from "@utils/authService";
+
+export const verifyEmail = createAsyncThunk(
+    'auth/verifyEmail',
+    async (userData, { rejectWithValue }) => {
+      try {
+        return await authService.verifyEmail(userData);
+      } catch (error) {
+        return rejectWithValue(JSON.parse(error.message));
+      }
+    }
+);
 
 const authSlice = createSlice({
   name: "auth",

@@ -81,5 +81,9 @@ export default {
         }
 
         throw new Error(errorData.message ?? 'An error occurred');
+    },
+
+    verifyEmail: async (userData) => {
+
     }
 }

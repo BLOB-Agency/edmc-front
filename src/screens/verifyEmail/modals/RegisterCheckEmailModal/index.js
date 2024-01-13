@@ -51,7 +51,7 @@ const CheckEmailModal = ({goNext, goPrevious}) => {
 
   const stopTimer = () => clearTimeout(timeoutId);
   const startTimer = () => {
-    const id = setTimeout(goNext, 60_000); // 1 minute
+    const id = setTimeout(goNext, 20_000);
     setTimeoutId(id);
   };
 
@@ -64,8 +64,8 @@ const CheckEmailModal = ({goNext, goPrevious}) => {
   return (
 
   <Background>
-    <ReturnBtn method={goPrevious} />
       <View style={{flex: 1, justifyContent: "space-between"}}>
+        <View></View>
         <View style={styles.background}>
           <BlurView style={styles.blurView} tint="light" intensity={20} />
 
