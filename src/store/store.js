@@ -3,6 +3,7 @@ import userReducer from "./userSlice";
 import tokenReducer from "./tokenSlice";
 import authReducer from "./authSlice";
 import loginReducer from "./loginSlice";
+import homeReducer from "./homeSlice";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer, persistStore} from "redux-persist";
 import thunk from "redux-thunk";
@@ -12,6 +13,7 @@ const reducers = combineReducers({
   token: tokenReducer,
   auth: authReducer,
   login: loginReducer,
+  home: homeReducer,
 })
 
 const persistConfig = {

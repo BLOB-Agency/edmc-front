@@ -15,6 +15,12 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         letterSpacing: -0.73,
     },
+    headerTitleLarge: {
+        fontFamily: 'Cereal-Bold',
+        fontSize: 36,
+        color: '#FFFFFF',
+        letterSpacing: -1.1,
+    },
 });
 
 

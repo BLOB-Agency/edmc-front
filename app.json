@@ -16,16 +16,22 @@
     ],
     "ios": {
       "supportsTablet": false,
-        "bundleIdentifier": "io.edmc.dropper",
+      "bundleIdentifier": "io.edmc.dropper",
       "config": {
         "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "io.edmc.dropper"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -4,18 +4,18 @@ import styles from "./styles";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {BlurView} from "expo-blur";
 
-const NavigationHeader = ({ title, scrollY, onHeaderLayout }) => {
+const NavigationHeader = ({ title, scrollY, onHeaderLayout, small = false }) => {
     const isIOS = Platform.OS === 'ios';
     const insets = useSafeAreaInsets();
     const titleRef = useRef(null);
     const [titleWidth, setTitleWidth] = useState(0);
-    const startFontSize = 24;
+    const startFontSize = small ? 24 : 36;
     const endFontSize = 16;
     const screenWidth = Dimensions.get('window').width;
 
     const titleTranslateX = scrollY.interpolate({
         inputRange: [0, 70],
-        outputRange: [0, ((screenWidth / 2) * (endFontSize / startFontSize) +titleWidth/2)],
+        outputRange: [0, small ? ((screenWidth / 2) * (endFontSize / startFontSize) +titleWidth/2) : (screenWidth/2) + (titleWidth/2)],
         extrapolate: 'clamp',
     });
 
@@ -61,7 +61,7 @@ const NavigationHeader = ({ title, scrollY, onHeaderLayout }) => {
                     ref={titleRef}
                     onLayout={onTitleLayout}
                     style={[
-                        styles.headerTitle,
+                        small ? styles.headerTitle : styles.headerTitleLarge,
                         {
                             transform: [
                                 { scale },
@@ -80,7 +80,7 @@ const NavigationHeader = ({ title, scrollY, onHeaderLayout }) => {
 };
 
 
-const ScreenWithNavigationHeader = ({ children, title }) => {
+const ScreenWithNavigationHeader = ({ children, title, small = false }) => {
     const scrollY = new Animated.Value(0);
     const [headerHeight, setHeaderHeight] = useState(0);
 
@@ -91,7 +91,7 @@ const ScreenWithNavigationHeader = ({ children, title }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: "#1e1e1e" }}>
-            <NavigationHeader title={title} scrollY={scrollY} onHeaderLayout={onHeaderLayout} />
+            <NavigationHeader small={small} title={title} scrollY={scrollY} onHeaderLayout={onHeaderLayout} />
             <Animated.ScrollView
                 style={{ paddingTop: headerHeight,  }}
                 onScroll={Animated.event(

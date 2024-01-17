@@ -48,7 +48,7 @@ const Profile = ({ navigation }) => {
     }
 
     return (
-        <ScreenWithNavigationheader title={"My Profile"}>
+        <ScreenWithNavigationheader title={"My Profile"} small={true}>
           <View style={styles.outerContainer}>
               <View style={styles.innerContainer}>
                   <View style={styles.infoContainer}>

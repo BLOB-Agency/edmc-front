@@ -23,6 +23,11 @@ import Profile from "@screens/profile";
 import {StatusBar, View} from "react-native";
 import verifyEmail from "@screens/verifyEmail";
 import {BlurView} from "expo-blur";
+import Home from "@screens/home";
+import {StyleSheet} from "react-native";
+import * as TrackPlayer from "react-native-track-player/lib/trackPlayer";
+import Player from "@screens/player";
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,19 +35,6 @@ const NavigationContext = createContext();
 
 
 export const useNavigationContext = () => useContext(NavigationContext);
-
-const BlurredTabBar = (props) => {
-    return (
-        <BlurView
-            style={{ position: 'absolute', bottom: 0, width: '100%', height: 60 }} // Adjust height as needed
-            blurType="dark" // Can be 'dark', 'light', or 'xlight'
-            blurAmount={10} // Adjust blur intensity
-        >
-            <BottomTabBar {...props} />
-        </BlurView>
-    );
-};
-
 
 const UserTabs = () => {
     const user = useSelector((state) => state.auth.user ?? {});
@@ -55,7 +47,39 @@ const UserTabs = () => {
     //     }
     // }, [navigation]);
   return (
-      <Tab.Navigator tabBar={(props) => <BlurredTabBar {...props} />}>
+      <Tab.Navigator
+          screenOptions={{
+              headerShown: false,
+              tabBarStyle: {
+                  position: "absolute",
+                  // shadowColor: "rgb(47, 64, 85)",
+                  shadowOffset: { width: 0, height: -4 },
+                  shadowOpacity: 0.12,
+                  borderWidth: 0,
+                  shadowRadius: 16,
+              },
+              tabBarBackground: () => (
+                  <BlurView
+                      tint="dark"
+                      intensity={40}
+                      style={{
+                          ...StyleSheet.absoluteFillObject,
+                          overflow: "hidden",
+                          backgroundColor: "transparent",
+                      }}
+                  />
+              ),
+          }}
+      >
+          <Tab.Screen
+              name="Home"
+              animation="fade"
+              component={Home}
+              options={{
+                  headerShown: false,
+              }}
+          />
+
         <Tab.Screen
             name="Profile"
             animation="fade"
@@ -79,6 +103,11 @@ const UserStack = () => {
             <Stack.Screen
                 name="verifyEmail"
                 component={verifyEmail}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name={"MusicPlayer"}
+                component={Player}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>
@@ -169,6 +198,11 @@ const Loader = () => {
         });
     }, [dispatch]);
 
+    useEffect(() => {
+        TrackPlayer.setupPlayer().then(() => {
+            console.log("Track Player is initialized");
+        });
+    }, []);
 
     return (
        <Fragment>
