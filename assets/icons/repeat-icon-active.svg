@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="22px" viewBox="0 0 18 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>repeat icon active</title>
+    <g id="repeat-icon-active" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <polyline id="Path" stroke="#FFFFFF" stroke-width="2" points="13 1 17 5 13 9"></polyline>
+        <path d="M2,11 L2,9 C2,6.790861 3.790861,5 6,5 L16,5" id="Path" stroke="#FFFFFF" stroke-width="2"></path>
+        <g id="Group" transform="translate(9.5, 16) scale(-1, -1) translate(-9.5, -16)translate(2, 11)" stroke="#FFFFFF" stroke-width="2">
+            <polyline id="Path-Copy-2" points="11 0 15 4 11 8"></polyline>
+            <path d="M0,10 L0,8 C0,5.790861 1.790861,4 4,4 L14,4" id="Path-Copy"></path>
+        </g>
+    </g>
+</svg>

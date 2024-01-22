@@ -19,8 +19,15 @@ const progressStyles = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
+    icon: {
+        width: 20,
+        height: 20,
+        resizeMode: 'contain',
+        zIndex: 2,
+    },
     outerContainer: {
         // display: 'flex',
+        flex: 1,
         paddingTop: 12,
         flexDirection: 'column',
     },
@@ -82,8 +89,8 @@ const styles = StyleSheet.create({
     controls: {
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center',
         width: '100%',
-        padding: 20,
     },
     controlButton: {
         fontSize: 18,

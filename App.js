@@ -1,10 +1,9 @@
-import React, {createContext, Fragment, useContext, useEffect} from "react";
+import React, {createContext, Fragment, useContext, useEffect, useState} from "react";
 import {Provider as ReduxProvider, useDispatch, useSelector} from "react-redux";
 import {NavigationContainer, useNavigation} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useFonts } from "expo-font";
 import {persistor, store} from "@store/store";
-import WelcomeScreen from "@screens/welcomeScreen";
 import SignUpColorPick from "@screens/signUpColorPick";
 import {BottomTabBar, createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {PersistGate} from "redux-persist/integration/react";
@@ -17,7 +16,7 @@ import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import welcome from "@screens/welcome";
 import SignIn from "@screens/signIn";
 import EventEmitter from "eventemitter3";
-import {useLoginEventEmitter} from "@utils/emitters";
+import {useLoginEventEmitter, usePlayerEventEmitter} from "@utils/emitters";
 import NavigationHeader from "@components/navigationHeader";
 import Profile from "@screens/profile";
 import {StatusBar, View} from "react-native";
@@ -27,6 +26,9 @@ import Home from "@screens/home";
 import {StyleSheet} from "react-native";
 import * as TrackPlayer from "react-native-track-player/lib/trackPlayer";
 import Player from "@screens/player";
+import PlayerModal from "@screens/player/modal";
+import {CurrentSongProvider, useCurrentSong} from "./src/context/CurrentSongContext";
+import MusicPlayer from "@screens/musicPlayer";
 
 
 const Stack = createStackNavigator();
@@ -39,56 +41,91 @@ export const useNavigationContext = () => useContext(NavigationContext);
 const UserTabs = () => {
     const user = useSelector((state) => state.auth.user ?? {});
     const navigation = useNavigationContext();
-
+    const [tabBarHeight, setTabBarHeight] = useState(0);
+    const [playerVisible, setPlayerVisible] = useState(false);
+    const {currentSong} = useCurrentSong();
+    const playerEventEmitter = usePlayerEventEmitter();
 
     // useEffect(() => {
     //     if (navigation && user.email_verified_at === null) {
     //         setTimeout(() => navigation.navigate('verifyEmail'), 0);
     //     }
     // }, [navigation]);
-  return (
-      <Tab.Navigator
-          screenOptions={{
-              headerShown: false,
-              tabBarStyle: {
-                  position: "absolute",
-                  // shadowColor: "rgb(47, 64, 85)",
-                  shadowOffset: { width: 0, height: -4 },
-                  shadowOpacity: 0.12,
-                  borderWidth: 0,
-                  shadowRadius: 16,
-              },
-              tabBarBackground: () => (
-                  <BlurView
-                      tint="dark"
-                      intensity={40}
-                      style={{
-                          ...StyleSheet.absoluteFillObject,
-                          overflow: "hidden",
-                          backgroundColor: "transparent",
-                      }}
-                  />
-              ),
-          }}
-      >
-          <Tab.Screen
-              name="Home"
-              animation="fade"
-              component={Home}
-              options={{
-                  headerShown: false,
-              }}
-          />
 
-        <Tab.Screen
-            name="Profile"
-            animation="fade"
-            component={Profile}
-            options={{
-               headerShown: false,
-            }}
-        />
-      </Tab.Navigator>
+    useEffect(() => {
+
+        const openPlayer = () => {
+            setPlayerVisible(true);
+        };
+        const closePlayer = () => {
+            setPlayerVisible(false);
+        };
+
+        playerEventEmitter.on('openPlayer', openPlayer);
+        playerEventEmitter.on('closePlayer', closePlayer);
+        return () => {
+            playerEventEmitter.off('openPlayer', openPlayer);
+            playerEventEmitter.off('closePlayer', closePlayer);
+        };
+    }, [navigation]);
+
+  return (
+     <Fragment>
+         <Tab.Navigator
+             screenOptions={{
+                 headerShown: false,
+                 tabBarStyle: {
+                     position: "absolute",
+                     // shadowColor: "rgb(47, 64, 85)",
+                     shadowOffset: { width: 0, height: -4 },
+                     shadowOpacity: 0.12,
+                     borderWidth: 0,
+                     shadowRadius: 16,
+                 },
+                 tabBarBackground: () => (
+                     <BlurView
+                         tint="dark"
+                         intensity={40}
+                         style={{
+                             ...StyleSheet.absoluteFillObject,
+                             overflow: "hidden",
+                             backgroundColor: "transparent",
+                         }}
+                     />
+                 ),
+             }}
+
+             onLayout={(event) => {
+                 const height = event.nativeEvent.layout.height;
+                 setTabBarHeight(height);
+             }}
+         >
+             <Tab.Screen
+                 name="Home"
+                 animation="fade"
+                 component={Home}
+                 options={{
+                     headerShown: false,
+                 }}
+             />
+
+             <Tab.Screen
+                 name="Profile"
+                 animation="fade"
+                 component={Profile}
+                 options={{
+                     headerShown: false,
+                 }}
+             />
+         </Tab.Navigator>
+
+         {currentSong && (
+             <MusicPlayer marginBottom={80} setPlayerOpen={setPlayerVisible} />
+         )}
+
+
+         <PlayerModal modalVisible={playerVisible} setModalVisible={setPlayerVisible}  />
+     </Fragment>
   );
 }
 
@@ -105,11 +142,7 @@ const UserStack = () => {
                 component={verifyEmail}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen
-                name={"MusicPlayer"}
-                component={Player}
-                options={{ headerShown: false }}
-            />
+
         </Stack.Navigator>
     );
 };
@@ -239,9 +272,11 @@ export default function App() {
 
            <ReduxProvider store={store}>
                <PersistGate loading={null} persistor={persistor}>
-                   <NavigationContainer>
-                       <NavigationWrapper></NavigationWrapper>
-                   </NavigationContainer >
+                   <CurrentSongProvider>
+                       <NavigationContainer>
+                           <NavigationWrapper></NavigationWrapper>
+                       </NavigationContainer >
+                   </CurrentSongProvider>
                </PersistGate>
            </ReduxProvider>
        </SafeAreaView>

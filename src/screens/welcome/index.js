@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ImageBackground, Text, TouchableOpacity, StatusBar} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import styles from "./styles";
@@ -7,8 +7,12 @@ import SecondaryButton from "@components/SecondaryBtn";
 import AppleLogo from "@assets/images/apple_logo_white.png";
 import SocialButton from "@components/IconButton";
 import Background from "@components/auth/bg"
+import { appleAuth, AppleButton } from '@invertase/react-native-apple-authentication';
 
+let user = null;
 export default function({navigation}) {
+    const [credentialStateForUser, updateCredentialStateForUser] = useState(-1);
+    console.log('credentialStateForUser', credentialStateForUser)
     const goToRegistration = () => {
         navigation.navigate('SignUp');
     }
@@ -16,6 +20,87 @@ export default function({navigation}) {
     const goToLogin = () => {
         navigation.navigate('SignIn');
     }
+
+    useEffect(() => {
+        if (!appleAuth.isSupported) return;
+
+        fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+            updateCredentialStateForUser(`Error: ${error.code}`),
+        );
+    }, []);
+
+    useEffect(() => {
+        if (!appleAuth.isSupported) return;
+
+        return appleAuth.onCredentialRevoked(async () => {
+            console.warn('Credential Revoked');
+            fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+                updateCredentialStateForUser(`Error: ${error.code}`),
+            );
+        });
+    }, []);
+
+    const fetchAndUpdateCredentialState = async () => {
+        if (user === null) {
+            updateCredentialStateForUser('N/A');
+        } else {
+            const credentialState = await appleAuth.getCredentialStateForUser(user);
+            if (credentialState === appleAuth.State.AUTHORIZED) {
+                updateCredentialStateForUser('AUTHORIZED');
+            } else {
+                updateCredentialStateForUser(credentialState);
+            }
+        }
+    }
+
+
+    const onAppleButtonPress = async () => {
+        console.warn('Beginning Apple Authentication');
+
+        try {
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+            });
+
+            console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+
+            const {
+                user: newUser,
+                email,
+                nonce,
+                identityToken,
+                realUserStatus /* etc */,
+            } = appleAuthRequestResponse;
+
+            user = newUser;
+
+            fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+                updateCredentialStateForUser(`Error: ${error.code}`),
+            );
+
+            if (identityToken) {
+                // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+                console.log(nonce, identityToken);
+            } else {
+                // no token - failed sign-in?
+                console.log('no token')
+            }
+
+            if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
+                console.log("I'm a real person!");
+            }
+
+                console.warn(`Apple Authentication Completed, ${user}, ${email}`);
+        } catch (error) {
+            if (error.code === appleAuth.Error.CANCELED) {
+                console.warn('User canceled Apple Sign in.');
+            } else {
+                console.error(error);
+            }
+        }
+    }
+
     return (
         <>
             <StatusBar barStyle="light-content" />
@@ -27,11 +112,11 @@ export default function({navigation}) {
                 <Text style={styles.socialText}>Or sign in with</Text>
 
                 <View style={{alignItems: "center"}}>
-                    <SocialButton src={AppleLogo}></SocialButton>
+                    {appleAuth.isSupported && (
+                        <SocialButton src={AppleLogo}></SocialButton>
+                    )}
                 </View>
-
-
             </Background>
         </>
-);
+    );
 };

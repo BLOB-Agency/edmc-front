@@ -3,7 +3,7 @@ import { TouchableOpacity, Text } from "react-native";
 import { useSelector } from "react-redux";
 import styles from "./styles";
 
-const PrimaryBtn = ({ onPress, title, style, textStyle, disabled = false }) => {
+const PrimaryBtn = ({ onPress, title, style, textStyle, disabled = false , children}) => {
   const user = useSelector((state) => state.user);
 
   const mainColor = user.color;
@@ -18,7 +18,9 @@ const PrimaryBtn = ({ onPress, title, style, textStyle, disabled = false }) => {
         { backgroundColor: mainColor },
       ]}
     >
-      <Text style={[styles.text, textStyle]}>{title}</Text>
+        {title && <Text style={[styles.text, textStyle]}>{title}</Text>}
+
+        {children}
     </TouchableOpacity>
   );
 };

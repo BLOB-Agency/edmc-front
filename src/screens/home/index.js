@@ -14,6 +14,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchHomeData} from "@store/homeSlice";
 import FastImage from "react-native-fast-image";
 import TrackPlayer from 'react-native-track-player';
+import {useCurrentSong} from "@context/CurrentSongContext";
+import {usePlayerEventEmitter} from "@utils/emitters";
+import {formatNamesWithAnd} from "@utils/helpers";
 
 const TopPlaylist = ({tag, title, subtitle, bg}) => {
     const tagWords = tag.split(' ');
@@ -69,7 +72,8 @@ const Playlist = ({title, subtitle, bg, onPress}) => {
 export default function ({navigation}) {
     const dispatch = useDispatch();
     const { songs, loading, errors } = useSelector((state) => state.home);
-
+    const {setCurrentSong} = useCurrentSong();
+    const playerEventEmitter = usePlayerEventEmitter();
     useEffect(() => {
         dispatch(fetchHomeData());
     }, [dispatch]);
@@ -85,17 +89,19 @@ export default function ({navigation}) {
             duration: song.duration,
         }
 
+        await TrackPlayer.reset();
         await TrackPlayer.add([track]);
         await TrackPlayer.play();
 
-        navigation.navigate('MusicPlayer', {song});
+        setCurrentSong(song);
+        playerEventEmitter.emit('openPlayer');
     }
 
     if (loading) {
         return <ActivityIndicator size="large" />;
     }
 
-    if (errors.length > 0) {
+    if (errors && errors.length > 0) {
         // Render error message
         return <Text>Error fetching songs</Text>;
     }
@@ -141,7 +147,7 @@ export default function ({navigation}) {
                         contentContainerStyle={styles.scrollViewContainer}
                     >
                         {songs.map((song, index) => (
-                            <Playlist onPress={() => handlePlay(song)} key={index} title={song.title} subtitle={"Tiofneoifn"} bg={song.cover_image[0].url} />
+                            <Playlist onPress={() => handlePlay(song)} key={index} title={song.title} subtitle={formatNamesWithAnd(song.artists)} bg={song.cover_image[0].url} />
                         ))}
                        </ScrollView>
                 </View>
