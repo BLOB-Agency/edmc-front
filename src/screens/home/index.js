@@ -16,7 +16,7 @@ import FastImage from "react-native-fast-image";
 import TrackPlayer from 'react-native-track-player';
 import {useCurrentSong} from "@context/CurrentSongContext";
 import {usePlayerEventEmitter} from "@utils/emitters";
-import {formatNamesWithAnd} from "@utils/helpers";
+import {formatNamesWithAnd, playSingleTrack} from "@utils/helpers";
 
 const TopPlaylist = ({tag, title, subtitle, bg}) => {
     const tagWords = tag.split(' ');
@@ -71,30 +71,24 @@ const Playlist = ({title, subtitle, bg, onPress}) => {
 
 export default function ({navigation}) {
     const dispatch = useDispatch();
-    const { songs, loading, errors } = useSelector((state) => state.home);
+    const { recentAlbums, songs, loading, errors } = useSelector((state) => state.home);
     const {setCurrentSong} = useCurrentSong();
     const playerEventEmitter = usePlayerEventEmitter();
     useEffect(() => {
         dispatch(fetchHomeData());
     }, [dispatch]);
 
+    useEffect(() => {
+        console.log(recentAlbums, 'recentAlbums')
+    }, [recentAlbums]);
+
     const handlePlay = async (song) => {
-        console.log('song', song)
-
-        const track = {
-            url: song.media[0].url,
-            title: song.title,
-            artist: song.artists[0].name,
-            artwork: song.cover_image[0].url,
-            duration: song.duration,
-        }
-
-        await TrackPlayer.reset();
-        await TrackPlayer.add([track]);
-        await TrackPlayer.play();
-
+         await playSingleTrack(song)
         setCurrentSong(song);
-        playerEventEmitter.emit('openPlayer');
+    }
+
+    const navigateToAlbum = (album) => {
+        navigation.navigate('AlbumScreen', { album });
     }
 
     if (loading) {
@@ -102,7 +96,6 @@ export default function ({navigation}) {
     }
 
     if (errors && errors.length > 0) {
-        // Render error message
         return <Text>Error fetching songs</Text>;
     }
 
@@ -146,10 +139,25 @@ export default function ({navigation}) {
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={styles.scrollViewContainer}
                     >
-                        {songs.map((song, index) => (
-                            <Playlist onPress={() => handlePlay(song)} key={index} title={song.title} subtitle={formatNamesWithAnd(song.artists)} bg={song.cover_image[0].url} />
+                        {recentAlbums.map((album, index) => (
+                            // <Text>{JSON.stringify(album.cover_image[0].url)}</Text>
+                            <Playlist onPress={() => navigateToAlbum(album)} key={index} title={album.name} subtitle={formatNamesWithAnd(album.artists)} bg={album.cover_image[0].url} />
                         ))}
-                       </ScrollView>
+                    </ScrollView>
+                </View>
+
+                <View style={{...styles.playlistContainer, gap: 12}}>
+                    <Text style={styles.playlistTitle}>Latest Releases</Text>
+                    <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.scrollViewContainer}
+                    >
+                        {songs.map((song, index) => (
+                            // <Text>{JSON.stringify(song.album.cover_image[0].url)}</Text>
+                            <Playlist onPress={() => handlePlay(song)} key={index} title={song.title} subtitle={formatNamesWithAnd(song.artists)} bg={song.album[0].cover_image[0].url} />
+                        ))}
+                    </ScrollView>
                 </View>
 
                 {/*<View style={{...styles.playlistContainer, gap: 12}}>*/}

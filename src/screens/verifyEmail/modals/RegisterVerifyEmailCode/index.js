@@ -18,7 +18,6 @@ import Background from "@components/auth/bg"
 import {authStyles} from "@components/auth/styles";
 const VerifyEmailCode = ({goNext, goPrevious}) => {
   const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
-  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const inputRefs = [];
 

@@ -2,6 +2,7 @@ import { Modal, ImageBackground, Text, View } from "react-native";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "@store/userSlice";
+
 import PrimaryInput from "@components/PrimaryInput";
 import { LinearGradient } from "expo-linear-gradient";
 import SecondaryBtn from "@components/SecondaryBtn";
@@ -12,6 +13,7 @@ import authService from "@utils/authService";
 import Background from "@components/auth/bg"
 import {authStyles, genericStyles} from "@components/auth/styles";
 import {authActions} from "@store/authSlice";
+import {registrationActions} from "@store/registrationSlice";
 const passwordIcon = require("@assets/icons/lock-icon.png");
 const isPasswordRegexValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&-])[A-Za-z\d@$!%*?&-]{8,}$/;
 
@@ -43,14 +45,14 @@ const RegisterPasswordModal = ({goNext, goPrevious, goToModal}) => {
 
     if (isPasswordInvalid || isPasswordMismatch) return;
 
-    dispatch(userActions.setPassword(password));
-    dispatch(userActions.registerUser({...userData, password, password_confirmation: confirmPassword}))
+    dispatch(registrationActions.setPassword(password));
+    dispatch(registrationActions.registerUser({...userData, password, password_confirmation: confirmPassword}))
       .unwrap()
       .then((fulfilledAction) => {
           console.log('Registration successful:', fulfilledAction);
-          dispatch(authActions.setToken(fulfilledAction.access_token));
+            dispatch(authActions.setToken(fulfilledAction.access_token));
             dispatch(authActions.setIsLoggedIn(true));
-            dispatch(authActions.setUser(fulfilledAction.user));
+            dispatch(userActions.setUser(fulfilledAction.user));
       })
       .catch((rejectedAction) => {
           console.error('Registration failed:', rejectedAction);

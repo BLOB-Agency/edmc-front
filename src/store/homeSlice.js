@@ -7,11 +7,9 @@ export const fetchHomeData = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const token = await tokenService.getTokenFromStorage();
-
-            const result = await musicService.fetchHomeData(token);
-            console.log('result', result)
-
-            return result.songs;
+            const songs = await musicService.fetchHomeData(token)
+            const recentAlbums = await musicService.fetchRecentAlbums(token);
+            return {recentAlbums: recentAlbums.albums, songs: songs.songs};
         } catch (error) {
             return rejectWithValue(JSON.parse(error.message));
         }
@@ -24,11 +22,9 @@ export const homeSlice = createSlice({
         loading: false,
         errors: [],
         songs: [],
+        recentAlbums: []
     },
     reducers: {
-        setSongs: (state, action) => {
-            state.songs = action.payload;
-        },
     },
     extraReducers: (builder) => {
         builder.addCase(
@@ -40,7 +36,8 @@ export const homeSlice = createSlice({
             fetchHomeData.fulfilled,
             (state, action) => {
                 state.loading = false;
-                state.songs = action.payload;
+                state.recentAlbums = action.payload.recentAlbums;
+                state.songs = action.payload.songs;
             }
         ).addCase(
             fetchHomeData.rejected,

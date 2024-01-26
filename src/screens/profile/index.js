@@ -1,11 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useDispatch } from "react-redux";
 import { View, Text, Image, ActivityIndicator, Button } from "react-native";
-import { StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
-import ProfileOption from "@components/ProfileOption";
+import ProfileOption, {ProfileToggleOption} from "@components/ProfileOption";
 import PrimaryBtn from "@components/PrimaryBtn";
-import { userActions } from "@store/userSlice";
+import {updateNotificationsEnabled, userActions} from "@store/userSlice";
 import { authActions } from "@store/authSlice";
 import ScreenWithNavigationheader from "@components/navigationHeader";
 import userIcon from "@assets/icons/user-icon.png";
@@ -13,32 +12,53 @@ import passwordIcon from "@assets/icons/lock-icon.png";
 import notificationIcon from "@assets/icons/bell-icon.png";
 import colorIcon from "@assets/icons/palette-icon.png";
 import styles from "./styles";
+import ChangePassword from "@screens/ChangePassword";
+import ColorPicker from "@screens/ColorPicker";
 const Profile = ({ navigation }) => {
-    // Get the user's information from the Redux store
-    const user = useSelector((state) => state.auth.user ?? {});
+
+    const [showChangePassword, setShowChangePassword] = useState(false);
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+
+    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
-
-    // Let's add a sign out button
-
-    // Check if the user data is still loading
     const isLoading = useSelector((state) => state.isLoading);
     const handlePersonalData = () => {
         console.log("Clicked On Personal Data");
     };
 
-    const handlePassword = () => {
-        console.log("Clicked On Password");
-    };
     const handleSignOut = () => {
-        console.log("Clicked On Sign Out");
-        // Here we want to reset the user data in the Redux store and redirect the user to the login screen
         dispatch(userActions.resetUser());
         dispatch(authActions.logOut());
         navigation.navigate("Welcome");
     };
 
-    // Display a loader if data is still loading
+    const openChangePassword = () => {
+        setShowChangePassword(true)
+    };
+
+    const closeChangePassword = () => {
+        setShowChangePassword(false)
+    }
+
+    const openColorPicker = () => {
+        setShowColorPicker(true)
+    };
+
+    const closeColorPicker = () => {
+        setShowColorPicker(false)
+    }
+
+    const handleNotificationToggle = (value) => {
+        dispatch(updateNotificationsEnabled(value ? 1 : 0))
+        setNotificationsEnabled(value)
+    }
+
+    useEffect(() => {
+        setNotificationsEnabled(user.notifications_enabled)
+    }, [user]);
+
     if (isLoading) {
         return (
             <View style={styles.loadingContainer}>
@@ -54,7 +74,7 @@ const Profile = ({ navigation }) => {
                   <View style={styles.infoContainer}>
                       <View style={styles.containerPicture}>
                           <Image
-                              source={require("@assets/images/harold.jpeg")}
+                              source={require("@assets/images/wesley.jpeg")}
                               style={styles.picture}
                               resizeMode="cover"
                           />
@@ -72,7 +92,7 @@ const Profile = ({ navigation }) => {
                           <ProfileOption
                               icon={passwordIcon}
                               text="Change Password"
-                              method={handlePassword}
+                              method={openChangePassword}
                               isLast={true}
                           />
                       </View>
@@ -80,15 +100,16 @@ const Profile = ({ navigation }) => {
                   <View style={styles.containerSettings}>
                       <Text style={styles.subtTitle}>APP SETTINGS</Text>
                       <View style={styles.containerOptions}>
-                          <ProfileOption
+                          <ProfileToggleOption
                               icon={notificationIcon}
+                              toggleValue={notificationsEnabled}
                               text="Enable Notifications"
-                              method={handlePersonalData}
+                              onToggleChange={handleNotificationToggle}
                           />
                           <ProfileOption
                               icon={colorIcon}
                               text="Change Accent Color"
-                              method={handlePassword}
+                              method={openColorPicker}
                               isLast={true}
                           />
                       </View>
@@ -98,10 +119,14 @@ const Profile = ({ navigation }) => {
 
               <PrimaryBtn
                   title="Sign Out"
+                  disabled={false}
                   onPress={handleSignOut}
                   style={styles.signOutBtn}
               />
           </View>
+
+            <ChangePassword onClose={closeChangePassword} visible={showChangePassword}/>
+            <ColorPicker onClose={closeColorPicker} visible={showColorPicker}/>
         </ScreenWithNavigationheader>
 
     );

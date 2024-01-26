@@ -1,3 +1,6 @@
+import TrackPlayer from "react-native-track-player";
+import {usePlayerEventEmitter} from "@utils/emitters";
+
 function formatNamesWithAnd(array) {
     if (array.length === 0) {
         return '';
@@ -24,7 +27,29 @@ function formatTime(seconds) {
     return `${minutes}:${paddedSeconds}`;
 }
 
+const getTotalDurationInMinutes = (songs) => {
+    const totalDurationInSeconds = songs.reduce((sum, song) => sum + song.duration, 0);
+    return Math.round(totalDurationInSeconds / 60);
+};
+
+const playSingleTrack = async (song) => {
+    const playerEventEmitter = usePlayerEventEmitter();
+    const track = {
+        url: song.media[0].url,
+        title: song.title,
+        artist: song.artists[0].name,
+        artwork: song.cover_image[0].url,
+        duration: song.duration,
+    }
+
+    await TrackPlayer.reset();
+    await TrackPlayer.add([track]);
+    await TrackPlayer.play();
+
+    playerEventEmitter.emit('openPlayer');
+}
+
 
 export {
-    formatNamesWithAnd, formatTime
+    formatNamesWithAnd, formatTime, getTotalDurationInMinutes, playSingleTrack
 }

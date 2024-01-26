@@ -83,6 +83,46 @@ export default {
         throw new Error(errorData.message ?? 'An error occurred');
     },
 
+    saveColor: async ({token, color}) => {
+        color = color.replace("#", "")
+
+        const response = await fetch(`${config.API_URL}/auth/user`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({color})
+        });
+
+
+        if (response.ok) {
+            return await response.json();
+        }
+
+        throw new Error("Something went wrong. (TraceID 0x32D2)")
+    },
+
+    toggleNotifications: async ({token, notifications_enabled}) => {
+
+        const response = await fetch(`${config.API_URL}/auth/user`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({notifications_enabled})
+        });
+
+
+        if (response.ok) {
+            return await response.json();
+        }
+
+        throw new Error("Something went wrong. (TraceID 0x32D3)")
+    },
+
+
     verifyEmail: async (userData) => {
 
     }

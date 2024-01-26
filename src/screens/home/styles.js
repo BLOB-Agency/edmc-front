@@ -44,22 +44,22 @@ const topListStyles = StyleSheet.create({
 
 const playlistStyles = StyleSheet.create({
     container: {
-        width: 100,
+        width: 120,
         display: "flex",
         flexDirection: "column",
         gap: 12,
         justifyContent: "space-between",
     },
     image: {
-        width: 100,
-        height: 100,
+        width: 120,
+        height: 120,
         borderRadius: 8,
     },
     textContainer: {
     },
     title: {
         color: "#FFFFFF",
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: "Cereal-Medium",
     },
     subtitle: {

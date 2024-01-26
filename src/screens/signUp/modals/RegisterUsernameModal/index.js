@@ -8,6 +8,7 @@ import ReturnBtn from "@components/ReturnBtn";
 import {authStyles} from "@components/auth/styles";
 import Background from "@components/auth/bg"
 import styles from "./styles";
+import {registrationActions} from "@store/registrationSlice";
 
 const userIcon = require("@assets/icons/user-icon.png");
 
@@ -15,7 +16,7 @@ export default function ({goNext, goPrevious}) {
     const dispatch = useDispatch();
     const [username, setUsername] = useState("");
     const [error, setError] = useState(null);
-    const stateError = useSelector(state => (state.user.errors ?? []).email ?? "")
+    const stateError = useSelector(state => (state.registration.errors ?? []).email ?? "")
 
     useEffect(() => {
         setError(stateError)
@@ -23,7 +24,7 @@ export default function ({goNext, goPrevious}) {
 
     const saveUsername = () => {
         if (username.trim().length > 0) {
-            dispatch(userActions.setUsername(username));
+            dispatch(registrationActions.setUsername(username));
             goNext();
             setError(null);
         } else {

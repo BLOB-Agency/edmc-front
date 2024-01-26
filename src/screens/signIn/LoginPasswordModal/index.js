@@ -1,7 +1,6 @@
 import { Modal, ImageBackground, Text, View } from "react-native";
 import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "@store/userSlice";
 import PrimaryInput from "@components/PrimaryInput";
 import { LinearGradient } from "expo-linear-gradient";
 import SecondaryBtn from "@components/SecondaryBtn";
@@ -30,11 +29,11 @@ const LoginPasswordModal = ({goNext, goPrevious, goToModal}) => {
     useEffect(() => {
         setPasswordError(stateError)
     }, [stateError]);
+
     const onPasswordChange = (enteredText) => {
         setPasswordError(false);
         setPassword(enteredText);
     };
-
 
     const passwordHandler = () => {
         console.log('email', email)

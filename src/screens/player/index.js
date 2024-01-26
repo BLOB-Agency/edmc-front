@@ -120,7 +120,7 @@ const Player = ({ }) => {
                 resizeMode={FastImage.resizeMode.cover}
                 style={styles.bgImage}
             />
-            <BlurView style={styles.blurView} tint="dark" intensity={100} />
+            <BlurView style={styles.blurView} tint="dark" intensity={75} />
 
             <View style={styles.topContainer}>
                 <IconButton

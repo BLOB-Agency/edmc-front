@@ -29,6 +29,7 @@ import Player from "@screens/player";
 import PlayerModal from "@screens/player/modal";
 import {CurrentSongProvider, useCurrentSong} from "./src/context/CurrentSongContext";
 import MusicPlayer from "@screens/musicPlayer";
+import {Album} from "@screens/album";
 
 
 const Stack = createStackNavigator();
@@ -38,8 +39,34 @@ const NavigationContext = createContext();
 
 export const useNavigationContext = () => useContext(NavigationContext);
 
+
+function HomeStack() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="HomeScreen" component={Home} options={{
+                headerShown: false,
+            }} />
+
+            <Stack.Screen name="AlbumScreen" component={Album} options={{
+                headerShown: false,
+            }} />
+
+
+        </Stack.Navigator>
+    );
+}
+
+function ProfileStack() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="ProfileScreen" component={Profile} options={{
+                headerShown: false,
+            }} />
+        </Stack.Navigator>
+    );
+}
+
 const UserTabs = () => {
-    const user = useSelector((state) => state.auth.user ?? {});
     const navigation = useNavigationContext();
     const [tabBarHeight, setTabBarHeight] = useState(0);
     const [playerVisible, setPlayerVisible] = useState(false);
@@ -103,7 +130,7 @@ const UserTabs = () => {
              <Tab.Screen
                  name="Home"
                  animation="fade"
-                 component={Home}
+                 component={HomeStack}
                  options={{
                      headerShown: false,
                  }}
@@ -112,7 +139,7 @@ const UserTabs = () => {
              <Tab.Screen
                  name="Profile"
                  animation="fade"
-                 component={Profile}
+                 component={ProfileStack}
                  options={{
                      headerShown: false,
                  }}
@@ -220,8 +247,8 @@ const Loader = () => {
         checkForToken().then((result) => {
             if (result !== null && result.token && result.user) {
                 dispatch(authActions.setIsLoggedIn(true));
-                dispatch(authActions.setToken(result.token));
-                dispatch(authActions.setUser(result.user));
+                console.log('user',  result.user)
+                dispatch(userActions.setUser(result.user));
             } else {
                 dispatch(authActions.setIsLoggedIn(false));
                 dispatch(authActions.logOut());

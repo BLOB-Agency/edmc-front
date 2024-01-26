@@ -3,67 +3,80 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import authService from "@utils/authService";
 import tokenService from "@utils/tokenService";
 
-export const registerUser = createAsyncThunk(
-    'user/registerUser',
-    async (userData, { rejectWithValue }) => {
-      try {
-        const response = await authService.createUser(userData)
-        await tokenService.setTokenInStorage(response.access_token);
 
-        return response;
-      } catch (error) {
-        return rejectWithValue(JSON.parse(error.message));
-      }
+export const saveColor = createAsyncThunk(
+    'user/saveColor',
+    async (color, {rejectWithValue}) => {
+        try {
+            const token = await tokenService.getTokenFromStorage();
+
+            return await authService.saveColor({color, token})
+        } catch (error) {
+            return rejectWithValue(error)
+        }
     }
-);
+)
+
+export const updateNotificationsEnabled = createAsyncThunk(
+    'user/updateNotificationsEnabled',
+    async (notifications_enabled, {rejectWithValue}) => {
+        try {
+            const token = await tokenService.getTokenFromStorage();
+
+            return await authService.toggleNotifications({notifications_enabled, token})
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
 
 
 export const userSlice = createSlice({
-  name: "user",
-  initialState: {
-    loading: false,
-    username: "",
-    email: "",
-    password: "",
-    color: "#BB61C9",
-    errors: [],
-  },
-  reducers: {
-    setUsername: (state, action) => {
-      state.username = action.payload;
+    name: "user",
+    initialState: {
+        loading: false,
+        username: "",
+        email: "",
+        color: "#BB61C9",
+        notifications_enabled: true,
+        errors: [],
     },
-    setEmail: (state, action) => {
-      state.email = action.payload;
-    },
-    setColor: (state, action) => {
-      state.color = action.payload;
-    },
-    setPassword: (state, action) => {
-      state.password = action.payload;
-    },
+    reducers: {
+        setUsername: (state, action) => {
+            state.username = action.payload;
+        },
+        setEmail: (state, action) => {
+            state.email = action.payload;
+        },
+        setColor: (state, action) => {
+            state.color = action.payload;
+        },
 
-    resetUser: (state) => {
-      state.username = "";
-      state.email = "";
-      state.password = "";
+        setUser: (state, action) => {
+            state.username = action.payload.username
+            state.email = action.payload.email
+            state.color = action.payload.color
+            state.notifications_enabled = action.payload.notifications_enabled
+        },
+
+        resetUser: (state) => {
+            state.username = "";
+            state.email = "";
+        },
     },
-  },
-  extraReducers: (builder) => {
-    builder
-        .addCase(registerUser.pending, (state) => {
-          state.loading = true;
-        })
-        .addCase(registerUser.fulfilled, (state, action) => {
-          state.loading = false;
-        })
-        .addCase(registerUser.rejected, (state, action) => {
-          state.loading = false;
-          state.errors = action.payload;
-        });
-  },
+    extraReducers: (builder) => {
+        builder
+            .addCase(saveColor.fulfilled, (state, action) => {
+                state.loading = false;
+                console.info('Color saved successfully')
+            })
+            .addCase(updateNotificationsEnabled.fulfilled, (state, action) => {
+                state.loading = false;
+                state.notifications_enabled = action.payload.user.notifications_enabled
+            });
+    },
 });
 export const userActions = {
-  ...userSlice.actions,
-    registerUser
+    ...userSlice.actions,
 };
 export default userSlice.reducer;

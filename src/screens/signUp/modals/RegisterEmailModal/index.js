@@ -8,14 +8,15 @@ import ReturnBtn from "@components/ReturnBtn";
 import styles from "./styles";
 import Background from "@components/auth/bg"
 import {authStyles, genericStyles} from "@components/auth/styles";
+import {registrationActions} from "@store/registrationSlice";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
     const emailIcon = require("@assets/icons/email-icon.png");
 
 const RegisterEmailModal = ({goNext, goPrevious}) => {
     const dispatch = useDispatch();
-    const username = useSelector(state => state.user.username)
-    const stateError = useSelector(state => (state.user.errors ?? []).email ?? "")
+    const username = useSelector(state => state.registration.username)
+    const stateError = useSelector(state => (state.registration.errors ?? []).email ?? "")
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState(null);
 
@@ -31,7 +32,7 @@ const RegisterEmailModal = ({goNext, goPrevious}) => {
     const emailHandler = () => {
         if (EMAIL_REGEX.test(email)) {
             setEmailError(null);
-            dispatch(userActions.setEmail(email));
+            dispatch(registrationActions.setEmail(email));
             goNext();
         } else {
             console.log("The email is invalid!");
