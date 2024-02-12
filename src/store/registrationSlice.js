@@ -34,7 +34,7 @@ export const registrationSlice = createSlice({
             state.password = action.payload;
         },
         setUsername: (state, action) => {
-            state.email = action.payload
+            state.username = action.payload
         },
         resetUser: (state) => {
             state.username = "";
@@ -52,7 +52,7 @@ export const registrationSlice = createSlice({
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
-                state.errors = action.payload;
+                state.errors = action.payload.errors ?? action.payload;
             })
     },
 });

@@ -29,9 +29,10 @@ const Profile = ({ navigation }) => {
     };
 
     const handleSignOut = () => {
+        console.log('signout?')
         dispatch(userActions.resetUser());
         dispatch(authActions.logOut());
-        navigation.navigate("Welcome");
+        // navigation.navigate("Welcome");
     };
 
     const openChangePassword = () => {
@@ -74,7 +75,7 @@ const Profile = ({ navigation }) => {
                   <View style={styles.infoContainer}>
                       <View style={styles.containerPicture}>
                           <Image
-                              source={require("@assets/images/wesley.jpeg")}
+                              source={require("@assets/images/default-avatar.png")}
                               style={styles.picture}
                               resizeMode="cover"
                           />

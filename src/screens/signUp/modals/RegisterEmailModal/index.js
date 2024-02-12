@@ -1,67 +1,71 @@
-import {Modal, ImageBackground, Text, View} from "react-native";
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {userActions} from "@store/userSlice";
+import React, { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal, ImageBackground, Text, View } from "react-native";
+import { registrationActions } from "@store/registrationSlice";
 import PrimaryInput from "@components/PrimaryInput";
-import SecondaryBtn from "@components/SecondaryBtn";
+import PrimaryBtn from "@components/PrimaryBtn";
 import ReturnBtn from "@components/ReturnBtn";
+import Background from "@components/auth/bg";
+import { authStyles, genericStyles } from "@components/auth/styles";
 import styles from "./styles";
-import Background from "@components/auth/bg"
-import {authStyles, genericStyles} from "@components/auth/styles";
-import {registrationActions} from "@store/registrationSlice";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
-    const emailIcon = require("@assets/icons/email-icon.png");
+const emailIcon = require("@assets/icons/email-icon.png");
 
-const RegisterEmailModal = ({goNext, goPrevious}) => {
+const validateEmail = (email) => EMAIL_REGEX.test(email);
+
+const RegisterEmailModal = ({ goNext, goPrevious }) => {
     const dispatch = useDispatch();
-    const username = useSelector(state => state.registration.username)
-    const stateError = useSelector(state => (state.registration.errors ?? []).email ?? "")
-    const [email, setEmail] = useState("");
-    const [emailError, setEmailError] = useState(null);
+    const {username, email} = useSelector(state => state.registration);
+    const stateError = useSelector(state => (state.registration.errors?.email) ?? null);
+    const [emailState, setEmailState] = useState({ email: "", error: null });
 
     useEffect(() => {
-        setEmailError(stateError)
+        if (email) {
+            setEmailState({ email, error: null });
+        }
+    }, [email]);
+
+    useEffect(() => {
+        setEmailState(emailState => ({ ...emailState, error: stateError }));
     }, [stateError]);
 
-    const getEmail = (enteredText) => {
-        setEmailError(null);
-        setEmail(enteredText.toLowerCase());
-    };
+    const handleEmailChange = useCallback((enteredText) => {
+        setEmailState({ email: enteredText.toLowerCase(), error: null });
+    }, []);
 
-    const emailHandler = () => {
-        if (EMAIL_REGEX.test(email)) {
-            setEmailError(null);
-            dispatch(registrationActions.setEmail(email));
+    const handleEmailSubmit = useCallback(() => {
+        const isValid = validateEmail(emailState.email);
+        if (isValid) {
+            dispatch(registrationActions.setEmail(emailState.email));
             goNext();
         } else {
-            console.log("The email is invalid!");
-            setEmailError("Please enter a valid email address");
+            setEmailState(emailState => ({ ...emailState, error: "Please enter a valid email address" }));
         }
-    };
+    }, [emailState.email, dispatch, goNext]);
 
     return (
         <Background>
-            <ReturnBtn method={goPrevious}/>
+            <ReturnBtn method={goPrevious} />
             <View style={styles.containerMain}>
                 <Text style={authStyles.title}>Hey {username}!</Text>
                 <Text style={authStyles.subtitle}>
                     Now we need your email, so we can verify your account
                 </Text>
                 <PrimaryInput
-                    label={"E-Mail Address"}
-                    placeholder={"avicii@edmc.io"}
+                    label="E-Mail Address"
+                    placeholder="avicii@edmc.io"
                     icon={emailIcon}
                     extraStyle={styles.input}
-                    value={email}
-                    method={getEmail}
-                    errorMessage={emailError}
+                    value={emailState.email}
+                    method={handleEmailChange}
+                    errorMessage={emailState.error}
                 />
 
-                <SecondaryBtn
-                    title={"LET'S GO!"}
-                    textStyle
-                    onPress={emailHandler}
+                <PrimaryBtn
+                    disabled={emailState.error !== null || emailState.email === ""}
+                    title="LET'S GO!"
+                    onPress={handleEmailSubmit}
                 />
             </View>
         </Background>

@@ -13,13 +13,16 @@ import {authStyles, genericStyles} from "@components/auth/styles";
 import {loginActions} from "@store/loginSlice";
 import {authActions} from "@store/authSlice";
 import {useLoginEventEmitter} from "@utils/emitters";
+import PrimaryBtn from "@components/PrimaryBtn";
+import TokenService from "@utils/tokenService";
+import {userActions} from "@store/userSlice";
 const passwordIcon = require("@assets/icons/lock-icon.png");
 
 const LoginPasswordModal = ({goNext, goPrevious, goToModal}) => {
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState(false);
     const dispatch = useDispatch();
-    const email = useSelector((state) => state.login.email);
+    const {email, loading} = useSelector((state) => state.login);
     const stateError = useSelector(state => {
         const errors = state.login.errors ?? []
         return errors.password ?? errors.error ?? ""
@@ -36,14 +39,13 @@ const LoginPasswordModal = ({goNext, goPrevious, goToModal}) => {
     };
 
     const passwordHandler = () => {
-        console.log('email', email)
         dispatch(loginActions.loginUser({email, password}))
             .unwrap()
-            .then((fulfilledAction) => {
+            .then(async (fulfilledAction) => {
                 console.log('Login successful:', fulfilledAction);
-                dispatch(authActions.setToken(fulfilledAction.access_token));
+                await TokenService.setTokenInStorage(fulfilledAction.access_token);
                 dispatch(authActions.setIsLoggedIn(true));
-                dispatch(authActions.setUser(fulfilledAction.user));
+                dispatch(userActions.setUser(fulfilledAction.user));
                 loginEventEmitter.emit('loginSuccess');
             })
             .catch((rejectedAction) => {
@@ -79,7 +81,8 @@ const LoginPasswordModal = ({goNext, goPrevious, goToModal}) => {
 
                 </View>
 
-                <SecondaryBtn
+                <PrimaryBtn
+                    disabled={passwordError || password === ""}
                     title={"LET'S GO!"}
                     textStyle
                     onPress={passwordHandler}

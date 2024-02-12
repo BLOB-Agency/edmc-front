@@ -27,9 +27,10 @@ import {StyleSheet} from "react-native";
 import * as TrackPlayer from "react-native-track-player/lib/trackPlayer";
 import Player from "@screens/player";
 import PlayerModal from "@screens/player/modal";
-import {CurrentSongProvider, useCurrentSong} from "./src/context/CurrentSongContext";
-import MusicPlayer from "@screens/musicPlayer";
 import {Album} from "@screens/album";
+import MiniPlayer from "@screens/player/MiniPlayer";
+import {AndroidAudioContentType, IOSCategory, IOSCategoryOptions} from "react-native-track-player";
+import {MusicPlayerProvider, useMusicPlayer} from "@context/MusicPlayerContext";
 
 
 const Stack = createStackNavigator();
@@ -70,14 +71,15 @@ const UserTabs = () => {
     const navigation = useNavigationContext();
     const [tabBarHeight, setTabBarHeight] = useState(0);
     const [playerVisible, setPlayerVisible] = useState(false);
-    const {currentSong} = useCurrentSong();
+    const {currentSong} = useMusicPlayer();
     const playerEventEmitter = usePlayerEventEmitter();
+    const user = useSelector(state => state.user);
 
-    // useEffect(() => {
-    //     if (navigation && user.email_verified_at === null) {
-    //         setTimeout(() => navigation.navigate('verifyEmail'), 0);
-    //     }
-    // }, [navigation]);
+    useEffect(() => {
+        if (navigation && user.email_verified_at === null) {
+            setTimeout(() => navigation.navigate('verifyEmail'), 0);
+        }
+    }, [navigation, user]);
 
     useEffect(() => {
 
@@ -147,7 +149,7 @@ const UserTabs = () => {
          </Tab.Navigator>
 
          {currentSong && (
-             <MusicPlayer marginBottom={80} setPlayerOpen={setPlayerVisible} />
+             <MiniPlayer marginBottom={80} setPlayerOpen={setPlayerVisible} />
          )}
 
 
@@ -240,6 +242,7 @@ const Loader = () => {
         loginEventEmitter.on('logoutSuccess', handleLogoutSuccess);
         return () => {
             loginEventEmitter.off('loginSuccess', handleLoginSuccess);
+            loginEventEmitter.off('logoutSuccess', handleLogoutSuccess);
         };
     }, [navigation]);
 
@@ -250,6 +253,7 @@ const Loader = () => {
                 console.log('user',  result.user)
                 dispatch(userActions.setUser(result.user));
             } else {
+                console.log("No token found")
                 dispatch(authActions.setIsLoggedIn(false));
                 dispatch(authActions.logOut());
 
@@ -259,9 +263,7 @@ const Loader = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        TrackPlayer.setupPlayer().then(() => {
-            console.log("Track Player is initialized");
-        });
+
     }, []);
 
     return (
@@ -299,11 +301,11 @@ export default function App() {
 
            <ReduxProvider store={store}>
                <PersistGate loading={null} persistor={persistor}>
-                   <CurrentSongProvider>
+                   <MusicPlayerProvider>
                        <NavigationContainer>
                            <NavigationWrapper></NavigationWrapper>
                        </NavigationContainer >
-                   </CurrentSongProvider>
+                   </MusicPlayerProvider>
                </PersistGate>
            </ReduxProvider>
        </SafeAreaView>

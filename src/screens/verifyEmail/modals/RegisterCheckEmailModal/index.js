@@ -31,6 +31,11 @@ const CheckEmailModal = ({goNext, goPrevious}) => {
     }).finally(startTimer);
   };
 
+  const goToNextScreen = () => {
+    stopTimer();
+    goNext();
+  }
+
   const openEmailApp = async () => {
     stopTimer();
     console.log("Opening email app...");
@@ -46,12 +51,13 @@ const CheckEmailModal = ({goNext, goPrevious}) => {
         })
         .catch((err) =>
             console.error("An error occurred", err)
-        ).finally(() => { goNext(); });
+        ).finally(() => {
+      goToNextScreen(); });
   };
 
   const stopTimer = () => clearTimeout(timeoutId);
   const startTimer = () => {
-    const id = setTimeout(goNext, 20_000);
+    const id = setTimeout(goToNextScreen, 20_000);
     setTimeoutId(id);
   };
 
@@ -66,22 +72,30 @@ const CheckEmailModal = ({goNext, goPrevious}) => {
   <Background>
       <View style={{flex: 1, justifyContent: "space-between"}}>
         <View></View>
-        <View style={styles.background}>
-          <BlurView style={styles.blurView} tint="light" intensity={20} />
 
-          <View style={styles.containerMain}>
-            <View style={styles.containerText}>
-              <Text style={authStyles.title}>Check your email</Text>
-              <Text style={authStyles.subtitle}>
-                We’ve sent you instructions on how to verify your email.
-              </Text>
+
+        <View style={{flex: 1, justifyContent: "center", gap: 24}}>
+          <View style={styles.background}>
+            <BlurView style={styles.blurView} tint="light" intensity={20} />
+
+            <View style={styles.containerMain}>
+              <View style={styles.containerText}>
+                <Text style={authStyles.title}>Check your email</Text>
+                <Text style={authStyles.subtitle}>
+                  We’ve sent you instructions on how to verify your email.
+                </Text>
+              </View>
+              <Image
+                  source={require("@assets/icons/send-email-icon.png")}
+                  style={{ width: 96, height: 96, paddingVertical: -72, alignSelf: "center" }}
+              />
+              <PrimaryBtn onPress={openEmailApp} title={"OPEN YOUR E-MAIL"} />
             </View>
-            <Image
-                source={require("@assets/icons/send-email-icon.png")}
-                style={{ width: 96, height: 96, paddingVertical: -72, alignSelf: "center" }}
-            />
-            <PrimaryBtn onPress={openEmailApp} title={"OPEN YOUR E-MAIL"} />
           </View>
+
+          <TouchableOpacity onPress={goToNextScreen}>
+            <Text style={styles.skip}>I have the code. Continue.</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.containerResendCode}>

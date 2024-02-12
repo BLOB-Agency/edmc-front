@@ -37,5 +37,17 @@ export default {
         });
 
         return  await response.json();
+    },
+
+    reportTrack: async (token, {track_id, reason}) => {
+        const response = await fetch(`${config.API_URL}/songs/${track_id}/report`, {
+            method: 'POST',
+            headers: {
+                ContentType: 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({reason})
+        });
+        
     }
 }

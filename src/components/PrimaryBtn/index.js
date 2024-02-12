@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import styles from "./styles"
 
 const PrimaryBtn = ({ onPress, title, style, textStyle, disabled = false, children }) => {
-    const [isActive, setIsActive] = useState(false);
     const user = useSelector((state) => state.user);
     const animatedValue = useRef(new Animated.Value(0)).current;
 

@@ -4,13 +4,21 @@ import RegisterUsernameModal from "./modals/RegisterUsernameModal";
 import RegisterEmailModal from "./modals/RegisterEmailModal";
 import RegisterPasswordModal from "./modals/RegisterPasswordModal";
 
-const Modals = withSequentialModals([
-    RegisterUsernameModal,
-    RegisterEmailModal,
-    RegisterPasswordModal,
-]);
 
-export default function () {
+export default function ({navigation}) {
+
+    const Modals = withSequentialModals([
+        RegisterUsernameModal,
+        RegisterEmailModal,
+        RegisterPasswordModal,
+    ],
+        navigation,
+        {
+        onFirstModalBack: () => {
+            navigation.goBack();
+        }
+    });
+
     return (
         <Modals></Modals>
     )

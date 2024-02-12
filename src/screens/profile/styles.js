@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         marginTop: 24,
+        zIndex: 2,
         gap: 14,
         justifyContent: "center",
         alignItems: "center",

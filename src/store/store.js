@@ -4,6 +4,7 @@ import tokenReducer from "./tokenSlice";
 import authReducer from "./authSlice";
 import loginReducer from "./loginSlice";
 import registrationReducer from "./registrationSlice";
+import eventsReducer from "./eventsSlice";
 import homeReducer from "./homeSlice";
 import albumsReducer from "./albumsSlice";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,12 +19,13 @@ const reducers = combineReducers({
   home: homeReducer,
   albums: albumsReducer,
   registration: registrationReducer,
+  events: eventsReducer,
 })
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user', 'auth'],
+  whitelist: ['user', 'auth', 'events'],
   blacklist: ['albums', 'login', 'registration', 'home']
 }
 

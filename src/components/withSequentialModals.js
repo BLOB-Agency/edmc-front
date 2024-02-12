@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Animated, View } from 'react-native';
 
-const withSequentialModals = (Modals, { onFirstModalBack, onLastModalNext } = {}) => {
+const withSequentialModals = (Modals, navigation, { onFirstModalBack, onLastModalNext } = {}) => {
 
     return function WrappedComponent(props) {
         const [currentModalIndex, setCurrentModalIndex] = useState(0);
@@ -67,13 +67,15 @@ const withSequentialModals = (Modals, { onFirstModalBack, onLastModalNext } = {}
         return (
             <View style={{ position: 'relative' }}>
                 <Animated.View style={{ opacity: fadeOutAnim }}>
-                    <CurrentModal  goNext={goNext} goToModal={goToModal}  goPrevious={goPrevious} {...props} />
+                    <CurrentModal navigation={navigation} goNext={goNext} goToModal={goToModal}  goPrevious={goPrevious} {...props} />
                 </Animated.View>
                 {NextModal && (
                     <Animated.View style={{ opacity: fadeInAnim, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                        <NextModal goNext={goNext} goToModal={goToModal} goPrevious={goPrevious} {...props} />
+                        <NextModal navigation={navigation} goNext={goNext} goToModal={goToModal} goPrevious={goPrevious} {...props} />
                     </Animated.View>
                 )}
+
+
             </View>
         );
     };

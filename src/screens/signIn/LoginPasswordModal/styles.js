@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     containerMain: {
       flex: 1,
 
-      gap: 24,
+      gap: 12,
     },
 
     containerText: {

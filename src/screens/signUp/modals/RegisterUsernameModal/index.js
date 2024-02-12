@@ -1,58 +1,57 @@
-import {Text, View} from "react-native";
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {userActions} from "@store/userSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Text, View } from "react-native";
+import { registrationActions } from "@store/registrationSlice";
 import PrimaryInput from "@components/PrimaryInput";
-import SecondaryBtn from "@components/SecondaryBtn";
+import PrimaryBtn from "@components/PrimaryBtn";
 import ReturnBtn from "@components/ReturnBtn";
-import {authStyles} from "@components/auth/styles";
-import Background from "@components/auth/bg"
+import Background from "@components/auth/bg";
+import { authStyles } from "@components/auth/styles";
 import styles from "./styles";
-import {registrationActions} from "@store/registrationSlice";
 
 const userIcon = require("@assets/icons/user-icon.png");
 
-export default function ({goNext, goPrevious}) {
+export default function Registration({ goNext, goPrevious }) {
     const dispatch = useDispatch();
     const [username, setUsername] = useState("");
-    const [error, setError] = useState(null);
-    const stateError = useSelector(state => (state.registration.errors ?? []).email ?? "")
+    const stateError = useSelector(state => state.registration.errors?.username ?? null);
 
     useEffect(() => {
-        setError(stateError)
+        if (stateError) {
+            setUsername("");
+        }
     }, [stateError]);
 
     const saveUsername = () => {
-        if (username.trim().length > 0) {
-            dispatch(registrationActions.setUsername(username));
+        const trimmedUsername = username.trim();
+        if (trimmedUsername) {
+            dispatch(registrationActions.setUsername(trimmedUsername));
             goNext();
-            setError(null);
         } else {
-            setError('Username cannot be empty');
+            alert('Username cannot be empty');
         }
     };
 
     return (
         <Background>
-            <ReturnBtn method={goPrevious}/>
+            <ReturnBtn method={goPrevious} />
             <View style={styles.containerMain}>
                 <View style={styles.containerText}>
                     <Text style={authStyles.title}>Welcome to EDMC</Text>
-                    <Text style={authStyles.subtitle}>
-                        Let's start with your username
-                    </Text>
+                    <Text style={authStyles.subtitle}>Let's start with your username</Text>
                 </View>
                 <PrimaryInput
-                    label={"Username"}
+                    label="Username"
                     placeholder="Username"
                     icon={userIcon}
                     value={username}
                     extraStyle={styles.input}
                     method={setUsername}
-                    errorMessage={error}
+                    errorMessage={stateError}
                 />
-                <SecondaryBtn
-                    title={"CONTINUE!"}
+                <PrimaryBtn
+                    disabled={!username.trim() || stateError}
+                    title="CONTINUE!"
                     onPress={saveUsername}
                 />
             </View>

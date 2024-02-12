@@ -1,14 +1,20 @@
 import VerifyEmailCode from "./modals/RegisterVerifyEmailCode";
 import RegisterCheckEmailModal from "./modals/RegisterCheckEmailModal";
 import withSequentialModals from "@components/withSequentialModals";
+import ColorPicker from "@screens/verifyEmail/modals/ColorPicker";
 
 
-const Modals = withSequentialModals([
-    RegisterCheckEmailModal,
-    VerifyEmailCode,
-]);
 
-export default function () {
+export default function ({navigation}) {
+    const Modals = withSequentialModals([
+        RegisterCheckEmailModal,
+        VerifyEmailCode,
+        ColorPicker
+    ], navigation, {
+        onLastModalNext: () => {
+            navigation.navigate('UserTabs');
+        }
+    });
 
     return (
         <Modals></Modals>

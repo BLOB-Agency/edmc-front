@@ -31,16 +31,20 @@ export const updateNotificationsEnabled = createAsyncThunk(
 )
 
 
+const initialState = {
+    loading: false,
+    username: "",
+    email: "",
+    color: "#BB61C9",
+    notifications_enabled: true,
+    email_verified_at: null,
+    errors: [],
+
+}
+
 export const userSlice = createSlice({
     name: "user",
-    initialState: {
-        loading: false,
-        username: "",
-        email: "",
-        color: "#BB61C9",
-        notifications_enabled: true,
-        errors: [],
-    },
+    initialState,
     reducers: {
         setUsername: (state, action) => {
             state.username = action.payload;
@@ -53,22 +57,22 @@ export const userSlice = createSlice({
         },
 
         setUser: (state, action) => {
+            console.log('user', action.payload)
             state.username = action.payload.username
             state.email = action.payload.email
             state.color = action.payload.color
             state.notifications_enabled = action.payload.notifications_enabled
+            state.email_verified_at = action.payload.email_verified_at
         },
 
         resetUser: (state) => {
-            state.username = "";
-            state.email = "";
+            state = initialState
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(saveColor.fulfilled, (state, action) => {
                 state.loading = false;
-                console.info('Color saved successfully')
             })
             .addCase(updateNotificationsEnabled.fulfilled, (state, action) => {
                 state.loading = false;

@@ -9,6 +9,7 @@ import styles from "./styles";
 import Background from "@components/auth/bg"
 import {authStyles, genericStyles} from "@components/auth/styles";
 import {loginActions} from "@store/loginSlice";
+import PrimaryBtn from "@components/PrimaryBtn";
 
 const EMAIL_REGEX = /\S+@\S+\.\S+/;
 const emailIcon = require("@assets/icons/email-icon.png");
@@ -43,14 +44,17 @@ const LoginEmailModal = ({goNext, goPrevious}) => {
         }
     };
 
+
     return (
         <Background>
             <ReturnBtn method={goPrevious}/>
             <View style={styles.containerMain}>
-                <Text style={authStyles.title}>Welcome back!</Text>
-                <Text style={authStyles.subtitle}>
-                    Enter your account details to get started.
-                </Text>
+                <View style={styles.containerText}>
+                    <Text style={authStyles.title}>Welcome back!</Text>
+                    <Text style={authStyles.subtitle}>
+                        Enter your account details to get started.
+                    </Text>
+                </View>
                 <PrimaryInput
                     label={"E-Mail Address"}
                     placeholder={"Enter your email"}
@@ -61,7 +65,8 @@ const LoginEmailModal = ({goNext, goPrevious}) => {
                     errorMessage={emailError}
                 />
 
-                <SecondaryBtn
+                <PrimaryBtn
+                    disabled={email === "" || emailError !== null}
                     title={"CONTINUE!"}
                     textStyle
                     onPress={emailHandler}

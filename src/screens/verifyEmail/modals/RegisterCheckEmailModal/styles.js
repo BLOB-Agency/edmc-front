@@ -17,6 +17,14 @@ const styles = StyleSheet.create({
     paddingBottom: 72,
     justifyContent: "space-between",
   },
+  skip: {
+    fontFamily: "Cereal-Book",
+    fontSize: 13,
+    width: "100%",
+    textAlign: "center",
+    color: "#fff",
+    opacity: 0.5,
+  },
   background: {
     textAlign: "center",
     flex:1,

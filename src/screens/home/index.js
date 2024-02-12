@@ -13,10 +13,9 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchHomeData} from "@store/homeSlice";
 import FastImage from "react-native-fast-image";
-import TrackPlayer from 'react-native-track-player';
-import {useCurrentSong} from "@context/CurrentSongContext";
 import {usePlayerEventEmitter} from "@utils/emitters";
 import {formatNamesWithAnd, playSingleTrack} from "@utils/helpers";
+import {useMusicPlayer} from "@context/MusicPlayerContext";
 
 const TopPlaylist = ({tag, title, subtitle, bg}) => {
     const tagWords = tag.split(' ');
@@ -72,7 +71,7 @@ const Playlist = ({title, subtitle, bg, onPress}) => {
 export default function ({navigation}) {
     const dispatch = useDispatch();
     const { recentAlbums, songs, loading, errors } = useSelector((state) => state.home);
-    const {setCurrentSong} = useCurrentSong();
+    const {setCurrentSong} = useMusicPlayer();
     const playerEventEmitter = usePlayerEventEmitter();
     useEffect(() => {
         dispatch(fetchHomeData());
@@ -132,19 +131,19 @@ export default function ({navigation}) {
                     </ScrollView>
                 </View>
 
-                <View style={{...styles.playlistContainer, gap: 12}}>
-                    <Text style={styles.playlistTitle}>Latest Releases</Text>
-                    <ScrollView
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={styles.scrollViewContainer}
-                    >
-                        {recentAlbums.map((album, index) => (
-                            // <Text>{JSON.stringify(album.cover_image[0].url)}</Text>
-                            <Playlist onPress={() => navigateToAlbum(album)} key={index} title={album.name} subtitle={formatNamesWithAnd(album.artists)} bg={album.cover_image[0].url} />
-                        ))}
-                    </ScrollView>
-                </View>
+                {/*<View style={{...styles.playlistContainer, gap: 12}}>*/}
+                {/*    <Text style={styles.playlistTitle}>Latest Releases</Text>*/}
+                {/*    <ScrollView*/}
+                {/*        horizontal={true}*/}
+                {/*        showsHorizontalScrollIndicator={false}*/}
+                {/*        contentContainerStyle={styles.scrollViewContainer}*/}
+                {/*    >*/}
+                {/*        {recentAlbums.map((album, index) => (*/}
+                {/*            // <Text>{JSON.stringify(album.cover_image[0].url)}</Text>*/}
+                {/*            <Playlist onPress={() => navigateToAlbum(album)} key={index} title={album.name} subtitle={formatNamesWithAnd(album.artists)} bg={album.cover_image[0].url} />*/}
+                {/*        ))}*/}
+                {/*    </ScrollView>*/}
+                {/*</View>*/}
 
                 <View style={{...styles.playlistContainer, gap: 12}}>
                     <Text style={styles.playlistTitle}>Latest Releases</Text>

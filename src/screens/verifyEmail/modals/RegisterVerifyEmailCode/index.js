@@ -1,100 +1,99 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  Modal,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-  View,
-  Text,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { BlurView } from "expo-blur";
-import styles from "./styles";
-import { TextInput } from "react-native-gesture-handler";
-import verifyCode from "@utils/verifyCode";
-import { authActions } from "@store/authSlice";
-import Background from "@components/auth/bg"
-import {authStyles} from "@components/auth/styles";
-const VerifyEmailCode = ({goNext, goPrevious}) => {
-  const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { View, Text, TextInput } from 'react-native';
+import { verifyEmail } from '@store/authSlice';
+import Background from '@components/auth/bg';
+import  { authStyles, genericStyles } from '@components/auth/styles';
+
+import styles from './styles';
+import {userActions} from "@store/userSlice";
+const initialCode = ['', '', '', ''];
+
+const useKeyPressHandler = (inputRefs, setVerificationCode) => {
+  return useCallback((index, key) => {
+    if (key === 'Backspace' && index > 0) {
+      inputRefs.current[index - 1].focus();
+    } else if (key !== 'Backspace' && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  }, [inputRefs]);
+};
+
+const DigitInput = React.forwardRef(({ index, onChange, onKeyPress }, ref) => (
+    <TextInput
+        ref={ref}
+        keyboardType="number-pad"
+        textContentType="oneTimeCode"
+        style={styles.digitInput}
+        maxLength={1}
+        onChangeText={onChange}
+        onKeyPress={onKeyPress}
+    />
+));
+
+const VerifyEmailCode = ({ goNext, navigation, goPrevious }) => {
+  const [verificationCode, setVerificationCode] = useState(initialCode);
   const dispatch = useDispatch();
-  const inputRefs = [];
+  const inputRefs = useRef([]);
+  const user = useSelector((state) => state.user);
+  const [stateError, setStateError] = useState(null);
 
-  const handleKeyPress = (index, key) => {
-    if (key === "Backspace" && index > 0) {
-      // If Backspace key is pressed and not the first input
-      inputRefs[index - 1].focus(); // Move focus to the previous input
-    } else if (key !== "Backspace" && index < inputRefs.length - 1) {
-      // If a number key is pressed and not the last input
-      inputRefs[index + 1].focus(); // Move focus to the next input
-    }
-  };
-  const handleInputChange = async (text, index) => {
-    const newVerificationCode = [...verificationCode];
-    newVerificationCode[index] = text;
-    setVerificationCode(newVerificationCode);
+  const handleInputChange = useCallback(
+      (text, index) => {
+        const newCode = [...verificationCode];
+        newCode[index] = text;
+        setVerificationCode(newCode);
+        setStateError(null);
+      },
+      [verificationCode]
+  );
 
-  };
+  const handleKeyPress = useKeyPressHandler(inputRefs, setVerificationCode);
+
   useEffect(() => {
-    if (verificationCode.join("").length === 4) {
-      console.log("userEmail: ", props.userData.email);
-      const verificationCodeString = verificationCode.join("");
-
-      // Call verifyCode and update the token state
-      verifyCode(verificationCodeString, props.userData.email)
-        .then((datas) => {
-          // Dispatch the token to the store
-          console.log("datas: ", datas);  
-          dispatch(authActions.setToken(datas.token));
-          if (datas.token) {
-            dispatch(authActions.setIsLoggedIn(true));
-            dispatch(authActions.setId(datas.id));
-            dispatch(authActions.getStatus());
-
-            closeAllModals();
-            props.method();
-            // Let's navigate to the next screen without the navigation prop
-          }
-        })
-        .catch((error) => {
-          console.error("Error in checkCode:", error);
-        });
+    if (verificationCode.join('').length === 4) {
+      const verificationCodeString = verificationCode.join('');
+      dispatch(verifyEmail({ email: user.email, code: verificationCodeString }))
+          .unwrap()
+          .then(async ({ user }) => {
+            dispatch(userActions.setUser(user));
+            goNext();
+          })
+          .catch((err) => setStateError(err.message || ''));
     }
-  }, [verificationCode]);
+  }, [verificationCode, dispatch, user.email, goNext]);
 
   return (
-
       <Background>
-
-          <View style={styles.containerMain}>
-            <View style={styles.containerText}>
-              <View>
-                <Text style={authStyles.title}>Verify your email</Text>
-                <Text style={authStyles.subtitle}>
-                  Enter the code we sent to your e-mail adress
-                </Text>
-              </View>
-              <View style={styles.containerDigitInput}>
-                {[0, 1, 2, 3].map((index) => (
-                  <TextInput
-                    key={index}
-                    ref={(ref) => (inputRefs[index] = ref)} // Assign a ref to each TextInput
-                    keyboardType="number-pad"
-                    textContentType="oneTimeCode"
-                    style={styles.digitInput}
-                    onChangeText={(text) => handleInputChange(text, index)}
-                    maxLength={1} // Allow only one character input
-                    onKeyPress={({ nativeEvent: { key } }) =>
-                      handleKeyPress(index, key)
-                    }
-                  />
-                ))}
-              </View>
+        <View style={styles.containerMain}>
+          <View style={styles.containerText}>
+            <View>
+              <Text style={authStyles.title}>Verify your email</Text>
+              <Text style={authStyles.subtitle}>
+                Enter the code we sent to your e-mail address
+              </Text>
             </View>
+            <View style={styles.containerDigitInput}>
+              {initialCode.map((_, index) => (
+                  <DigitInput
+                      key={index}
+                      index={index}
+                      ref={(el) => (inputRefs.current[index] = el)}
+                      onChange={(text) => handleInputChange(text, index)}
+                      onKeyPress={({ nativeEvent: { key } }) =>
+                          handleKeyPress(index, key)
+                      }
+                  />
+              ))}
+            </View>
+            {stateError && (
+                <Text style={[genericStyles.errorText, { marginTop: 16, textAlign: 'center' }]}>
+                  {stateError}
+                </Text>
+            )}
           </View>
+        </View>
       </Background>
-    
   );
 };
 

@@ -25,7 +25,6 @@ export default {
     },
 
     loginUser: async (userData) => {
-        console.log("userData: ", userData);
         const response = await fetch(`${config.API_URL}/auth/login`, {
             method: 'POST',
             headers: {
@@ -39,7 +38,7 @@ export default {
         }
 
         let errorData = await response.text();
-        console.log('text', errorData)
+        console.log('text2', errorData)
         errorData = JSON.parse(errorData);
         console.log('err', errorData)
         if (errorData.errors) {
@@ -55,8 +54,6 @@ export default {
     },
 
     createUser: async (userData) => {
-        console.log("userData: ", userData);
-        console.log(`${config.API_URL}/auth/register`)
         const response = await fetch(`${config.API_URL}/auth/register`, {
             method: 'POST',
             headers: {
@@ -65,22 +62,14 @@ export default {
             body: JSON.stringify(userData),
         });
 
+        const result = await response.json();
+
         if (response.ok) {
-            return await response.json();
-        }
-        console.log('text', await response.text())
-        const errorData = JSON.parse(await response.text());
-        if (errorData.errors) {
-            const errors = Object.keys(errorData.errors).reduce((acc, key) => {
-                acc[key] = errorData.errors[key].join(' ');
-                return acc;
-            }, {});
-            console.log('err', errors)
-
-            throw new Error(JSON.stringify(errors));
+            return result;
         }
 
-        throw new Error(errorData.message ?? 'An error occurred');
+        throw new Error(JSON.stringify(result));
+
     },
 
     saveColor: async ({token, color}) => {
@@ -123,7 +112,22 @@ export default {
     },
 
 
-    verifyEmail: async (userData) => {
+    verifyEmail: async ({token, userData}) => {
+        const response = await fetch(`${config.API_URL}/auth/verify-email`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
 
+        const result = await response.json();
+
+        if (response.ok) {
+            return result;
+        }
+
+        throw new Error(JSON.stringify(result));
     }
 }

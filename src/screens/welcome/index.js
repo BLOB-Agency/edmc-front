@@ -8,6 +8,7 @@ import AppleLogo from "@assets/images/apple_logo_white.png";
 import SocialButton from "@components/IconButton";
 import Background from "@components/auth/bg"
 import { appleAuth, AppleButton } from '@invertase/react-native-apple-authentication';
+import LoadingContainer from "@components/LoadingContainer";
 
 let user = null;
 export default function({navigation}) {
