@@ -3,8 +3,10 @@ import { View, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import PrimaryBtn from "@components/PrimaryBtn";
 import {useMusicPlayer} from "@context/MusicPlayerContext";
+import useTrackEvent from "@utils/hooks/useTrackEvent";
 
 const PlayerControls = ({ }) => {
+    const trackEvent = useTrackEvent();
 
     const {
         togglePlayPause,

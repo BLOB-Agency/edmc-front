@@ -31,6 +31,9 @@ const styles = StyleSheet.create({
         gap: 6,
         borderColor: 'rgba(255, 255, 255, 0.25)'
     },
+    liked: {
+        borderColor: "white",
+    },
     likeButtons: {
         display: "flex",
         gap: 12,
@@ -41,11 +44,17 @@ const styles = StyleSheet.create({
         height: 16,
         width: 16
     },
+    likedIcon: {
+        opacity: 1,
+    },
     likeText: {
         fontFamily: "Cereal-Medium",
         fontSize: 12,
         color: "white",
         opacity: .5
+    },
+    likedText: {
+        opacity: 1,
     },
     icon: {
         width: 20,

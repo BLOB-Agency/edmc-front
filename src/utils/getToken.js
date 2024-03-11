@@ -18,8 +18,7 @@ const getToken = async (email, password) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res);
-      return res;
+            return res;
     });
 };
 

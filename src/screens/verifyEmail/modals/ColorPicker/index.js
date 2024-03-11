@@ -20,8 +20,7 @@ const ColorPicker = ({ goNext, navigation, goPrevious }) => {
         setCurrentColor(color);
         dispatch(userActions.setColor(color));
 
-        console.log("SelectedColor: ", color);
-    };
+            };
 
     const onSubmit = () => {
         dispatch(saveColor(currentColor))

@@ -14,6 +14,9 @@ import { authStyles, genericStyles } from "@components/auth/styles";
 import styles from "./styles";
 import TokenService from "@utils/tokenService";
 import PrimaryBtn from "@components/PrimaryBtn";
+import {useRegisterUserMutation} from "@store/api/auth";
+import {err} from "react-native-svg";
+import {useLoginEventEmitter} from "@utils/emitters";
 
 const passwordIcon = require("@assets/icons/lock-icon.png");
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&-])[A-Za-z\d@$!%*?&-]{8,}$/;
@@ -21,13 +24,14 @@ export const PASSWORD_ERROR = "Password must be at least 8 characters long, cont
 export const CONFIRM_PASSWORD_ERROR = "The passwords do not match.";
 
 const RegisterPasswordModal = ({ goNext, navigation, goPrevious, goToModal }) => {
+    const loginEventEmitter = useLoginEventEmitter();
+    const [registerUser, { isLoading, error }] = useRegisterUserMutation();
     const [state, setState] = useState({
         password: "",
         confirmPassword: "",
         passwordError: false,
         confirmPasswordError: false,
     });
-    const dispatch = useDispatch();
     const userData = useSelector((state) => state.registration);
 
     const handleInputChange = useCallback((key, value) => {
@@ -49,21 +53,30 @@ const RegisterPasswordModal = ({ goNext, navigation, goPrevious, goToModal }) =>
             confirmPasswordError: isPasswordMismatch,
         }));
 
-        if (isPasswordInvalid || isPasswordMismatch) return;
+        if (!isPasswordInvalid && !isPasswordMismatch) {
+            const payload = {
+                ...userData,
+                password: state.password,
+                password_confirmation: state.confirmPassword
+            };
 
-        const payload = { ...userData, password: state.password, password_confirmation: state.confirmPassword };
-        dispatch(registrationActions.registerUser(payload))
-            .unwrap()
-            .then(async ({ access_token, user }) => {
-                await TokenService.setTokenInStorage(access_token);
-                dispatch(authActions.setIsLoggedIn(true));
-                dispatch(userActions.setUser(user));
-            })
-            .catch((error) => {
-                error.errors.email && goToModal(1);
-                error.errors.username && goToModal(0);
-            });
-    }, [state, userData, dispatch, goToModal]);
+            registerUser(payload)
+                .unwrap()
+                .then((fulfilledAction) => {
+                    loginEventEmitter.emit('loginSuccess');
+                })
+                .catch((error) => {
+                    console.error(error);
+                    // Handle error (you can check error object for details)
+                    if (error.data?.errors?.email) {
+                        goToModal(1);
+                    }
+                    if (error.data?.errors?.username) {
+                        goToModal(0);
+                    }
+                });
+        }
+    }, [state, userData, goToModal]);
 
     return (
         <Background>

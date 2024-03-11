@@ -38,10 +38,8 @@ export default {
         }
 
         let errorData = await response.text();
-        console.log('text2', errorData)
-        errorData = JSON.parse(errorData);
-        console.log('err', errorData)
-        if (errorData.errors) {
+                errorData = JSON.parse(errorData);
+                if (errorData.errors) {
             const errors = Object.keys(errorData.errors).reduce((acc, key) => {
                 acc[key] = errorData.errors[key].join(' ');
                 return acc;

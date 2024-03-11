@@ -32,20 +32,15 @@ const SignUpColorPick = ({ navigation }) => {
   const handleColorSelection = (color) => {
     setSelectedColor(color);
     dispatch(userActions.setColor(color));
-    console.log("SelectedColor: ", color);
-  };
+      };
 
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
   const handleContinue = () => {
     if (auth && auth.id) {
-      console.log("id", auth.id);
-      console.log("updatedUser", user);
-      editUser( user, auth.id).then((res) => {
-        console.log("res", res);
-        if (res) {
-          console.log("Let's go Home!");
-          // For now we'll just navigate to the profile screen but then we'll need to navigate to the home screen
+                  editUser( user, auth.id).then((res) => {
+                if (res) {
+                    // For now we'll just navigate to the profile screen but then we'll need to navigate to the home screen
           navigation.navigate("Profile");
         }
       });

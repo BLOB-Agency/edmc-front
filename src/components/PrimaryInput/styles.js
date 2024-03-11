@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         gap: 10,
         backgroundColor: 'rgba(255, 255, 255, 0.12)',
         borderColor: 'rgba(255, 255, 255, 0.3)',
@@ -31,11 +31,22 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         color: '#FFFFFF',
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
         fontFamily: 'Cereal-Book',
     },
     inputError: {
         borderColor: 'red',
         borderWidth: 1,
+    },
+    disabledInputContainer: {
+        // Example styling: lighter background, etc.
+        backgroundColor: 'rgba(200, 200, 200, 0.1)',
+    },
+    disabledInput: {
+        color: 'white', // Example styling: grayed out text
+        // Adjust styles as needed
     },
 });
 

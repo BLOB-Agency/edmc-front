@@ -11,8 +11,7 @@ export const usePlayerControls = () => {
 
     const playPause = async () => {
         if (isPlaying) {
-            trackEvent({
-            })
+
             await TrackPlayer.pause();
         } else {
             await TrackPlayer.play();

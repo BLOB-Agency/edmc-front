@@ -1,5 +1,6 @@
 import TrackPlayer from "react-native-track-player";
 import {usePlayerEventEmitter} from "@utils/emitters";
+import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
 
 function formatNamesWithAnd(array) {
     if (array.length === 0) {
@@ -33,6 +34,8 @@ const getTotalDurationInMinutes = (songs) => {
 };
 
 const playSingleTrack = async (song) => {
+
+
     const playerEventEmitter = usePlayerEventEmitter();
     const track = {
         url: song.media[0].url,
@@ -46,10 +49,31 @@ const playSingleTrack = async (song) => {
     await TrackPlayer.add([track]);
     await TrackPlayer.play();
 
+
     playerEventEmitter.emit('openPlayer');
 }
 
 
+const playMultipleTracks = async (songs) => {
+    const playerEventEmitter = usePlayerEventEmitter();
+    const trackEvent = useTrackEvent();
+    const tracks = songs.map(song => ({
+        url: song.media[0].url,
+        title: song.title,
+        artist: song.artists[0].name,
+        artwork: song.cover_image[0].url,
+        duration: song.duration,
+    }));
+
+    await TrackPlayer.reset();
+    await TrackPlayer.add(tracks);
+    await TrackPlayer.play();
+    trackEvent(TrackableEvents.Music.Play, {
+        track_id: song.id,
+    });
+    playerEventEmitter.emit('openPlayer');
+}
+
 export {
-    formatNamesWithAnd, formatTime, getTotalDurationInMinutes, playSingleTrack
+    formatNamesWithAnd, formatTime, getTotalDurationInMinutes, playSingleTrack, playMultipleTracks
 }

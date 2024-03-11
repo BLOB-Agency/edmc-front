@@ -1,6 +1,18 @@
 import config from "../../config";
 
 export default {
+    fetchFeaturedPlaylists: async (token) => {
+        const response = await fetch(`${config.API_URL}/playlists`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        return await response.json();
+    },
+
     fetchHomeData: async (token) => {
         const response = await fetch(`${config.API_URL}/songs`, {
             method: 'GET',

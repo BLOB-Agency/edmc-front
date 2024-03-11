@@ -9,7 +9,12 @@ export const fetchHomeData = createAsyncThunk(
             const token = await tokenService.getTokenFromStorage();
             const songs = await musicService.fetchHomeData(token)
             const recentAlbums = await musicService.fetchRecentAlbums(token);
-            return {recentAlbums: recentAlbums.albums, songs: songs.songs};
+            const featuredPlaylists = await musicService.fetchFeaturedPlaylists(token);
+            return {
+                recentAlbums: recentAlbums.albums,
+                songs: songs.songs,
+                featuredPlaylists: featuredPlaylists.playlists
+            };
         } catch (error) {
             return rejectWithValue(JSON.parse(error.message));
         }
@@ -22,7 +27,8 @@ export const homeSlice = createSlice({
         loading: false,
         errors: [],
         songs: [],
-        recentAlbums: []
+        recentAlbums: [],
+        featuredPlaylists: []
     },
     reducers: {
     },
@@ -37,6 +43,7 @@ export const homeSlice = createSlice({
             (state, action) => {
                 state.loading = false;
                 state.recentAlbums = action.payload.recentAlbums;
+                state.featuredPlaylists = action.payload.featuredPlaylists;
                 state.songs = action.payload.songs;
             }
         ).addCase(

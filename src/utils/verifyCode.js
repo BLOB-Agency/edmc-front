@@ -23,9 +23,7 @@ const verifyCode = async (code, email) => {
         if (user.verificationCode !== code) {
             throw new Error("Invalid verification code");
         }
-        console.log("User:", user);
-        console.log("User: ", user.username, " is now verified and connected!");
-
+                
         // Let's generate a token for the user
         const token = Math.random().toString(36).substr(2,10);
         const datas = { ...user, token };

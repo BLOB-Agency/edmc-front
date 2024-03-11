@@ -4,8 +4,7 @@ const BASE_URL = "http://localhost:3000"; // Adjust the URL based on your JSON s
 
 export const editUser = async (userData, id) => {
   const url = `${BASE_URL}/users/${id}`;
-  console.log(`Updating user at URL: ${url} with data: `, userData);
-
+  
   return fetch(url, {
     method: "PUT",
     headers: {

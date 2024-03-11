@@ -12,10 +12,8 @@ export const fetchSongsForAlbum = createAsyncThunk(
         }
 
         const token = await TokenService.getTokenFromStorage();
-        console.log(token);
-        const response = await musicService.fetchAlbum(token, albumId, true)
-        console.log('response', response)
-        return {albumId, album: response.data};
+                const response = await musicService.fetchAlbum(token, albumId, true)
+                return {albumId, album: response.data};
     }
 );
 

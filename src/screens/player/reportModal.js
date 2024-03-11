@@ -43,7 +43,7 @@ const ReportModal = ({ isVisible, onClose, onSubmit }) => {
                             Submit a report
                         </Text>
 
-                        <TouchableOpacity style={[popupStyles.closeButton, reportStyles.closeButton]} onPress={onclose}>
+                        <TouchableOpacity style={[popupStyles.closeButton, reportStyles.closeButton]} onPress={onClose}>
                             <Image style={popupStyles.closeButtonImage} source={require("@assets/icons/close-icon.png")}/>
                         </TouchableOpacity>
                     </View>

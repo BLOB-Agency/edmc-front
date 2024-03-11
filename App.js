@@ -1,11 +1,17 @@
+import { TextEncoder, TextDecoder } from 'text-encoding';
+
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
+
+
+
 import React, {createContext, Fragment, useContext, useEffect, useState} from "react";
 import {Provider as ReduxProvider, useDispatch, useSelector} from "react-redux";
 import {NavigationContainer, useNavigation} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useFonts } from "expo-font";
 import {persistor, store} from "@store/store";
-import SignUpColorPick from "@screens/signUpColorPick";
-import {BottomTabBar, createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {PersistGate} from "redux-persist/integration/react";
 import tokenService from "@utils/tokenService";
 import authService from "@utils/authService";
@@ -31,191 +37,33 @@ import {Album} from "@screens/album";
 import MiniPlayer from "@screens/player/MiniPlayer";
 import {AndroidAudioContentType, IOSCategory, IOSCategoryOptions} from "react-native-track-player";
 import {MusicPlayerProvider, useMusicPlayer} from "@context/MusicPlayerContext";
+import ArtistProfile from "@screens/artistProfile";
+import AuthStack from "./src/navigation/authenticator/stack";
+import NavigationStack from "./src/navigation/stack";
 
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+
 const NavigationContext = createContext();
 
 
 export const useNavigationContext = () => useContext(NavigationContext);
 
 
-function HomeStack() {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name="HomeScreen" component={Home} options={{
-                headerShown: false,
-            }} />
-
-            <Stack.Screen name="AlbumScreen" component={Album} options={{
-                headerShown: false,
-            }} />
 
 
-        </Stack.Navigator>
-    );
-}
-
-function ProfileStack() {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen name="ProfileScreen" component={Profile} options={{
-                headerShown: false,
-            }} />
-        </Stack.Navigator>
-    );
-}
-
-const UserTabs = () => {
-    const navigation = useNavigationContext();
-    const [tabBarHeight, setTabBarHeight] = useState(0);
-    const [playerVisible, setPlayerVisible] = useState(false);
-    const {currentSong} = useMusicPlayer();
-    const playerEventEmitter = usePlayerEventEmitter();
-    const user = useSelector(state => state.user);
-
-    useEffect(() => {
-        if (navigation && user.email_verified_at === null) {
-            setTimeout(() => navigation.navigate('verifyEmail'), 0);
-        }
-    }, [navigation, user]);
-
-    useEffect(() => {
-
-        const openPlayer = () => {
-            setPlayerVisible(true);
-        };
-        const closePlayer = () => {
-            setPlayerVisible(false);
-        };
-
-        playerEventEmitter.on('openPlayer', openPlayer);
-        playerEventEmitter.on('closePlayer', closePlayer);
-        return () => {
-            playerEventEmitter.off('openPlayer', openPlayer);
-            playerEventEmitter.off('closePlayer', closePlayer);
-        };
-    }, [navigation]);
-
-  return (
-     <Fragment>
-         <Tab.Navigator
-             screenOptions={{
-                 headerShown: false,
-                 tabBarStyle: {
-                     position: "absolute",
-                     // shadowColor: "rgb(47, 64, 85)",
-                     shadowOffset: { width: 0, height: -4 },
-                     shadowOpacity: 0.12,
-                     borderWidth: 0,
-                     shadowRadius: 16,
-                 },
-                 tabBarBackground: () => (
-                     <BlurView
-                         tint="dark"
-                         intensity={40}
-                         style={{
-                             ...StyleSheet.absoluteFillObject,
-                             overflow: "hidden",
-                             backgroundColor: "transparent",
-                         }}
-                     />
-                 ),
-             }}
-
-             onLayout={(event) => {
-                 const height = event.nativeEvent.layout.height;
-                 setTabBarHeight(height);
-             }}
-         >
-             <Tab.Screen
-                 name="Home"
-                 animation="fade"
-                 component={HomeStack}
-                 options={{
-                     headerShown: false,
-                 }}
-             />
-
-             <Tab.Screen
-                 name="Profile"
-                 animation="fade"
-                 component={ProfileStack}
-                 options={{
-                     headerShown: false,
-                 }}
-             />
-         </Tab.Navigator>
-
-         {currentSong && (
-             <MiniPlayer marginBottom={80} setPlayerOpen={setPlayerVisible} />
-         )}
-
-
-         <PlayerModal modalVisible={playerVisible} setModalVisible={setPlayerVisible}  />
-     </Fragment>
-  );
-}
-
-const UserStack = () => {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen
-                name="UserTabs"
-                component={UserTabs}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="verifyEmail"
-                component={verifyEmail}
-                options={{ headerShown: false }}
-            />
-
-        </Stack.Navigator>
-    );
-};
-
-
-const AuthStack = () => {
-  return (
-      <Stack.Navigator initialRouteName="Welcome">
-        <Stack.Screen
-            name="Welcome"
-            component={welcome}
-            options={{ headerShown: false }}
-        />
-        <Stack.Screen
-            name="SignUp"
-            component={SignUp}
-            options={{ headerShown: false }}
-        />
-          <Stack.Screen
-            name="SignIn"
-            component={SignIn}
-            options={{ headerShown: false }}
-        />
-        <Stack.Screen
-            name="SignUpColorPick"
-            component={SignUpColorPick}
-            options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-  );
-};
 
 const Loader = () => {
     const dispatch = useDispatch();
     const navigation = useNavigationContext();
-    const isAuthenticated  = useSelector(state => state.auth.isLoggedIn);
+    const {isLoggedIn, isArtistMode}  = useSelector(state => state.user);
     const loginEventEmitter = useLoginEventEmitter();
+
     const checkForToken = async () => {
         const token = await tokenService.getTokenFromStorage();
         console.info('token', token)
         if (token) {
             const user = await authService.verifyToken(token);
-            console.log('isValid', user)
-            if (user !== false) {
+                        if (user !== false) {
                 return {token, user};
             }
         }
@@ -234,11 +82,20 @@ const Loader = () => {
         };
 
         const handleLogoutSuccess = () => {
-            console.log('logout', navigation, 1)
-            navigation.navigate('Welcome');
+                        navigation.navigate('Welcome');
+        }
+
+        const goToArtist = () => {
+            navigation.navigate('ArtistTabs')
+        }
+
+        const goToListener = () => {
+            navigation.navigate('UserTabs')
         }
 
         loginEventEmitter.on('loginSuccess', handleLoginSuccess);
+        loginEventEmitter.on('goToArtist', goToArtist);
+        loginEventEmitter.on('goToListener', goToListener);
         loginEventEmitter.on('logoutSuccess', handleLogoutSuccess);
         return () => {
             loginEventEmitter.off('loginSuccess', handleLoginSuccess);
@@ -249,13 +106,15 @@ const Loader = () => {
     useEffect(() => {
         checkForToken().then((result) => {
             if (result !== null && result.token && result.user) {
-                dispatch(authActions.setIsLoggedIn(true));
-                console.log('user',  result.user)
+                dispatch(userActions.setLoggedIn(true));
                 dispatch(userActions.setUser(result.user));
+
+                if (isArtistMode) {
+                    navigation.navigate('ArtistTabs')
+                }
             } else {
-                console.log("No token found")
-                dispatch(authActions.setIsLoggedIn(false));
-                dispatch(authActions.logOut());
+                dispatch(userActions.setLoggedIn(false));
+                dispatch(userActions.logOut());
 
                 loginEventEmitter.emit('logoutSuccess');
             }
@@ -268,7 +127,7 @@ const Loader = () => {
 
     return (
        <Fragment>
-           {isAuthenticated ? <UserStack  /> : <AuthStack />}
+           {!isLoggedIn ? <AuthStack /> : <NavigationStack />}
        </Fragment>
     )
 }

@@ -19,8 +19,7 @@ const resendCode = async (email) => {
 
     const user = users[0];
     const verificationCode = generateCode();
-    console.log("New verification code: ", verificationCode);
-
+    
     // Proceed to update the user with the new code
     const updatedUserData = { ...user, verificationCode, isVerified: false };
     await editUser(updatedUserData);

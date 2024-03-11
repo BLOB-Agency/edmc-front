@@ -7,6 +7,11 @@ const styles = StyleSheet.create({
       gap: 24,
       justifyContent: "flex-start",
     },
+    inputContainer: {
+        display: "flex",
+        gap: 12,
+    },
+
     blurView: {
       position: "absolute",
       top: 0,
@@ -34,6 +39,17 @@ const styles = StyleSheet.create({
     input: {
       marginTop: 12,
     },
+    artistField: {
+        display: "flex",
+        gap: 12,
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    artistText: {
+        fontFamily: "Cereal-Medium",
+        color: "white",
+        fontSize: 16,
+    }
   });
 
 export default styles;

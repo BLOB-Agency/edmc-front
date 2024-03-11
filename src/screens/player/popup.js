@@ -4,13 +4,23 @@ import {BlurView} from "expo-blur";
 import styles, {popupStyles} from "@screens/player/styles";
 import {formatNamesWithAnd} from "@utils/helpers";
 import ReportModal from "@screens/player/reportModal";
+import {usePlayerEventEmitter} from "@utils/emitters";
+import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
+import {useNavigation} from "@react-navigation/native";
 
 const Popup = ({modalVisible, setModalVisible, track}) => {
+    const trackEvent = useTrackEvent();
+    const navigation = useNavigation();
     const [reportModalVisible, setReportModalVisible] = useState(false);
-
+    const playerEventEmitter = usePlayerEventEmitter();
     const onShare = async () => {
         try {
             const link = `dropper://track/${track.id}`;
+
+            trackEvent(TrackableEvents.Social.Share, {
+                trackId: track.id,
+            })
+
             await Share.share({
                 message: `Check out ${track.title} by ${formatNamesWithAnd(track.artists)} on Dropper: ${link}`,
             });
@@ -18,6 +28,17 @@ const Popup = ({modalVisible, setModalVisible, track}) => {
             console.error('Error sharing:', error);
         }
     };
+
+
+    const navigateToArtist = (artistId) => {
+        trackEvent(TrackableEvents.Music.GoToArtist, {
+            track_id: track.id,
+            artistId,
+        });
+        playerEventEmitter.emit('closePlayer')
+        navigation.navigate('ArtistProfileScreen', { artistId });
+    }
+
 
 
     return (
@@ -40,7 +61,9 @@ const Popup = ({modalVisible, setModalVisible, track}) => {
                     </View>
 
                     <View style={popupStyles.optionContainer}>
-                        <TouchableOpacity style={popupStyles.option}><Text style={popupStyles.optionText}>View the artist</Text></TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigateToArtist(track.artists[0].id)}
+                            style={popupStyles.option}><Text style={popupStyles.optionText}>View the artist</Text></TouchableOpacity>
                         <TouchableOpacity
                             style={popupStyles.option}
                             onPress={onShare}
@@ -60,8 +83,7 @@ const Popup = ({modalVisible, setModalVisible, track}) => {
                 isVisible={reportModalVisible}
                 onClose={() => setReportModalVisible(false)}
                 onSubmit={(reason) => {
-                    console.log('Reported for reason:', reason);
-                    // Handle report submission logic
+                                        // Handle report submission logic
                 }}
             />
 

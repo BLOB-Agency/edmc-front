@@ -38,14 +38,12 @@ const CheckEmailModal = ({goNext, goPrevious}) => {
 
   const openEmailApp = async () => {
     stopTimer();
-    console.log("Opening email app...");
-
+    
     Linking
         .canOpenURL("mailto:")
         .then((supported) => {
           if (!supported) {
-              console.log("Can't handle mailto URL");
-          } else {
+                        } else {
               return Linking.openURL("mailto:");
           }
         })

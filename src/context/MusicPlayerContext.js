@@ -3,12 +3,15 @@ import TrackPlayer, {
     AndroidAudioContentType,
     IOSCategory,
     IOSCategoryOptions, RepeatMode, State,
-    usePlaybackState
+    usePlaybackState, useProgress
 } from 'react-native-track-player';
+import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
 
 const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({ children }) => {
+    const trackEvent = useTrackEvent();
+    const { position, duration } = useProgress();
     const [currentSong, setCurrentSong] = useState(null);
     const [queue, setQueue] = useState([]);
     const playbackState = usePlaybackState();
@@ -26,7 +29,8 @@ export const MusicPlayerProvider = ({ children }) => {
             androidAudioContentType: AndroidAudioContentType.Music,
             autoHandleInterruptions: true
         }).then(() => {
-            console.log("Track Player is initialized");
+            
+            // trackEvent(TrackableEvents.Music.Init)
         });
     }, []);
 
@@ -42,10 +46,22 @@ export const MusicPlayerProvider = ({ children }) => {
 
     const play = async () => {
         await TrackPlayer.play();
+
+        trackEvent(TrackableEvents.Music.Play, {
+            track_id: currentSong.id,
+            position,
+            duration
+        });
     };
 
     const pause = async () => {
         await TrackPlayer.pause();
+
+        trackEvent(TrackableEvents.Music.Pause, {
+            track_id: currentSong.id,
+            position,
+            duration
+        })
     };
 
     const togglePlayPause = async () => {
@@ -58,10 +74,22 @@ export const MusicPlayerProvider = ({ children }) => {
 
     const previous = async () => {
         await TrackPlayer.skipToPrevious();
+        trackEvent(TrackableEvents.Music.SkipPrevious, {
+            track_id: currentSong.id,
+            position,
+            duration
+        });
     };
 
     const next = async () => {
+        const current = currentSong.id;
         await TrackPlayer.skipToNext();
+
+        trackEvent(TrackableEvents.Music.SkipNext, {
+            track_id: currentSong.id,
+            position,
+            duration
+        });
     }
 
     const toggleRepeat = async () => {

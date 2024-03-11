@@ -11,10 +11,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {FlatList} from "react-native-gesture-handler";
 import {saveColor, userActions} from "@store/userSlice";
 import config from "../../../config";
+import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
 
 
 
 export default function ({visible, onClose}) {
+    const trackEvent = useTrackEvent();
     const [initialColor, setInitialColor] = useState(false)
     const [currentColor, setCurrentColor] = useState(false)
     const { color } = useSelector((state) => state.user);
@@ -27,6 +29,12 @@ export default function ({visible, onClose}) {
 
     const onSubmit = () => {
         dispatch(saveColor(currentColor))
+
+        trackEvent(TrackableEvents.Ui.ChangeColor, {
+            initialColor,
+            newColor: currentColor
+        })
+
         onClose();
     }
 
@@ -39,8 +47,7 @@ export default function ({visible, onClose}) {
         setCurrentColor(color);
         dispatch(userActions.setColor(color));
 
-        console.log("SelectedColor: ", color);
-    };
+            };
 
     return (
         <Modal

@@ -16,46 +16,54 @@ import {useLoginEventEmitter} from "@utils/emitters";
 import PrimaryBtn from "@components/PrimaryBtn";
 import TokenService from "@utils/tokenService";
 import {userActions} from "@store/userSlice";
+import {useLoginUserMutation} from "@store/api/auth";
+// import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
 const passwordIcon = require("@assets/icons/lock-icon.png");
 
 const LoginPasswordModal = ({goNext, goPrevious, goToModal}) => {
     const [password, setPassword] = useState("");
-    const [passwordError, setPasswordError] = useState(false);
-    const dispatch = useDispatch();
-    const {email, loading} = useSelector((state) => state.login);
-    const stateError = useSelector(state => {
-        const errors = state.login.errors ?? []
-        return errors.password ?? errors.error ?? ""
-    })
+    const [passwordError, setPasswordError] = useState(null);
+    const {email} = useSelector((state) => state.login);
+    const [loginUser, { isLoading, isError }] = useLoginUserMutation();
     const loginEventEmitter = useLoginEventEmitter();
 
     useEffect(() => {
-        setPasswordError(stateError)
-    }, [stateError]);
+        setPasswordError(isError ? "Login failed" : "");
+    }, [isError]);
 
     const onPasswordChange = (enteredText) => {
         setPasswordError(false);
         setPassword(enteredText);
     };
 
-    const passwordHandler = () => {
-        dispatch(loginActions.loginUser({email, password}))
-            .unwrap()
-            .then(async (fulfilledAction) => {
-                console.log('Login successful:', fulfilledAction);
-                await TokenService.setTokenInStorage(fulfilledAction.access_token);
-                dispatch(authActions.setIsLoggedIn(true));
-                dispatch(userActions.setUser(fulfilledAction.user));
-                loginEventEmitter.emit('loginSuccess');
-            })
-            .catch((rejectedAction) => {
-                console.error('Login failed:', rejectedAction);
-                if (rejectedAction.email) {
-                    goToModal(0)
-                    return;
-                }
-            });
+    const passwordHandler = async () => {
+        try {
+            const user = await loginUser({ email, password }).unwrap();
+            loginEventEmitter.emit('loginSuccess');
+                        // You can handle additional logic here if needed
+        } catch (error) {
+            console.error('Login failed:', error);
+            // Handle error (e.g., set error message)
+        }
     };
+    // const passwordHandler = () => {
+    //     dispatch(loginActions.loginUser({email, password}))
+    //         .unwrap()
+    //         .then(async (fulfilledAction) => {
+    //                 //             await TokenService.setTokenInStorage(fulfilledAction.access_token);
+    //             dispatch(authActions.setIsLoggedIn(true));
+    //             dispatch(userActions.setUser(fulfilledAction.user));
+    //             loginEventEmitter.emit('loginSuccess');
+    //             // trackEvent(TrackableEvents.Auth.Login)
+    //         })
+    //         .catch((rejectedAction) => {
+    //             console.error('Login failed:', rejectedAction);
+    //             if (rejectedAction.email) {
+    //                 goToModal(0)
+    //                 return;
+    //             }
+    //         });
+    // };
 
     return (
         <Background>

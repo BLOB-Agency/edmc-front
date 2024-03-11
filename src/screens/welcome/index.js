@@ -9,12 +9,18 @@ import SocialButton from "@components/IconButton";
 import Background from "@components/auth/bg"
 import { appleAuth, AppleButton } from '@invertase/react-native-apple-authentication';
 import LoadingContainer from "@components/LoadingContainer";
+import {userActions} from "@store/userSlice";
+import config from "../../../config";
+import {useDispatch} from "react-redux";
 
 let user = null;
 export default function({navigation}) {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(userActions.setColor("#BB61C9"));
+    }, []);
     const [credentialStateForUser, updateCredentialStateForUser] = useState(-1);
-    console.log('credentialStateForUser', credentialStateForUser)
-    const goToRegistration = () => {
+        const goToRegistration = () => {
         navigation.navigate('SignUp');
     }
 
@@ -41,6 +47,8 @@ export default function({navigation}) {
         });
     }, []);
 
+
+
     const fetchAndUpdateCredentialState = async () => {
         if (user === null) {
             updateCredentialStateForUser('N/A');
@@ -64,8 +72,7 @@ export default function({navigation}) {
                 requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
             });
 
-            console.log('appleAuthRequestResponse', appleAuthRequestResponse);
-
+            
             const {
                 user: newUser,
                 email,
@@ -82,15 +89,12 @@ export default function({navigation}) {
 
             if (identityToken) {
                 // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-                console.log(nonce, identityToken);
-            } else {
+                            } else {
                 // no token - failed sign-in?
-                console.log('no token')
-            }
+                            }
 
             if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
-                console.log("I'm a real person!");
-            }
+                            }
 
                 console.warn(`Apple Authentication Completed, ${user}, ${email}`);
         } catch (error) {

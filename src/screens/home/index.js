@@ -16,35 +16,39 @@ import FastImage from "react-native-fast-image";
 import {usePlayerEventEmitter} from "@utils/emitters";
 import {formatNamesWithAnd, playSingleTrack} from "@utils/helpers";
 import {useMusicPlayer} from "@context/MusicPlayerContext";
+import {useFetchFeaturedPlaylistsQuery, useFetchHomeDataQuery, useFetchRecentAlbumsQuery} from "@store/api/music";
+import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
 
-const TopPlaylist = ({tag, title, subtitle, bg}) => {
+const TopPlaylist = ({ tag, title, subtitle, bg, onClick }) => {
     const tagWords = tag.split(' ');
 
     return (
-        <ImageBackground
-            style={topListStyles.container}
-            source={bg}
-        >
-            <View style={topListStyles.bgOverlay} />
-            <View style={topListStyles.topTextContainer}>
-                {tagWords.map((word, index) => (
-                    <Text key={index} style={topListStyles.topText}>
-                        {word}
-                    </Text>
-                ))}
-            </View>
+        <TouchableOpacity onPress={onClick} activeOpacity={0.7}>
+            <ImageBackground
+                style={topListStyles.container}
+                source={bg}
+            >
+                <View style={topListStyles.bgOverlay} />
+                <View style={topListStyles.topTextContainer}>
+                    {tagWords.map((word, index) => (
+                        <Text key={index} style={topListStyles.topText}>
+                            {word}
+                        </Text>
+                    ))}
+                </View>
 
-            <View style={topListStyles.bottomTextContainer}>
-                <Text style={topListStyles.bottomText}>
-                    {title}
-                </Text>
-                <Text style={topListStyles.bottomSubText}>
-                    {subtitle}
-                </Text>
-            </View>
-        </ImageBackground>
-    )
-}
+                <View style={topListStyles.bottomTextContainer}>
+                    <Text style={topListStyles.bottomText}>
+                        {title}
+                    </Text>
+                    <Text style={topListStyles.bottomSubText}>
+                        {subtitle}
+                    </Text>
+                </View>
+            </ImageBackground>
+        </TouchableOpacity>
+    );
+};
 
 const Playlist = ({title, subtitle, bg, onPress}) => {
     return (
@@ -70,19 +74,28 @@ const Playlist = ({title, subtitle, bg, onPress}) => {
 
 export default function ({navigation}) {
     const dispatch = useDispatch();
-    const { recentAlbums, songs, loading, errors } = useSelector((state) => state.home);
+    const trackEvent = useTrackEvent();
+    // const { recentAlbums, songs, loading, errors } = useSelector((state) => state.home);
     const {setCurrentSong} = useMusicPlayer();
     const playerEventEmitter = usePlayerEventEmitter();
-    useEffect(() => {
-        dispatch(fetchHomeData());
-    }, [dispatch]);
+
+    const { data: homeData, isLoading: isLoadingHomeData } = useFetchHomeDataQuery();
+    const { data: recentAlbums } = useFetchRecentAlbumsQuery();
+    const { data: featuredPlaylists } = useFetchFeaturedPlaylistsQuery();
+    // useEffect(() => {
+    //     dispatch(fetchHomeData());
+    // }, [dispatch]);
 
     useEffect(() => {
-        console.log(recentAlbums, 'recentAlbums')
-    }, [recentAlbums]);
+            }, [recentAlbums]);
+
 
     const handlePlay = async (song) => {
          await playSingleTrack(song)
+        trackEvent(TrackableEvents.Music.Play, {
+            track_id: song.id,
+        });
+
         setCurrentSong(song);
     }
 
@@ -90,13 +103,18 @@ export default function ({navigation}) {
         navigation.navigate('AlbumScreen', { album });
     }
 
-    if (loading) {
+    if (isLoadingHomeData) {
         return <ActivityIndicator size="large" />;
     }
 
-    if (errors && errors.length > 0) {
-        return <Text>Error fetching songs</Text>;
+    // if (errors && errors.length > 0) {
+    //     return <Text>Error fetching songs</Text>;
+    // }
+
+        const navigateToPlaylist = (playlistId) => {
+        navigation.navigate('PlaylistScreen', { playlistId });
     }
+
 
     return (
         <ScreenWithNavigationHeader title={"Explore"}>
@@ -108,26 +126,18 @@ export default function ({navigation}) {
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={styles.scrollViewContainer}
                     >
-                        <TopPlaylist
-                            title={"Weekly Top"}
-                            subtitle={"Top songs this week"}
-                            tag={"EDMC 10"}
-                            bg={require("@assets/images/topplaylisttestbg.png")}
-                        />
+                        {(featuredPlaylists || []).map((playlist, index) => (
+                            <TopPlaylist
+                                key={index}
+                                title={playlist.name}
+                                subtitle={playlist.description}
+                                tag={playlist.tag}
+                                onClick={() => navigateToPlaylist(playlist.id)}
+                                bg={{uri: playlist.cover_image[0].url}}
+                            />
+                        ))}
 
-                        <TopPlaylist
-                            title={"Weekly Top"}
-                            subtitle={"Top songs this week"}
-                            tag={"EDMC 10"}
-                            bg={require("@assets/images/topplaylisttestbg.png")}
-                        />
 
-                        <TopPlaylist
-                            title={"Weekly Top"}
-                            subtitle={"Top songs this week"}
-                            tag={"EDMC 10"}
-                            bg={require("@assets/images/topplaylisttestbg.png")}
-                        />
                     </ScrollView>
                 </View>
 
@@ -152,7 +162,7 @@ export default function ({navigation}) {
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={styles.scrollViewContainer}
                     >
-                        {songs.map((song, index) => (
+                        {homeData.songs.map((song, index) => (
                             // <Text>{JSON.stringify(song.album.cover_image[0].url)}</Text>
                             <Playlist onPress={() => handlePlay(song)} key={index} title={song.title} subtitle={formatNamesWithAnd(song.artists)} bg={song.album[0].cover_image[0].url} />
                         ))}
