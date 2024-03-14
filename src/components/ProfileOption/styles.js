@@ -9,12 +9,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomColor: "rgba(255, 255, 255, 0.12)",
   },
+  secondText: {
+flex: 1,
+    textAlign: "right",
+  },
   textOption: {
     color: "#FFFFFF",
     fontSize: 16,
     fontFamily: "Cereal-Book",
     marginLeft: 24,
-    flex:2,
+    flex:1,
   },
   icon: {
     width: 14,

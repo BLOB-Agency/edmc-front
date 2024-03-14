@@ -3,6 +3,7 @@ import userReducer from "./userSlice";
 import tokenReducer from "./tokenSlice";
 import authReducer from "./authSlice";
 import loginReducer from "./loginSlice";
+import musicReducer from "./musicSlice";
 import registrationReducer from "./registrationSlice";
 import eventsReducer from "./eventsSlice";
 import homeReducer from "./homeSlice";
@@ -15,6 +16,7 @@ import {apiService} from "@store/apiService";
 import {authApi} from "@store/api/auth";
 import {musicApi} from "@store/api/music";
 import {artistApi} from "@store/api/artist";
+import {userApi} from "@store/api/user";
 
 const reducers = combineReducers({
   user: userReducer,
@@ -22,6 +24,7 @@ const reducers = combineReducers({
   auth: authReducer,
   login: loginReducer,
   home: homeReducer,
+  music: musicReducer,
   albums: albumsReducer,
   registration: registrationReducer,
   events: eventsReducer,
@@ -29,13 +32,14 @@ const reducers = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [musicApi.reducerPath]: musicApi.reducer,
   [artistApi.reducerPath]: artistApi.reducer,
+  [userApi.reducerPath]: userApi.reducer
 })
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: [],
-  blacklist: ['user', 'auth', 'events', 'albums', 'login', 'registration', 'home', artistApi.reducerPath, musicApi.reducerPath, authApi.reducerPath, apiService.reducerPath]
+  whitelist: ['events', 'music'],
+  blacklist: ['user', 'auth', 'albums', 'login', 'registration', 'home', artistApi.reducerPath, musicApi.reducerPath, authApi.reducerPath, apiService.reducerPath]
 }
 
 
@@ -46,6 +50,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
           authApi.middleware,
+          userApi.middleware,
           artistApi.middleware,
           musicApi.middleware,
           periodicEventSender

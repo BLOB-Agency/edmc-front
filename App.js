@@ -40,6 +40,8 @@ import {MusicPlayerProvider, useMusicPlayer} from "@context/MusicPlayerContext";
 import ArtistProfile from "@screens/artistProfile";
 import AuthStack from "./src/navigation/authenticator/stack";
 import NavigationStack from "./src/navigation/stack";
+import useTrackPlayerEvents from "@utils/hooks/useTrackPlayerEvents";
+import useMusicTimer from "@utils/hooks/useMusicTimer";
 
 
 
@@ -57,7 +59,8 @@ const Loader = () => {
     const navigation = useNavigationContext();
     const {isLoggedIn, isArtistMode}  = useSelector(state => state.user);
     const loginEventEmitter = useLoginEventEmitter();
-
+    useTrackPlayerEvents();
+    useMusicTimer()
     const checkForToken = async () => {
         const token = await tokenService.getTokenFromStorage();
         console.info('token', token)

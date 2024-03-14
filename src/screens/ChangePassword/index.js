@@ -122,16 +122,23 @@ export default function PasswordChangeModal({ visible, onClose }) {
 
                     {!isLoading && (
                         <View style={styles.inputContainer}>
-                        {renderInput("Cuyrrent Password", "current_password")}
+                        {renderInput("Current Password", "current_password")}
                         {renderInput("New password", "new_password")}
                         {renderInput("Confirm new password", "new_password_confirmation")}
                         </View>
                     )}
+
+                    {!isLoading && (
                     <PrimaryBtn
                         title={"SAVE NEW PASSWORD"}
                         onPress={onSubmit}
-                        disabled={!canSubmit}
-                    />
+                        disabled={!canSubmit} />
+                        )}
+                    />1
+
+                    {isSuccess && (
+                        <Text>Password changed successfully!</Text>
+                    )}
                 </View>
             </View>
         </Modal>

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const { width, height } = Dimensions.get('window');
 
-const BlobButton = ({ onSubmit }) => {
+const BlobButton = ({ onSubmit, starred }) => {
     const blobSize = useSharedValue(0);
     const blobPositionX = useSharedValue(0);
     const blobPositionY = useSharedValue(0);
@@ -57,9 +57,7 @@ const BlobButton = ({ onSubmit }) => {
     };
 
     const handlePress = () => {
-        if (isFilled) {
             onSubmit();
-        }
     };
 
     return (
@@ -70,11 +68,11 @@ const BlobButton = ({ onSubmit }) => {
                 </Svg>
             </Animated.View>
             <View ref={buttonRef} style={styles.buttonContainer}>
-                {star_drops > 0 && (
+                {!starred && star_drops > 0 && (
                     <TouchableOpacity
                         style={[styles.button, { backgroundColor: color }]}
-                        onPressIn={onPressIn}
-                        onPressOut={onPressOut}
+                        // onPressIn={onPressIn}
+                        // onPressOut={onPressOut}
                         onPress={handlePress}
                         activeOpacity={0.9}
                     >
@@ -86,11 +84,21 @@ const BlobButton = ({ onSubmit }) => {
                     </TouchableOpacity>
                 )}
 
-                {star_drops === 0 && (
+                {!starred && star_drops === 0 && (
                     <View style={[styles.button, {backgroundColor: 'rgba(255, 255, 255, 0.3)'}]}>
                         <Text style={styles.dropText}>No stars available</Text>
                         <Image
                             source={require("@assets/icons/star-icon.png")}
+                            style={styles.icon}
+                        />
+                    </View>
+                )}
+
+                {starred && (
+                    <View style={[styles.button, {backgroundColor: 'rgba(255, 255, 255, 0.3)'}]}>
+                        <Text style={styles.dropText}>STARRED!</Text>
+                        <Image
+                            source={require("@assets/icons/icon-star-active.png")}
                             style={styles.icon}
                         />
                     </View>

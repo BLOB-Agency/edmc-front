@@ -126,7 +126,7 @@ const ScreenWithNavigationHeader = ({ children, title, small = false, xsmall = f
     const scrollY = new Animated.Value(0);
     const [headerHeight, setHeaderHeight] = useState(0);
     const [selectedFilter, setSelectedFilter] = useState(null);
-
+    const insets = useSafeAreaInsets()
     const handleFilterSelect = (filter) => {
         setSelectedFilter(filter);
         if (onFilterSelect) {
@@ -149,13 +149,14 @@ const ScreenWithNavigationHeader = ({ children, title, small = false, xsmall = f
                 { useNativeDriver: true }
             ),
             scrollEventThrottle: 16,
+            contentContainerStyle: { paddingBottom: 96 + insets.bottom },
         }
         : {
             style: { paddingTop: headerHeight },
         };
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#1e1e1e" }}>
+        <View style={{ flex: 1, backgroundColor: "#1e1e1e", }}>
             <NavigationHeader
                 xsmall={xsmall}
                 onFilterSelect={handleFilterSelect}

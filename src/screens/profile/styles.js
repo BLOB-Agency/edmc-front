@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     outerContainer: {
         paddingLeft: 24,
         paddingRight: 24,
+        marginBottom: 72,
         flex: 1,
         justifyContent: "space-between",
         backgroundColor: "#1E1E1E",

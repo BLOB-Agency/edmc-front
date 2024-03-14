@@ -3,6 +3,20 @@ import {TouchableOpacity, Text, Image, View, Switch} from "react-native";
 import styles from "./styles";
 import {useSelector} from "react-redux";
 
+const ProfileOptionText = ({ icon, text, secondText, method, isLast = false }) => {
+    const borderBottomWidth = isLast ? 0 : 1;
+    return (
+        <TouchableOpacity onPress={method}>
+            <View style={{...styles.containerOption, borderBottomWidth}}>
+                <Image source={icon} style={styles.icon} />
+                <Text style={styles.textOption}>{text}</Text>
+                <Text style={[styles.textOption, styles.secondText]}>{secondText}</Text>
+
+            </View>
+        </TouchableOpacity>
+    );
+};
+
 const ProfileOption = ({ icon, text, method, isLast = false }) => {
     const borderBottomWidth = isLast ? 0 : 1;
     return (
@@ -40,3 +54,5 @@ const ProfileToggleOption = ({ icon, text, isLast = false, toggleValue, onToggle
 
 export {ProfileToggleOption} ;
 export default ProfileOption;
+
+export {ProfileOptionText};

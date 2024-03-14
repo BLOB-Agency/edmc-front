@@ -3,6 +3,8 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import authService from "@utils/authService";
 import tokenService from "@utils/tokenService";
 import {authApi} from "@store/api/auth";
+import {userApi} from "@store/api/user";
+import {musicApi} from "@store/api/music";
 
 
 export const saveColor = createAsyncThunk(
@@ -41,6 +43,7 @@ const initialState = {
     color: "#BB61C9",
     notifications_enabled: true,
     email_verified_at: null,
+    profile_photo: {},
     errors: [],
     artist_profile: null,
     star_drops: 0,
@@ -67,13 +70,15 @@ export const userSlice = createSlice({
         },
 
         setUser: (state, action) => {
-                        state.username = action.payload.username
+            console.log('action.payload', action.payload)
+            state.username = action.payload.username
             state.email = action.payload.email
             state.color = action.payload.color
             state.star_drops = action.payload.star_drops
             state.notifications_enabled = action.payload.notifications_enabled
             state.email_verified_at = action.payload.email_verified_at
             state.artist_profile = action.payload.artist_profile
+            state.profile_photo = action.profile_photo
         },
 
         resetUser: (state) => {
@@ -83,6 +88,7 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addMatcher(authApi.endpoints.loginUser.matchFulfilled, (state, action) => {
+                console.log('action.payload', action.payload.user)
                 state.isLoggedIn = true;
                 state.username = action.payload.user.username
                 state.email = action.payload.user.email
@@ -90,17 +96,31 @@ export const userSlice = createSlice({
                 state.notifications_enabled = action.payload.user.notifications_enabled
                 state.email_verified_at = action.payload.user.email_verified_at
                 state.artist_profile = action.payload.artist_profile
-               state.star_drops = action.payload.star_drops
+               state.star_drops = action.payload.user.star_drops
+                state.profile_photo = action.payload.user.profile_photo
             })
             .addMatcher(authApi.endpoints.registerUser.matchFulfilled, (state, action) => {
                 state.isLoggedIn = true;
                 state.username = action.payload.user.username
                 state.email = action.payload.user.email
                 state.color = action.payload.user.color
-                 state.notifications_enabled = action.payload.user.notifications_enabled
+                state.notifications_enabled = action.payload.user.notifications_enabled
                 state.email_verified_at = action.payload.user.email_verified_at
                 state.artist_profile = action.payload.artist_profile
-               state.star_drops = action.payload.star_drops
+                state.star_drops = action.payload.user.star_drops
+                state.profile_photo = action.payload.user.profile_photo
+            })
+
+            .addMatcher(userApi.endpoints.updateProfilePicture.matchFulfilled, (state, action) => {
+               console.log('action.payload',' action.payload', action.payload.user.profile_photo)
+                state.profile_photo = action.payload.user.profile_photo
+            })
+            .addMatcher(userApi.endpoints.claimStarDrops.matchFulfilled, (state, action) => {
+                state.star_drops = action.payload.user_star_drops
+
+            })
+            .addMatcher(musicApi.endpoints.starSong.matchFulfilled, (state, action) => {
+                state.star_drops = action.payload.user_star_drops
             })
             .addMatcher(authApi.endpoints.changePassword.matchRejected, (state, action) => {
                 // Handle rejected case

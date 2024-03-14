@@ -21,7 +21,7 @@ const UserTabs = () => {
     const {currentSong} = useMusicPlayer();
     const playerEventEmitter = usePlayerEventEmitter();
     const user = useSelector(state => state.user);
-
+    const [miniPlayerVisible, setMiniPlayerVisible] = useState(false);
     useEffect(() => {
         // So, if the user is logged in and their email is not verified, we want to redirect them to the verifyEmail screen
         // the username check is to make sure we don't redirect the user to the verifyEmail screen
@@ -36,6 +36,7 @@ const UserTabs = () => {
         // A listener to open and close the player modal globally
         // TODO: This should go a layer up, so it also works for artist tabs.
         const openPlayer = () => {
+            setMiniPlayerVisible(true);
             setPlayerVisible(true);
         };
 
@@ -97,7 +98,8 @@ const UserTabs = () => {
                         tabBarLabelStyle: {
                             fontFamily: 'Gordita-Regular', // Make sure the font is loaded
                             fontSize: 12,
-                        }
+                        },
+                        tabBarActiveTintColor: 'white'
                     }}
                 />
 
@@ -116,7 +118,8 @@ const UserTabs = () => {
                         tabBarLabelStyle: {
                             fontFamily: 'Gordita-Regular', // Make sure the font is loaded
                             fontSize: 12,
-                        }
+                        },
+                        tabBarActiveTintColor: 'white'
                     }}
                 />
 
@@ -135,13 +138,14 @@ const UserTabs = () => {
                         tabBarLabelStyle: {
                             fontFamily: 'Gordita-Regular', // Make sure the font is loaded
                             fontSize: 12,
-                        }
+                        },
+                        tabBarActiveTintColor: 'white'
                     }}
                 />
             </Tab.Navigator>
 
-            {currentSong && (
-                <MiniPlayer marginBottom={80} setPlayerOpen={setPlayerVisible} />
+            {currentSong && miniPlayerVisible && (
+                <MiniPlayer marginBottom={80} setMiniPlayerVisible={setMiniPlayerVisible} setPlayerOpen={setPlayerVisible} />
             )}
 
 

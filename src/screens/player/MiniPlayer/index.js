@@ -18,7 +18,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 
-const MiniPlayer = ({marginBottom, setPlayerOpen}) => {
+const MiniPlayer = ({marginBottom, setPlayerOpen, setMiniPlayerVisible}) => {
     const {currentSong, play, pause} = useMusicPlayer();
     const { position, duration } = useProgress();
     const user = useSelector((state) => state.user);
@@ -124,8 +124,8 @@ const MiniPlayer = ({marginBottom, setPlayerOpen}) => {
                                             )}
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity onPress={() => { /* Previous Song */ }}>
-                                            <Image source={ require("@assets/icons/skip-forward-icon.png")} style={[styles.icon, {
+                                        <TouchableOpacity onPress={() => { setMiniPlayerVisible(false)}}>
+                                            <Image source={ require("@assets/icons/close-icon.png")} style={[styles.icon, {
                                                 width: 14,
                                                 height: 16,
                                             }]} />

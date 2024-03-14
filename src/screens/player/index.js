@@ -9,6 +9,7 @@ import PlayerInfo from "@screens/player/playerInfo";
 import PlayerControls from "@screens/player/PlayerControls";
 import Popup from "@screens/player/popup";
 import {useMusicPlayer} from "@context/MusicPlayerContext";
+import useMusicTimer from "@utils/hooks/useMusicTimer";
 
 
 
@@ -16,7 +17,7 @@ const Player = () => {
     const { currentSong, isPlaying } = useMusicPlayer();
     const insets = useSafeAreaInsets();
     const [isModalVisible, setModalVisible] = useState(false);
-
+    // const {timeUntilNextStar} = useMusicTimer()
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };

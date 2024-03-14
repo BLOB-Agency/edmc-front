@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useDispatch } from "react-redux";
 import {View, Text, Image, ActivityIndicator, Button, TouchableOpacity} from "react-native";
 import { useSelector } from "react-redux";
-import ProfileOption, {ProfileToggleOption} from "@components/ProfileOption";
+import ProfileOption, {ProfileOptionText, ProfileToggleOption} from "@components/ProfileOption";
 import PrimaryBtn from "@components/PrimaryBtn";
 import {updateNotificationsEnabled, userActions} from "@store/userSlice";
 import { authActions } from "@store/authSlice";
@@ -21,6 +21,8 @@ import {registrationActions} from "@store/registrationSlice";
 import CreateArtistProfile from "@screens/createArtistProfile";
 import {useLoginEventEmitter} from "@utils/emitters";
 import MyAccount from "@screens/MyAccount";
+import ChooseImage from "@screens/ChooseImage";
+import FastImage from "react-native-fast-image";
 const Profile = ({ navigation }) => {
     const [showCreateArtistProfile, setShowCreateArtistProfile] = useState(false);
     const [showSignOut, setShowSignOut] = useState(false);
@@ -29,10 +31,11 @@ const Profile = ({ navigation }) => {
     const [notificationsEnabled, setNotificationsEnabled] = useState(false);
     const [userVisible, setUserVisible] = useState(false);
     const loginEventEmitter = useLoginEventEmitter()
-
+    const [showProfilePicture, setShowProfilePicture] = useState(false)
     const user = useSelector((state) => state.user);
+    const profilePhoto = useSelector((state) => state.user.profile_photo);
     const dispatch = useDispatch();
-
+    const { timeUntilNextStar } = useSelector((state) => state.music);
     const isLoading = useSelector((state) => state.isLoading);
     const handlePersonalData = () => {
             };
@@ -85,6 +88,14 @@ const Profile = ({ navigation }) => {
         setShowColorPicker(false)
     }
 
+    const openImagePicker = () => {
+        setShowProfilePicture(true)
+    }
+
+    const closeImagePicker = () => {
+        setShowProfilePicture(false)
+    }
+
     const handleNotificationToggle = (value) => {
         dispatch(updateNotificationsEnabled(value ? 1 : 0))
         setNotificationsEnabled(value)
@@ -126,22 +137,47 @@ const Profile = ({ navigation }) => {
         );
     }
 
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins} minute${mins === 1 ? '' : 's'} and ${secs} second${secs === 1 ? '' : 's'}`;
+    };
+    const imageUrl = user.profile_photo ? user.profile_photo.url : 'https://i.imgur.com/OgjjT6T.png';
+
     return (
         <ScreenWithNavigationheader title={"My Profile"} small={true}>
           <View style={styles.outerContainer}>
               <View style={styles.innerContainer}>
                   <View style={styles.infoContainer}>
-                      <View style={styles.containerPicture}>
-                          <Image
-                              source={require("@assets/images/default-avatar.png")}
-                              style={styles.picture}
-                              resizeMode="cover"
-                          />
-                      </View>
+                      <TouchableOpacity onPress={openImagePicker} style={styles.containerPicture}>
+                              <FastImage
+                                  source={{uri: imageUrl, priority: FastImage.priority.normal}}
+                                  style={styles.picture}
+                                  resizeMode="cover"
+                              />
+                      </TouchableOpacity>
                       <Text style={styles.username}>{user.username}</Text>
 
                       <ArtistSwitchButton onSubmit={goToArtist} />
                   </View>
+                  <View style={styles.containerSettings}>
+                      <Text style={styles.subtTitle}>STAR DROPS</Text>
+                      <View style={styles.containerOptions}>
+                          <ProfileOptionText
+                              icon={require("@assets/icons/star-icon.png")}
+                              text="Available"
+                              secondText={user.star_drops}
+                          />
+
+                          <ProfileOptionText
+                              icon={require("@assets/icons/clock-icon.png")}
+                              text="Time till next"
+                              secondText={formatTime(timeUntilNextStar)}
+                          />
+
+                      </View>
+                  </View>
+
                   <View style={styles.containerSettings}>
                       <Text style={styles.subtTitle}>PERSONAL SETTINGS</Text>
                       <View style={styles.containerOptions}>
@@ -186,6 +222,7 @@ const Profile = ({ navigation }) => {
               />
           </View>
 
+            <ChooseImage visible={showProfilePicture} onClose={closeImagePicker}></ChooseImage>
             <MyAccount visible={userVisible} onClose={closeUserProfile} />
             <ChangePassword onClose={closeChangePassword} visible={showChangePassword}/>
             <ColorPicker onClose={closeColorPicker} visible={showColorPicker}/>

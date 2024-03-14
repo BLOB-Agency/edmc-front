@@ -7,6 +7,7 @@ export const TrackableEvents = {
         Init: "INIT_PLAYER",
     },
     Social: {
+        Star: "STAR",
         Share: "SHARE",
         Like: "LIKE",
         Dislike: "DISLIKE",

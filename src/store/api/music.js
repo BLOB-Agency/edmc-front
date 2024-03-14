@@ -97,6 +97,14 @@ export const musicApi = createApi({
             },
         }),
 
+        starSong: builder.mutation({
+            query: (songId) => ({
+                url: `/songs/${songId}/star`,
+                method: 'POST',
+            }),
+
+        }),
+
         dislikeSong: builder.mutation({
             query: (songId) => ({
                 url: `/songs/${songId}/dislike`,
@@ -157,4 +165,5 @@ export const {
     useDislikeSongMutation,
     useFetchPlaylistQuery,
     useFetchPublicPlaylistsQuery,
+    useStarSongMutation,
 } = musicApi;
