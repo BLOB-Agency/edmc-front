@@ -1,5 +1,5 @@
 export default {
-    API_URL: 'http://api.edmc.test/v1',
+    API_URL: 'https://api.dropper.edmc.io/v1',
     COLORS: [
         { name: "Purple", colorCode: "#BB61C9" },
         { name: "Lila", colorCode: "#8083FF" },
@@ -14,5 +14,4 @@ export default {
         { name: "Duck", colorCode: "#0E7C7B" },
         { name: "Pine", colorCode: "#005A34" },
     ]
-
 }

@@ -1,7 +1,7 @@
 
 {
   "expo": {
-    "name": "edmc-front",
+    "name": "Dropper by EDMC",
     "slug": "edmc-front",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,6 +16,7 @@
       "**/*"
     ],
     "ios": {
+      "buildNumber": "3",
       "supportsTablet": false,
       "bundleIdentifier": "io.edmc.dropper",
       "config": {
