@@ -11,7 +11,13 @@ const trackStyles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
-        paddingBottom: 24
+        paddingBottom: 12
+    },
+    image: {
+        marginTop: 12,
+        width: 48,
+        height: 48,
+        borderRadius: 5,
     },
     index: {
         textAlign: "center",

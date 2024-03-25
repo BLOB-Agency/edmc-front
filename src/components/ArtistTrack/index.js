@@ -9,7 +9,7 @@ const Track = ({ track, onClick, index, last = false }) => {
                 <View style={trackStyles.leftContainer}>
                     <FastImage
                         source={{
-                            uri: track.album[0].cover_image[0].url,
+                            uri: track.album[0].cover_image.url,
                             priority: FastImage.priority.normal,
                         }}
                         resizeMode={FastImage.resizeMode.cover}

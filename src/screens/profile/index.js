@@ -151,7 +151,7 @@ const Profile = ({ navigation }) => {
                   <View style={styles.infoContainer}>
                       <TouchableOpacity onPress={openImagePicker} style={styles.containerPicture}>
                               <FastImage
-                                  source={{uri: imageUrl, priority: FastImage.priority.normal}}
+                                  // source={{uri: imageUrl, priority: FastImage.priority.normal}}
                                   style={styles.picture}
                                   resizeMode="cover"
                               />

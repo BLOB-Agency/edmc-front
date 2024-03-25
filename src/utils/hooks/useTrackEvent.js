@@ -3,6 +3,9 @@ import { eventsActions } from '@store/eventsSlice';
 import Joi from "joi";
 
 export const TrackableEvents = {
+    App: {
+        Init: "INIT_APP"
+    },
     Player: {
         Init: "INIT_PLAYER",
     },

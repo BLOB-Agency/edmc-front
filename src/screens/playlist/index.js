@@ -38,7 +38,7 @@ export default function Playlist({ route, navigation }) {
                        onPress={() => handlePress(index)}
                        containerStyles={{width: itemWidth, marginBottom: 12}}
                        title={song.title}
-                       bg={ song.album[0].cover_image[0].url}
+                       bg={ song.album[0].cover_image.url}
                        subtitle={formatNamesWithAnd(song.artists)}
                    />
                ))}

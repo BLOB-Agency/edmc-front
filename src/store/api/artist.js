@@ -19,9 +19,19 @@ export const artistApi = createApi({
 
 
     endpoints: (builder) => ({
+        getNewArtists: builder.query({
+            query: () => 'artist-profile/new',
+            transformResponse: (response) => {
+                console.log('response', response)
+
+                return response.artists;
+            },
+        }),
         getArtistProfile: builder.query({
             query: (artistId) => `artist-profile/${artistId}`,
-            transformResponse: (response) => response.artist_profile,
+            transformResponse: (response) => {
+                return {...response.artist_profile, songs: response.songs, latest: response.latest};
+            },
         }),
 
         createArtistProfile: builder.mutation({
@@ -37,4 +47,8 @@ export const artistApi = createApi({
     }),
 });
 
-export const { useGetArtistProfileQuery, useCreateArtistProfileMutation } = artistApi;
+export const {
+    useGetArtistProfileQuery,
+    useGetNewArtistsQuery,
+    useCreateArtistProfileMutation
+} = artistApi;

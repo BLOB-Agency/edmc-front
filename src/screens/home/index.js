@@ -18,6 +18,7 @@ import {formatNamesWithAnd, playSingleTrack} from "@utils/helpers";
 import {useMusicPlayer} from "@context/MusicPlayerContext";
 import {useFetchFeaturedPlaylistsQuery, useFetchHomeDataQuery, useFetchRecentAlbumsQuery} from "@store/api/music";
 import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
+import {useGetNewArtistsQuery} from "@store/api/artist";
 
 const TopPlaylist = ({ tag, title, subtitle, bg, onClick }) => {
     const tagWords = tag.split(' ');
@@ -82,12 +83,14 @@ export default function ({navigation}) {
     const { data: homeData, isLoading: isLoadingHomeData } = useFetchHomeDataQuery();
     const { data: recentAlbums } = useFetchRecentAlbumsQuery();
     const { data: featuredPlaylists } = useFetchFeaturedPlaylistsQuery();
+    const {data : recentArtists} = useGetNewArtistsQuery();
     // useEffect(() => {
     //     dispatch(fetchHomeData());
     // }, [dispatch]);
 
     useEffect(() => {
-            }, [recentAlbums]);
+        console.log('recentArtists', recentArtists)
+    }, [recentArtists]);
 
 
     const handlePlay = async (song) => {
@@ -111,8 +114,16 @@ export default function ({navigation}) {
     //     return <Text>Error fetching songs</Text>;
     // }
 
-        const navigateToPlaylist = (playlistId) => {
+    const navigateToPlaylist = (playlistId) => {
         navigation.navigate('PlaylistScreen', { playlistId });
+    }
+
+    const navigateToArtist = (artistId) => {
+        trackEvent(TrackableEvents.Music.GoToArtist, {
+            from: 'home',
+            artistId,
+        });
+        navigation.navigate('ArtistProfileScreen', { artistId });
     }
 
 
@@ -141,19 +152,7 @@ export default function ({navigation}) {
                     </ScrollView>
                 </View>
 
-                {/*<View style={{...styles.playlistContainer, gap: 12}}>*/}
-                {/*    <Text style={styles.playlistTitle}>Latest Releases</Text>*/}
-                {/*    <ScrollView*/}
-                {/*        horizontal={true}*/}
-                {/*        showsHorizontalScrollIndicator={false}*/}
-                {/*        contentContainerStyle={styles.scrollViewContainer}*/}
-                {/*    >*/}
-                {/*        {recentAlbums.map((album, index) => (*/}
-                {/*            // <Text>{JSON.stringify(album.cover_image[0].url)}</Text>*/}
-                {/*            <Playlist onPress={() => navigateToAlbum(album)} key={index} title={album.name} subtitle={formatNamesWithAnd(album.artists)} bg={album.cover_image[0].url} />*/}
-                {/*        ))}*/}
-                {/*    </ScrollView>*/}
-                {/*</View>*/}
+
 
                 <View style={{...styles.playlistContainer, gap: 12}}>
                     <Text style={styles.playlistTitle}>Latest Releases</Text>
@@ -164,10 +163,46 @@ export default function ({navigation}) {
                     >
                         {homeData.songs.map((song, index) => (
                             // <Text>{JSON.stringify(song.album.cover_image[0].url)}</Text>
-                            <Playlist onPress={() => handlePlay(song)} key={index} title={song.title} subtitle={formatNamesWithAnd(song.artists)} bg={song.album[0].cover_image[0].url} />
+                            <Playlist onPress={() => handlePlay(song)} key={index} title={song.title} subtitle={formatNamesWithAnd(song.artists)} bg={song.cover_image.url} />
                         ))}
                     </ScrollView>
                 </View>
+
+                <View style={{...styles.playlistContainer, gap: 12}}>
+                    <Text style={styles.playlistTitle}>New artists</Text>
+                    <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.scrollViewContainer}
+                    >
+                        {(recentArtists || []).map((artist, index) => {
+                            const imageUrl = artist.profile_photo ? artist.profile_photo.url : 'https://i.imgur.com/OgjjT6T.png';
+                            console.log(imageUrl, 'imageUrl')
+                            return (
+                                // <Text>{JSON.stringify(artist)}</Text>
+                                <Playlist onPress={() => navigateToArtist(artist.id)} key={index} title={artist.username} bg={imageUrl}/>
+                            )
+                        })}
+                    </ScrollView>
+                </View>
+
+                {/*<View style={{...styles.playlistContainer, gap: 12}}>*/}
+                {/*    <Text style={styles.playlistTitle}>New Artists</Text>*/}
+                {/*    <ScrollView*/}
+                {/*        horizontal={true}*/}
+                {/*        showsHorizontalScrollIndicator={false}*/}
+                {/*        contentContainerStyle={styles.scrollViewContainer}*/}
+                {/*    >*/}
+                {/*        <Playlist title={"Voyage"} bg={require("@assets/images/albumarttest.png")}/>*/}
+                {/*        <Playlist title={"Voyage"} bg={require("@assets/images/albumarttest.png")}/>*/}
+                {/*        <Playlist title={"Voyage"} bg={require("@assets/images/albumarttest.png")}/>*/}
+                {/*        <Playlist title={"Voyage"} bg={require("@assets/images/albumarttest.png")}/>*/}
+                {/*        <Playlist title={"Voyage"} bg={require("@assets/images/albumarttest.png")}/>*/}
+                {/*        <Playlist title={"Voyage"} bg={require("@assets/images/albumarttest.png")}/>*/}
+                {/*    </ScrollView>*/}
+                {/*</View>*/}
+
+
 
                 {/*<View style={{...styles.playlistContainer, gap: 12}}>*/}
                 {/*    <Text style={styles.playlistTitle}>New Artists</Text>*/}

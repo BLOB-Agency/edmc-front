@@ -29,7 +29,7 @@ const Player = () => {
     return (
         <View style={{...styles.outerContainer, paddingTop: insets.top, paddingBottom: insets.bottom}}>
             <FastImage
-                source={{ uri: currentSong.cover_image[0].url, priority: FastImage.priority.normal }}
+                source={{ uri: currentSong.cover_image.url, priority: FastImage.priority.normal }}
                 resizeMode={FastImage.resizeMode.cover}
                 style={styles.bgImage}
             />

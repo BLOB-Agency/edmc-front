@@ -98,7 +98,7 @@ const MiniPlayer = ({marginBottom, setPlayerOpen, setMiniPlayerVisible}) => {
                         {/* Your content */}
 
                         <TouchableOpacity onPress={openPlayer} style={styles.touchableArea}>
-                            <Animated.Image source={{ uri: currentSong.cover_image[0].url }} style={[styles.albumArt, {
+                            <Animated.Image source={{ uri: currentSong.cover_image.url }} style={[styles.albumArt, {
                                 width: 60,
                                 height: 60,
                             }]} />

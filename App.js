@@ -42,6 +42,7 @@ import AuthStack from "./src/navigation/authenticator/stack";
 import NavigationStack from "./src/navigation/stack";
 import useTrackPlayerEvents from "@utils/hooks/useTrackPlayerEvents";
 import useMusicTimer from "@utils/hooks/useMusicTimer";
+import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
 
 
 
@@ -61,6 +62,8 @@ const Loader = () => {
     const loginEventEmitter = useLoginEventEmitter();
     useTrackPlayerEvents();
     useMusicTimer()
+    const trackEvent = useTrackEvent();
+
     const checkForToken = async () => {
         const token = await tokenService.getTokenFromStorage();
         console.info('token', token)
@@ -85,7 +88,7 @@ const Loader = () => {
         };
 
         const handleLogoutSuccess = () => {
-                        navigation.navigate('Welcome');
+            navigation.navigate('Welcome');
         }
 
         const goToArtist = () => {
@@ -111,6 +114,10 @@ const Loader = () => {
             if (result !== null && result.token && result.user) {
                 dispatch(userActions.setLoggedIn(true));
                 dispatch(userActions.setUser(result.user));
+
+                trackEvent(TrackableEvents.App.Init, {
+
+                })
 
                 if (isArtistMode) {
                     navigation.navigate('ArtistTabs')

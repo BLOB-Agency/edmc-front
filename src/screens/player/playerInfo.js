@@ -70,7 +70,7 @@ const PlayerInfo = ({ currentSong }) => {
         <View style={styles.infoContainer}>
             <FastImage
                 source={{
-                    uri: currentSong.cover_image[0].url,
+                    uri: currentSong.cover_image.url,
                     priority: FastImage.priority.normal,
                 }}
                 resizeMode={FastImage.resizeMode.cover}

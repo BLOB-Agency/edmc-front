@@ -30,7 +30,7 @@ export const MusicPlayerProvider = ({ children }) => {
             autoHandleInterruptions: true
         }).then(() => {
             
-            // trackEvent(TrackableEvents.Music.Init)
+            trackEvent(TrackableEvents.Player.Init)
         });
     }, []);
 

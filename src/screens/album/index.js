@@ -11,6 +11,7 @@ import React, {useEffect, useState} from "react";
 import {fetchSongsForAlbum} from "@store/albumsSlice";
 import TrackPlayer from "react-native-track-player";
 import useTrackEvent, {TrackableEvents} from "@utils/hooks/useTrackEvent";
+import Track from "@components/track";
 
 
 export const Album = ({navigation, route}) => {

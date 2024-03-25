@@ -41,7 +41,7 @@ const playSingleTrack = async (song) => {
         url: song.media[0].url,
         title: song.title,
         artist: song.artists[0].name,
-        artwork: song.cover_image[0].url,
+        artwork: song.cover_image.url,
         duration: song.duration,
     }
 
