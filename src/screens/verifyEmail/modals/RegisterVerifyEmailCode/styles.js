@@ -71,5 +71,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 5,
   },
+  containerResendCode: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 24,
+    gap: 6,
+    fontFamily: "Gordita-Regular",
+  },
+  sendCodeLink: {
+    textDecorationLine: "underline",
+    color: "#fff",
+  },
 });
 export default styles;

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, TextInput } from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import { verifyEmail } from '@store/authSlice';
 import Background from '@components/auth/bg';
 import  { authStyles, genericStyles } from '@components/auth/styles';
 
 import styles from './styles';
 import {userActions} from "@store/userSlice";
+import {useResendPasswordCodeMutation} from "@store/api/user";
 const initialCode = ['', '', '', ''];
 
 const useKeyPressHandler = (inputRefs, setVerificationCode) => {
@@ -37,6 +38,7 @@ const VerifyEmailCode = ({ goNext, navigation, goPrevious }) => {
   const inputRefs = useRef([]);
   const user = useSelector((state) => state.user);
   const [stateError, setStateError] = useState(null);
+  const [resendPasswordCode, { isLoading, isError, error }] = useResendPasswordCodeMutation();
 
   const handleInputChange = useCallback(
       (text, index) => {
@@ -62,6 +64,28 @@ const VerifyEmailCode = ({ goNext, navigation, goPrevious }) => {
           .catch((err) => setStateError(err.message || ''));
     }
   }, [verificationCode, dispatch, user.email, goNext]);
+
+    const handleResendCode = () => {
+        resendPasswordCode(user.email)
+            .then(() => {
+                // Show alert when email is successfully resent
+                Alert.alert(
+                    'Code Resent',
+                    'A new verification code has been sent to your email.',
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => console.log('OK Pressed'),
+                            style: 'default',
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
   return (
       <Background>
@@ -91,6 +115,13 @@ const VerifyEmailCode = ({ goNext, navigation, goPrevious }) => {
                   {stateError}
                 </Text>
             )}
+
+              <View style={styles.containerResendCode}>
+                  <Text style={{ color: "#fff" }}>Don't have a code?</Text>
+                  <TouchableOpacity onPress={handleResendCode}>
+                      <Text style={styles.sendCodeLink}>Resend now</Text>
+                  </TouchableOpacity>
+              </View>
           </View>
         </View>
       </Background>

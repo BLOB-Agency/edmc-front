@@ -84,6 +84,17 @@ export const userSlice = createSlice({
         resetUser: (state) => {
             state = initialState
         },
+        logOut: (state) => {
+            state.isLoggedIn = false;
+            state.username = "";
+            state.email = "";
+            state.color = "#BB61C9";
+            state.notifications_enabled = true;
+            state.email_verified_at = null;
+            state.artist_profile = null;
+            state.profile_photo = {};
+            state.star_drops = 0;
+        }
     },
     extraReducers: (builder) => {
         builder

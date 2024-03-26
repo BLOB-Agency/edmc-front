@@ -6,29 +6,44 @@ import {
   Modal,
   View,
   Text,
-  Linking,
+  Linking, Alert,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { BlurView } from "expo-blur";
 import styles from "./styles";
 import PrimaryBtn from "@components/PrimaryBtn";
-import resendCode from "@utils/resendCode";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import Background from "@components/auth/bg"
 import ReturnBtn from "@components/ReturnBtn";
 import {authStyles} from "@components/auth/styles";
+import {useResendPasswordCodeMutation} from "@store/api/user";
 
 const CheckEmailModal = ({goNext, goPrevious}) => {
   const [timeoutId, setTimeoutId] = useState(null);
   const userData = useSelector((state) => state.user);
+  const [resendPasswordCode, { isLoading, isError, error }] = useResendPasswordCodeMutation();
+
   const handleResendCode = () => {
     stopTimer();
 
-    resendCode(userData.email).then(() => {
-      console.info("Resent code");
+    resendPasswordCode(userData.email).then(() => {
+      // Show alert when email is successfully resent
+      Alert.alert(
+          'Code Resent',
+          'A new verification code has been sent to your email.',
+          [
+            {
+              text: 'OK',
+              onPress: () => console.log('OK Pressed'),
+              style: 'default',
+            },
+          ],
+          { cancelable: false }
+      );
     }).catch((err) => {
         console.error(err);
-    }).finally(startTimer);
+      })
+      .finally(startTimer);
   };
 
   const goToNextScreen = () => {

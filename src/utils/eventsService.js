@@ -10,6 +10,8 @@ export default {
             };
         });
 
+        console.log('`${config.API_URL}/meta/events`', `${config.API_URL}/meta/events`)
+
         const response = await fetch(`${config.API_URL}/meta/events`, {
             method: 'POST',
             headers: {

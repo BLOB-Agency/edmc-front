@@ -38,10 +38,20 @@ export const userApi = createApi({
             }
         }),
 
+        resendPasswordCode: builder.mutation({
+            query: (email) => ({
+                url: '/auth/resend-code',
+                method: 'POST',
+            }),
+            transformResponse: (response, meta, arg) => {
+                return response;
+            }
+        }),
     }),
 });
 
 export const {
     useUpdateProfilePictureMutation,
     useClaimStarDropsMutation,
+    useResendPasswordCodeMutation,
 } = userApi;
