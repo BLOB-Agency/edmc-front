@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, ImageBackground, Text, View } from "react-native";
+import {Modal, ImageBackground, Text, View, ActivityIndicator} from "react-native";
 
 import { registrationActions } from "@store/registrationSlice";
 import { authActions } from "@store/authSlice";
@@ -33,6 +33,7 @@ const RegisterPasswordModal = ({ goNext, navigation, goPrevious, goToModal }) =>
         confirmPasswordError: false,
     });
     const userData = useSelector((state) => state.registration);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleInputChange = useCallback((key, value) => {
         setState((prevState) => ({
@@ -54,6 +55,7 @@ const RegisterPasswordModal = ({ goNext, navigation, goPrevious, goToModal }) =>
         }));
 
         if (!isPasswordInvalid && !isPasswordMismatch) {
+            setIsSubmitting(true)
             const payload = {
                 ...userData,
                 password: state.password,
@@ -74,12 +76,21 @@ const RegisterPasswordModal = ({ goNext, navigation, goPrevious, goToModal }) =>
                     if (error.data?.errors?.username) {
                         goToModal(0);
                     }
+                })
+                .finally(() => {
+                    setIsSubmitting(false);
+
                 });
         }
     }, [state, userData, goToModal]);
 
     return (
         <Background>
+            {isSubmitting && (
+                <View style={styles.overlay}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            )}
             <ReturnBtn method={goPrevious} />
             <View style={styles.containerMain}>
                 <View style={styles.containerText}>
@@ -113,7 +124,7 @@ const RegisterPasswordModal = ({ goNext, navigation, goPrevious, goToModal }) =>
                     )}
                 </View>
                 <PrimaryBtn
-                    disabled={state.passwordError || state.confirmPasswordError || state.password === "" || state.confirmPassword === ""}
+                    disabled={isSubmitting || state.passwordError || state.confirmPasswordError || state.password === "" || state.confirmPassword === ""}
                     title="LET'S GO!" onPress={passwordHandler} />
             </View>
         </Background>

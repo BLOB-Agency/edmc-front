@@ -17,12 +17,21 @@ export const musicSlice = createSlice({
         setIsPlaying: (state, action) => {
             state.isPlaying = action.payload;
         },
-        // You can add more reducers as needed for handling other music-related actions
+        reset: (state) => {
+            state.timer = 0;
+            state.isPlaying = false;
+            state.timeUntilNextStar = 300;
+        },
     },
 });
 
 // Export actions
-export const { setTimer, setIsPlaying } = musicSlice.actions;
+export const { reset, setTimer, setIsPlaying } = musicSlice.actions;
 
+export const musicActions = {
+    reset,
+    setTimer,
+    setIsPlaying,
+};
 // Export reducer
 export default musicSlice.reducer;

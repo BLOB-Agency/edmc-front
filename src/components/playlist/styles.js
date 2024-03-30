@@ -7,6 +7,8 @@ const styles = StyleSheet.create({
         height: 200,
         padding: 12,
         justifyContent: "space-between",
+        borderRadius: 8,
+        overflow: "hidden",
     },
     bgOverlay: {
         ...StyleSheet.absoluteFillObject,

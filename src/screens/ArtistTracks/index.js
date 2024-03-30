@@ -19,9 +19,9 @@ export default function ({navigation}) {
     const sortTracks = (tracks, option) => {
         switch (option) {
             case 'mostPlays':
-                return [...tracks].sort((a, b) => b.plays - a.plays);
-            case 'mostLikes':
-                return [...tracks].sort((a, b) => b.likes - a.likes);
+                return [...tracks].sort((a, b) => b.play_count - a.play_count);
+            case 'mostLiked':
+                return [...tracks].sort((a, b) => b.likes_count - a.likes_count);
             case 'mostRecent':
             default:
                 return [...tracks].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -59,18 +59,20 @@ export default function ({navigation}) {
                 />
 
             </ScrollView>
-            {sortedTracks && sortedTracks.length > 0 ?  (
-                sortedTracks.map((track, index) => (
-                    <Track
-                        key={track.id}
-                        track={track}
-                        onClick={() => {}}
-                        index={index + 1}
-                    />
-                ))
-            ) : (
-                <Text>No tracks found</Text>
-            )}
+            <View style={styles.container}>
+                {sortedTracks && sortedTracks.length > 0 ?  (
+                    sortedTracks.map((track, index) => (
+                        <Track
+                            key={track.id}
+                            track={track}
+                            onClick={() => {}}
+                            index={index + 1}
+                        />
+                    ))
+                ) : (
+                    <Text>No tracks found</Text>
+                )}
+            </View>
         </ScreenWithNavigationHeader>
     )
 }

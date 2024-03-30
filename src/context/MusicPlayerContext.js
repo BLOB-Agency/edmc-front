@@ -54,6 +54,10 @@ export const MusicPlayerProvider = ({ children }) => {
         });
     };
 
+    const stopMusic = async () => {
+        await TrackPlayer.stop();
+    }
+
     const pause = async () => {
         await TrackPlayer.pause();
 
@@ -118,6 +122,7 @@ export const MusicPlayerProvider = ({ children }) => {
         addToQueue,
         removeFromQueue,
         play,
+        stopMusic,
         pause,
         togglePlayPause,
         previous,

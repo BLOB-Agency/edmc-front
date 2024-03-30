@@ -21,9 +21,8 @@ export const musicApi = createApi({
             query: () => '/songs',
         }),
         fetchFeaturedPlaylists: builder.query({
-            query: () => '/playlists',
+            query: () => '/playlists?type=featured',
             transformResponse: (response, meta, arg) => response.playlists,
-
         }),
         fetchAlbum: builder.query({
             query: ({ albumId, withMedia = false }) => `/albums/${albumId}?with_media=${withMedia}`,
@@ -35,9 +34,8 @@ export const musicApi = createApi({
         }),
 
         fetchPublicPlaylists: builder.query({
-            query: () => `/playlists?type=public`,
+            query: () => `/playlists?type=public&hide_featured=true`,
             transformResponse: (response, meta, arg) => response.playlists,
-
         }),
 
         fetchRecentAlbums: builder.query({

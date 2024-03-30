@@ -23,6 +23,8 @@ import {useLoginEventEmitter} from "@utils/emitters";
 import MyAccount from "@screens/MyAccount";
 import ChooseImage from "@screens/ChooseImage";
 import FastImage from "react-native-fast-image";
+import {musicActions} from "@store/musicSlice";
+import {useMusicPlayer} from "@context/MusicPlayerContext";
 const Profile = ({ navigation }) => {
     const [showCreateArtistProfile, setShowCreateArtistProfile] = useState(false);
     const [showSignOut, setShowSignOut] = useState(false);
@@ -37,14 +39,15 @@ const Profile = ({ navigation }) => {
     const dispatch = useDispatch();
     const { timeUntilNextStar } = useSelector((state) => state.music);
     const isLoading = useSelector((state) => state.isLoading);
-    const handlePersonalData = () => {
-            };
+    const {stopMusic} = useMusicPlayer();
 
     const handleSignOut = () => {
-                dispatch(userActions.resetUser());
+        dispatch(userActions.resetUser());
         dispatch(loginActions.resetUser());
         dispatch(registrationActions.resetUser());
         dispatch(userActions.setLoggedIn(false));
+        dispatch(musicActions.reset())
+        stopMusic()
         navigation.navigate("Welcome");
     };
 
@@ -143,7 +146,7 @@ const Profile = ({ navigation }) => {
         return `${mins} minute${mins === 1 ? '' : 's'} and ${secs} second${secs === 1 ? '' : 's'}`;
     };
     const imageUrl = user.profile_photo ? user.profile_photo.url : 'https://i.imgur.com/OgjjT6T.png';
-
+    console.log('imageUrl', user)
     return (
         <ScreenWithNavigationheader title={"My Profile"} small={true}>
           <View style={styles.outerContainer}>
@@ -151,7 +154,7 @@ const Profile = ({ navigation }) => {
                   <View style={styles.infoContainer}>
                       <TouchableOpacity onPress={openImagePicker} style={styles.containerPicture}>
                               <FastImage
-                                  // source={{uri: imageUrl, priority: FastImage.priority.normal}}
+                                  source={{uri: imageUrl, priority: FastImage.priority.normal}}
                                   style={styles.picture}
                                   resizeMode="cover"
                               />

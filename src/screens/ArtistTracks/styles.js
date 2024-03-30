@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         borderColor: 'rgba(255, 255, 255, 0.25)',
     },
+    container: {
+        marginBottom: 72,
+    },
 });
 
 export default styles;

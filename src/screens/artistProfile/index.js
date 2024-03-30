@@ -41,10 +41,10 @@ export default function ({route, navigation}) {
             >
                 <View style={styles.topContainer}>
                     {
-                        artistProfile.profile_photo[0]?.url ?
+                        artistProfile.profile_photo?.url ?
                             <FastImage
                                 source={{
-                                    uri: artistProfile.profile_photo[0].url,
+                                    uri: artistProfile.profile_photo.url,
                                     priority: FastImage.priority.normal,
                                 }}
                                 resizeMode={FastImage.resizeMode.cover}
@@ -85,7 +85,7 @@ export default function ({route, navigation}) {
                             <FastImage
                                 style={styles.latestImage}
                                 source={{
-                                    uri: artistProfile.latest.album[0].cover_image[0].url,
+                                    uri: artistProfile.latest.album[0].cover_image.url,
                                     priority: FastImage.priority.normal,
                                 }}
                                 resizeMode={FastImage.resizeMode.cover}

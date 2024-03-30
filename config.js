@@ -1,4 +1,5 @@
 export default {
+    // API_URL: 'http://api.dropper.edmc.test/v1',
     API_URL: 'https://api.dropper.edmc.io/v1',
     COLORS: [
         { name: "Purple", colorCode: "#BB61C9" },

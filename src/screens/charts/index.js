@@ -5,6 +5,8 @@ import Playlist from "@components/playlist";
 import styles from './styles'
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+const width = Dimensions.get('window').width;
+const itemWidth = (width - 60) / 2;
 export default function Charts({ navigation }) {
     const insets = useSafeAreaInsets();
     const {data: chartsData, loading: chartsLoading, error: chartsError} = useFetchPublicPlaylistsQuery();
@@ -20,7 +22,7 @@ export default function Charts({ navigation }) {
                 {chartsData && chartsData.map((chart, index) => (
                     <Playlist
                         onClick={() => navigateToPlaylist(chart.id)}
-                        style={{marginBottom: 12}}
+                        style={{marginBottom: 12, width: itemWidth}}
                         key={index}
                         tag={chart.tag}
                         title={chart.name}

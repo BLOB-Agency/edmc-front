@@ -114,13 +114,13 @@ export default function({navigation}) {
                 <SecondaryButton onPress={goToLogin} title={"Log In!"}></SecondaryButton>
                 <PrimaryButton onPress={goToRegistration} title={"Sign Up!"}></PrimaryButton>
 
-                <Text style={styles.socialText}>Or sign in with</Text>
+                {/*<Text style={styles.socialText}>Or sign in with</Text>*/}
 
-                <View style={{alignItems: "center"}}>
-                    {appleAuth.isSupported && (
-                        <SocialButton src={AppleLogo}></SocialButton>
-                    )}
-                </View>
+                {/*<View style={{alignItems: "center"}}>*/}
+                {/*    {appleAuth.isSupported && (*/}
+                {/*        <SocialButton src={AppleLogo}></SocialButton>*/}
+                {/*    )}*/}
+                {/*</View>*/}
             </Background>
         </>
     );

@@ -17,7 +17,8 @@ const trackStyles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         paddingVertical: 12,
-        paddingHorizontal: 24
+        paddingHorizontal: 24,
+
     },
     index: {
         textAlign: "center",

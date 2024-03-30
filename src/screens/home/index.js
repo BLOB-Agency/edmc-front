@@ -177,7 +177,6 @@ export default function ({navigation}) {
                     >
                         {(recentArtists || []).map((artist, index) => {
                             const imageUrl = artist.profile_photo ? artist.profile_photo.url : 'https://i.imgur.com/OgjjT6T.png';
-                            console.log(imageUrl, 'imageUrl')
                             return (
                                 // <Text>{JSON.stringify(artist)}</Text>
                                 <Playlist onPress={() => navigateToArtist(artist.id)} key={index} title={artist.username} bg={imageUrl}/>

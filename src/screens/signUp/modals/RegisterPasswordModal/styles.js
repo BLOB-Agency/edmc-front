@@ -23,6 +23,16 @@ const styles = StyleSheet.create({
 
       gap: 24,
     },
+    overlay: {
+        position: 'absolute',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 
     containerText: {
         justifyContent: "center",
