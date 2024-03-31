@@ -1,22 +1,21 @@
-
 {
   "expo": {
-    "name": "Dropper by EDMC",
+    "name": "Dropper",
     "slug": "edmc-front",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/app-icons/BB61C9.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#BB61C9"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "buildNumber": "4",
+      "buildNumber": "6",
       "supportsTablet": false,
       "bundleIdentifier": "io.edmc.dropper",
       "config": {
@@ -42,6 +41,73 @@
       "eas": {
         "projectId": "a650dc46-3617-4f2f-a88f-0e3d98d28638"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-dynamic-app-icon",
+        {
+          "BB61C9": {
+            "image": "./assets/app-icons/BB61C9.png",
+            "prerendered": true
+          },
+
+          "8083FF": {
+            "image": "./assets/app-icons/8083FF.png",
+            "prerendered": true
+          },
+
+          "FB6376": {
+            "image": "./assets/app-icons/FB6376.png",
+            "prerendered": true
+          },
+
+          "FAB3A9": {
+            "image": "./assets/app-icons/FAB3A9.png",
+            "prerendered": true
+          },
+
+          "FAB565": {
+            "image": "./assets/app-icons/FAB565.png",
+            "prerendered": true
+          },
+
+
+          "FF715B": {
+            "image": "./assets/app-icons/FF715B.png",
+            "prerendered": true
+          },
+
+          "0267C1": {
+            "image": "./assets/app-icons/0267C1.png",
+            "prerendered": true
+          },
+
+          "6E8894": {
+            "image": "./assets/app-icons/6E8894.png",
+            "prerendered": true
+          },
+
+          "A9CEC2": {
+            "image": "./assets/app-icons/A9CEC2.png",
+            "prerendered": true
+          },
+
+          "5B9279": {
+            "image": "./assets/app-icons/5B9279.png",
+            "prerendered": true
+          },
+
+          "0E7C7B": {
+            "image": "./assets/app-icons/0E7C7B.png",
+            "prerendered": true
+          },
+
+          "005A34": {
+            "image": "./assets/app-icons/005A34.png",
+            "prerendered": true
+          }
+        }
+      ]
+    ]
   }
 }

@@ -134,7 +134,7 @@ export default function PasswordChangeModal({ visible, onClose }) {
                         onPress={onSubmit}
                         disabled={!canSubmit} />
                         )}
-                    />1
+
 
                     {isSuccess && (
                         <Text>Password changed successfully!</Text>

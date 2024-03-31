@@ -32,5 +32,77 @@
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
+    <activity-alias android:name="io.edmc.dropper.MainActivityBB61C9" android:enabled="false" android:exported="true" android:icon="@mipmap/BB61C9" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivity8083FF" android:enabled="false" android:exported="true" android:icon="@mipmap/8083FF" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivityFB6376" android:enabled="false" android:exported="true" android:icon="@mipmap/FB6376" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivityFAB3A9" android:enabled="false" android:exported="true" android:icon="@mipmap/FAB3A9" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivityFAB565" android:enabled="false" android:exported="true" android:icon="@mipmap/FAB565" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivityFF715B" android:enabled="false" android:exported="true" android:icon="@mipmap/FF715B" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivity0267C1" android:enabled="false" android:exported="true" android:icon="@mipmap/0267C1" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivity6E8894" android:enabled="false" android:exported="true" android:icon="@mipmap/6E8894" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivityA9CEC2" android:enabled="false" android:exported="true" android:icon="@mipmap/A9CEC2" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivity5B9279" android:enabled="false" android:exported="true" android:icon="@mipmap/5B9279" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivity0E7C7B" android:enabled="false" android:exported="true" android:icon="@mipmap/0E7C7B" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
+    <activity-alias android:name="io.edmc.dropper.MainActivity005A34" android:enabled="false" android:exported="true" android:icon="@mipmap/005A34" android:targetActivity=".MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity-alias>
   </application>
 </manifest>

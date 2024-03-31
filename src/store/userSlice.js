@@ -5,6 +5,8 @@ import tokenService from "@utils/tokenService";
 import {authApi} from "@store/api/auth";
 import {userApi} from "@store/api/user";
 import {musicApi} from "@store/api/music";
+import {changeIcon} from "react-native-change-icon";
+import {setAppIcon} from "expo-dynamic-app-icon";
 
 
 export const saveColor = createAsyncThunk(
@@ -12,6 +14,8 @@ export const saveColor = createAsyncThunk(
     async (color, {rejectWithValue}) => {
         try {
             const token = await tokenService.getTokenFromStorage();
+            color = color.replace("#", "")
+            await setAppIcon(color)
 
             return await authService.saveColor({color, token})
         } catch (error) {
@@ -79,7 +83,6 @@ export const userSlice = createSlice({
             state.email_verified_at = action.payload.email_verified_at
             state.artist_profile = action.payload.artist_profile
             state.profile_photo = action.profile_photo
-            console.error("pic update 1")
         },
 
         resetUser: (state) => {
@@ -94,7 +97,6 @@ export const userSlice = createSlice({
             state.email_verified_at = null;
             state.artist_profile = null;
             state.profile_photo = {};
-            console.error("pic update 2")
             state.star_drops = 0;
         }
     },
@@ -111,7 +113,6 @@ export const userSlice = createSlice({
                 state.artist_profile = action.payload.artist_profile
                state.star_drops = action.payload.user.star_drops
                 state.profile_photo = action.payload.user.profile_photo
-                console.error("pic update 3")
             })
             .addMatcher(authApi.endpoints.registerUser.matchFulfilled, (state, action) => {
                 state.isLoggedIn = true;
@@ -123,13 +124,11 @@ export const userSlice = createSlice({
                 state.artist_profile = action.payload.artist_profile
                 state.star_drops = action.payload.user.star_drops
                 state.profile_photo = action.payload.user.profile_photo
-                console.error("pic update 4")
             })
 
             .addMatcher(userApi.endpoints.updateProfilePicture.matchFulfilled, (state, action) => {
                console.log('action.payload',' action.payload', action.payload.user.profile_photo)
                 state.profile_photo = action.payload.user.profile_photo
-                console.error("pic update 5")
             })
             .addMatcher(userApi.endpoints.claimStarDrops.matchFulfilled, (state, action) => {
                 state.star_drops = action.payload.user_star_drops

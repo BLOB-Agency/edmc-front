@@ -25,6 +25,7 @@ import ChooseImage from "@screens/ChooseImage";
 import FastImage from "react-native-fast-image";
 import {musicActions} from "@store/musicSlice";
 import {useMusicPlayer} from "@context/MusicPlayerContext";
+import {setAppIcon} from "expo-dynamic-app-icon";
 const Profile = ({ navigation }) => {
     const [showCreateArtistProfile, setShowCreateArtistProfile] = useState(false);
     const [showSignOut, setShowSignOut] = useState(false);
@@ -47,6 +48,7 @@ const Profile = ({ navigation }) => {
         dispatch(registrationActions.resetUser());
         dispatch(userActions.setLoggedIn(false));
         dispatch(musicActions.reset())
+        setAppIcon("BB61C9")
         stopMusic()
         navigation.navigate("Welcome");
     };
