@@ -22,19 +22,19 @@ expo start
 
 ### Login
 
-- [ ] Login
-- [ ] Forgot Password
+- [x] Login
+- [x] Forgot Password
 
 ### Signup
 
-- [ ] Signup
+- [x] Signup
 - [x] Save username, email, password, color to redux store
 - [x] Save username, email, password, color to json file using json-server
-- [ ] Check if username or email already exists
-- [ ] Check if password is strong enough
-- [ ] Check if email already exists
-- [ ] Need to change the modal system to a page system !!!!!!!!!!!!!!!!
-- [ ] When user signup, send email verification (create email verification function)
+- [x] Check if username or email already exists
+- [x] Check if password is strong enough
+- [x] Check if email already exists
+- [x] Need to change the modal system to a page system !!!!!!!!!!!!!!!!
+- [x] When user signup, send email verification (create email verification function)
 - [x] Color Picker Page
 - [x] Save color in the store
 - [x] Make color a variable accessible through the components
@@ -42,7 +42,7 @@ expo start
 ### User Profile Page
 
 - [x] User Profile Page
-- [ ] Display user's profile picture, username, email
+- [x] Display user's profile picture, username, email
 - [x] Logout button
 
 ### User Settings Page
